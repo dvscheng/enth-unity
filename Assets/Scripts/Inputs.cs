@@ -11,6 +11,7 @@ public class Inputs : MonoBehaviour {
     public bool attack_key_down;
     public bool inventory_key_down;
     public bool equipment_key_down;
+    public bool interaction_key_down;
 
     private void Awake()
     {
@@ -32,5 +33,6 @@ public class Inputs : MonoBehaviour {
         attack_key_down = Input.GetKeyDown(KeyCode.C);
         inventory_key_down = Input.GetKeyDown(KeyCode.B);
         equipment_key_down = Input.GetKeyDown(KeyCode.E);
+        interaction_key_down = Input.GetKeyDown(KeyCode.Space);
     }
 }

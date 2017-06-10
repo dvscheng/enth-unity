@@ -27,6 +27,10 @@ public class UIManager : MonoBehaviour {
         playerController = player.GetComponent<PlayerController>();
         playerInventory = inventory.GetComponent<PlayerInventory>();
         playerHp = playerController.Hp;
+
+        /* Turn on (initialize) the UI, then turn it back off. */
+        playerInventory.ToggleOnOff();
+        playerInventory.ToggleOnOff();
     }
 
     // Update is called once per frame
