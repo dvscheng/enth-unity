@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class NPCs : MonoBehaviour
 {
+    public int ID;
+    public bool isQuestGiver;
     public CircleCollider2D interactRange;
     public Rigidbody2D rb;
+    public GameObject DialogueUIObj;
+    DialogueManager DialogueMan;
     [HideInInspector] Inputs inputs;
 
     // Use this for initialization
     void Awake()
     {
         inputs = gameObject.AddComponent<Inputs>();
+        DialogueMan = DialogueUIObj.GetComponent<DialogueManager>();
     }
 
     /* Keeps the rigidbody awake to check for player interaction. */
@@ -27,10 +32,10 @@ public class NPCs : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player"))
         {
-            if (inputs.interaction_key_down)
+            if (!DialogueMan.dialogueUIOn && inputs.interaction_key_down)
             {
-                print("swag key");
-                // open textbox
+                DialogueMan.StartDialogue(ID, isQuestGiver);
+                
                 // second "page" will have buttons (green check red x) to click on to accept or not
             }
         }
@@ -41,6 +46,11 @@ public class NPCs : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player"))
         {
+            if(DialogueMan.dialogueUIOn)
+            {
+                DialogueMan.ToggleOnOff();
+                DialogueMan.ResetDialogue();
+            }
             rb.sleepMode = RigidbodySleepMode2D.StartAwake;
         }
     }
