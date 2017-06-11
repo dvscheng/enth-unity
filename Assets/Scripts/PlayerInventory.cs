@@ -197,6 +197,7 @@ public class PlayerInventory : MonoBehaviour {
         }
     }
 
+    /* Toggles this UI's display on or off in Unity. */
     public void ToggleOnOff()
     {
         inventoryUIOn = !inventoryUIOn;

@@ -27,13 +27,14 @@ public class PlayerController : MonoBehaviour
     {
         get { return hp; }
     }
-    public void takeDamage(int damage)
+
+    /* Applies the damage and resets to 0 if hp goes below 0. */
+    public void TakeDamage(int damage)
     {
         hp -= damage;
+
         if (hp <= 0)
-        {
             hp = 0;
-        }
     }
 
     private int baseDamage = 10;
@@ -171,7 +172,6 @@ public class PlayerController : MonoBehaviour
 
 
 
-
             /* Checks when the player dies. */
             if (hp <= 0)
             {
@@ -180,18 +180,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    /* Used to apply movement to the character. */
+    void FixedUpdate()
     {
         rb.velocity = movement;
     }
-
+    
+    /* 
+     * After the given wait time, destroys the strike's hitbox.
+     * */
     private IEnumerator HitBoxTimer(float waitTime, GameObject hitBox)
     {
         yield return new WaitForSeconds(waitTime);
         Destroy(hitBox);
     }
 
-    /* Called by the animator to signal an end to animation. */
+    /* Called to signal an end to the attack animation. */
     public IEnumerator AttackAnimationDone(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);

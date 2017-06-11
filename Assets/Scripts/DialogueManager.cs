@@ -83,7 +83,7 @@ public class DialogueManager : MonoBehaviour {
         dialogueUIOn = true;
     }
 
-
+    /* Destroys and resets the dialogue manager, including the quest dialogue if there is one. */
     public void ResetDialogue()
     {
         if (dialogue != null)
@@ -92,12 +92,15 @@ public class DialogueManager : MonoBehaviour {
             lineNumber = 1;
             ToggleOnOff();
         }
+
+        /* If a quest dialogue exists, destroy it too. */
         if (questDialogueObj != null)
         {
             Destroy(questDialogueObj);
         }
     }
 
+    /* Toggles this UI's display on or off in Unity. */
     public void ToggleOnOff()
     {
         dialogueUIOn = !dialogueUIOn;

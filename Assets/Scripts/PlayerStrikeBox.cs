@@ -22,15 +22,11 @@ public class PlayerStrikeBox : MonoBehaviour {
         Enemy enemyScript = collision.gameObject.GetComponent<Enemy>();
         if (enemyScript)
         {
-            /* If we've collided with the enemy's sightRange, then ignore collision and DO NOT apply damage. */
+            /* If we've collided with the enemy's sightRange or hitbox, then ignore collision and do NOT apply damage. */
             if (collision.Equals(enemyScript.sightRange) || collision.Equals(enemyScript.boxTrigger))
-            {
                 Physics2D.IgnoreCollision(bc, collision);
-            }
             else
-            {
                 enemyScript.Hp -= playerController.BaseDamage;
-            }
         }
     }
 }

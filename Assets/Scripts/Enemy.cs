@@ -76,7 +76,7 @@ public class Enemy : MonoBehaviour {
 
                 /* Apply damage. */
                 // playerObj.GetComponent<Rigidbody2D>().AddForce(force);
-                playerObj.GetComponent<PlayerController>().takeDamage(baseDamage);
+                playerObj.GetComponent<PlayerController>().TakeDamage(baseDamage);
 
                 movement = Vector2.zero;
                 stateReady = false;
@@ -157,10 +157,9 @@ public class Enemy : MonoBehaviour {
         rb.velocity = movement;
     }
 
+    /* Roll for drops, then destroy the Game Object. */
     private void OnDeath()
     {
-        
-
         if (!RollForDrops(itemDB.LEGENDARY))
         {
             if (!RollForDrops(itemDB.RARE))
@@ -172,10 +171,10 @@ public class Enemy : MonoBehaviour {
             }
         }
 
-        Object.Destroy(gameObject);
+        Destroy(gameObject);
     }
 
-    /* Returns true IFF the random. (Change later for diff tier drops) */
+    /* Returns true IFF the roll succeeds. (Change later for diff tier drops) */
     private bool RollForDrops(int chances)
     {
         // instantiate an ItemOnGround prefab.
