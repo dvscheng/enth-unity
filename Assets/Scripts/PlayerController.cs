@@ -13,12 +13,10 @@ public class PlayerController : MonoBehaviour
 
     /* Movement params. */
     float moveDistance = 3.5f;
-    public float horizontalAxis; // UNITY
-    public float verticalAxis; // UNITY
-    int upKey;
-    int downKey;
-    int leftKey;
-    int rightKey;
+    public float inputX; // UNITY
+    public float inputY; // UNITY
+    public bool isMoving; // UNITY
+    public Vector2 lastFacing; // UNITY
 
     /* Animator params. */
     int animationState;
@@ -57,10 +55,10 @@ public class PlayerController : MonoBehaviour
         inventory = inventoryGameObj.GetComponent<PlayerInventory>();
 
         /* Initialize movement parameters. */
-        upKey = 0;
-        downKey = 0;
-        leftKey = 0;
-        rightKey = 0;
+        inputX = 0;
+        inputY = 0;
+        isMoving = false;
+        lastFacing = Vector2.zero;
     }
 
     // Update is called once per frame
@@ -71,8 +69,6 @@ public class PlayerController : MonoBehaviour
             /* Mouse clicks. */
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                // check if on ui somehow
-
                 /* Gets the mouse's world position, not screen position. */
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -95,53 +91,52 @@ public class PlayerController : MonoBehaviour
                 bool left = (mousePos.x < playerLeft) ? true : false;
                 bool right = (playerRight < mousePos.x) ? true : false;
 
-                /*
-                print("PlayerPos.x:" + playerPos.x + ", PlayerLeft:" + playerLeft);
-                print("MousePos.x: " + mousePos.x);
-                print(below);
-                */
-
+                /* Depending on the direction of the mouse click, creates a hitbox at the appropriate position,
+                 * and setup the animation triggers and idle position for after the animation ends. */
                 Vector3 hitBoxPos;
                 float rotation;
                 string triggerName;
-
-                /* For animation control. */
-                //AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
-
                 if (above)
                 {
                     hitBoxPos = new Vector2(playerPos.x, playerPos.y + playerColliderSize.y);
                     rotation = 90;
                     triggerName = "playerAttackUp";
+                    lastFacing = new Vector2(0, 1);
                 }
                 else if (below)
                 {
                     hitBoxPos = new Vector2(playerPos.x, playerPos.y - playerColliderSize.y);
                     rotation = -90;
                     triggerName = "playerAttackDown";
+                    lastFacing = new Vector2(0, -1);
+
                 }
                 else if (left)
                 {
                     hitBoxPos = new Vector2(playerPos.x - playerColliderSize.x, playerPos.y);
                     rotation = 180;
                     triggerName = "playerAttackLeft";
+                    lastFacing = new Vector2(-1, 0);
+
                 }
                 else // right
                 {
                     hitBoxPos = new Vector2(playerPos.x + playerColliderSize.x, playerPos.y);
                     rotation = 0;
                     triggerName = "playerAttackRight";
-                }
+                    lastFacing = new Vector2(1, 0);
 
+                }
                 GameObject hitBox = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerStrikeBox"), hitBoxPos, Quaternion.identity);
                 hitBox.transform.Rotate(new Vector3(0, 0, rotation));
-                anim.enabled = true;
-                anim.SetTrigger(triggerName);
-
                 attacking = true;
-
                 movement = Vector2.zero;
 
+                anim.SetTrigger(triggerName);
+                anim.SetFloat("LastFacingX", lastFacing.x);
+                anim.SetFloat("LastFacingY", lastFacing.y);
+
+                /* Start the coroutines for the hitbox spawntime and animation time. */
                 StartCoroutine(HitBoxTimer(0.1f, hitBox));
                 StartCoroutine(AttackAnimationDone(0.5f));
             }
@@ -149,50 +144,35 @@ public class PlayerController : MonoBehaviour
         if (!attacking)
         {
             /* Update movement parameters. */
-            upKey = (inputs.up_key) ? 1 : 0;
-            downKey = (inputs.down_key) ? -1 : 0;
-            leftKey = (inputs.left_key) ? -1 : 0;
-            rightKey = (inputs.right_key) ? 1 : 0;
-            horizontalAxis = leftKey + rightKey;
-            verticalAxis = upKey + downKey;
-
-            
-            if (verticalAxis > 0)
+            inputX = Input.GetAxisRaw("HorizontalAD");
+            inputY = Input.GetAxisRaw("VerticalWS");
+            if (inputX != 0 || inputY != 0)
             {
-                anim.SetTrigger("playerMoveUp");
-            }
-            else if (verticalAxis < 0)
-            {
-                anim.SetTrigger("playerMoveDown");
-            }
-            else if (horizontalAxis > 0)
-            {
-                anim.SetTrigger("playerMoveRight");
-            }
-            else if (horizontalAxis < 0)
-            {
-                anim.SetTrigger("playerMoveLeft");
-            }
-
-            /* Diagonal movement. */
-            if (horizontalAxis != 0 && verticalAxis != 0)
-            {
-                horizontalAxis = horizontalAxis / 1.5f;
-                verticalAxis = verticalAxis / 1.5f;
-            }
-            if (horizontalAxis == 0 && verticalAxis == 0)
-            {
-                animationState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
-                anim.Play(animationState, 0, 0.0f);
-                anim.enabled = false;
+                lastFacing = new Vector2(inputX, inputY);
+                isMoving = true;
             }
             else
+                isMoving = false;
+            
+
+            anim.SetFloat("Horizontal", inputX);
+            anim.SetFloat("Vertical", inputY);
+            anim.SetBool("isMoving", isMoving);
+            anim.SetFloat("LastFacingX", lastFacing.x);
+            anim.SetFloat("LastFacingY", lastFacing.y);
+
+            /* Diagonal speed for rigidbody calcs. */
+            if (inputX != 0 && inputY != 0)
             {
-                anim.enabled = true;
+                inputX = inputX / 1.5f;
+                inputY = inputY / 1.5f;
             }
+            movement = new Vector2(inputX * moveDistance, inputY * moveDistance);
 
-            movement = new Vector2(horizontalAxis * moveDistance, verticalAxis * moveDistance);
 
+
+
+            /* Checks when the player dies. */
             if (hp <= 0)
             {
                 //game over
