@@ -4743,8 +4743,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryGameObj: {fileID: 494646189}
   inventory: {fileID: 0}
-  horizontalAxis: 0
-  verticalAxis: 0
+  inputX: 0
+  inputY: 0
+  isMoving: 0
+  lastFacing: {x: 0, y: 0}
   attacking: 0
 --- !u!61 &443277857
 BoxCollider2D:
