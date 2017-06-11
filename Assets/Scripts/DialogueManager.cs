@@ -37,14 +37,14 @@ public class DialogueManager : MonoBehaviour {
                 /* If we reach the end of the dialogue. */
                 if (lineNumber == textLines.Length)
                 {
-                    if (isQuestGiver)
+                    if (isQuestGiver && questDialogueObj == null)
                     {
                         questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
                         QuestDialogue questDialogue = questDialogueObj.GetComponent<QuestDialogue>();
                         questDialogue.dialogueMan = this;
                         questDialogue.Initialize();
                     }
-                    else
+                    else if (questDialogueObj == null)
                     {
                         ResetDialogue();
                     }
