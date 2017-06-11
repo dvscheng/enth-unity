@@ -15,9 +15,13 @@ public class DialogueManager : MonoBehaviour {
     Text NPCDialogueText;
     string[] textLines;
     int lineNumber = 0;
+    bool isQuestGiver;
+
+    GameObject questDialogueObj;
 
     // Use this for initialization
     void Awake () {
+        questDialogueObj = null;
         inputs = gameObject.AddComponent<Inputs>();
         NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
         dialogueUIOn = true;
@@ -30,8 +34,26 @@ public class DialogueManager : MonoBehaviour {
         {
             if (dialogueUIOn && NPCDialogueText != null)
             {
-                NPCDialogueText.text = textLines[lineNumber];
-                lineNumber++;
+                /* If we reach the end of the dialogue. */
+                if (lineNumber == textLines.Length)
+                {
+                    if (isQuestGiver)
+                    {
+                        questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
+                        QuestDialogue questDialogue = questDialogueObj.GetComponent<QuestDialogue>();
+                        questDialogue.dialogueMan = this;
+                        questDialogue.Initialize();
+                    }
+                    else
+                    {
+                        ResetDialogue();
+                    }
+                }
+                else
+                {
+                    NPCDialogueText.text = textLines[lineNumber];
+                    lineNumber++;
+                }
             }
         }
     }
@@ -43,6 +65,7 @@ public class DialogueManager : MonoBehaviour {
         string name = values[0][0];
         string spriteLocation = values[1][0];
         textLines = values[2];
+        this.isQuestGiver = isQuestGiver;
 
         /* Create and map values to the Dialogue GameObject's name and portait. */
         dialogue = Instantiate(Resources.Load<GameObject>("Prefabs/NPC Dialogue"), gameObject.transform);
@@ -63,8 +86,13 @@ public class DialogueManager : MonoBehaviour {
     {
         if (dialogue != null)
         {
-            Object.Destroy(dialogue);
+            Destroy(dialogue);
             lineNumber = 0;
+            ToggleOnOff();
+        }
+        if (questDialogueObj != null)
+        {
+            Destroy(questDialogueObj);
         }
     }
 

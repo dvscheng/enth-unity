@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Quests : MonoBehaviour {
-    // show quests on top right with kill/collect count?
-
+public class QuestTrackerUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

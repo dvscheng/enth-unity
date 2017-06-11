@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator HitBoxTimer(float waitTime, GameObject hitBox)
     {
         yield return new WaitForSeconds(waitTime);
-        Object.Destroy(hitBox);
+        Destroy(hitBox);
     }
 
     /* Called by the animator to signal an end to animation. */

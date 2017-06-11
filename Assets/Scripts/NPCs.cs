@@ -48,7 +48,6 @@ public class NPCs : MonoBehaviour
         {
             if(DialogueMan.dialogueUIOn)
             {
-                DialogueMan.ToggleOnOff();
                 DialogueMan.ResetDialogue();
             }
             rb.sleepMode = RigidbodySleepMode2D.StartAwake;

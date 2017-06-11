@@ -22,7 +22,7 @@ public class ItemOnGround : MonoBehaviour {
             
             if (pInventory.AddToInventory(item))
             {
-                Object.Destroy(gameObject);
+                Destroy(gameObject);
             }
         }
     }
