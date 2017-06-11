@@ -6403,7 +6403,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 3.52
 --- !u!114 &604141263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20120,6 +20120,7 @@ GameObject:
   - component: {fileID: 2097614154}
   - component: {fileID: 2097614153}
   - component: {fileID: 2097614155}
+  - component: {fileID: 2097614156}
   m_Layer: 5
   m_Name: Dialogue
   m_TagString: Untagged
@@ -20142,8 +20143,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 91}
-  m_SizeDelta: {x: 1020, y: 160}
+  m_AnchoredPosition: {x: 0, y: 88}
+  m_SizeDelta: {x: 1046, y: 163}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2097614153
 MonoBehaviour:
@@ -20157,7 +20158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.553}
+  m_Color: {r: 0.038602933, g: 0.08430527, b: 0.102941155, a: 0.891}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -20190,6 +20191,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueUIOn: 0
+--- !u!95 &2097614156
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2097614151}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 03ca7a049f8406d49a7c744daab32669, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &2103501025
 GameObject:
   m_ObjectHideFlags: 0

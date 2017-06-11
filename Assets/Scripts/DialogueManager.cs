@@ -14,7 +14,7 @@ public class DialogueManager : MonoBehaviour {
     public bool dialogueUIOn;
     Text NPCDialogueText;
     string[] textLines;
-    int lineNumber = 0;
+    int lineNumber = 1;
     bool isQuestGiver;
 
     GameObject questDialogueObj;
@@ -58,6 +58,7 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
+    /* Creates and displays the dialogue box. Assumes that there is text to be displayed. */
     public void StartDialogue(int NPC_ID, bool isQuestGiver)
     {
         /* Get the NPC's dialogue values. */
@@ -76,6 +77,7 @@ public class DialogueManager : MonoBehaviour {
 
         /* Handle displaying the text. */
         NPCDialogueText = dialogue.transform.GetChild(2).gameObject.GetComponent<Text>();
+        NPCDialogueText.text = textLines[0];
 
         ToggleOnOff();
         dialogueUIOn = true;
@@ -87,7 +89,7 @@ public class DialogueManager : MonoBehaviour {
         if (dialogue != null)
         {
             Destroy(dialogue);
-            lineNumber = 0;
+            lineNumber = 1;
             ToggleOnOff();
         }
         if (questDialogueObj != null)
