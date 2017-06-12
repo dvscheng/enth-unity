@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour {
+    private static PlayerInventory _instance;   // singleton behaviour
+    public static PlayerInventory Instance
+    {
+        get { return _instance; }
+    }
+
+
     private readonly int WIDTH = 4;
     private readonly int HEIGHT = 6;
     public GameObject equipmentGridGameObj;
@@ -38,6 +45,15 @@ public class PlayerInventory : MonoBehaviour {
 
     public void Awake()
     {
+        /* Singleton behaviour. */
+        if (_instance == null)
+        {
+            _instance = this;
+        } else if (_instance != this)
+        {
+            Destroy(this);
+        }
+
         /* Load in the inventory tab buttons. */
         buttonOnSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_focused");
         buttonOffSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_not_focused");

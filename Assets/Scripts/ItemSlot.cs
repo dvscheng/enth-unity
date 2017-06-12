@@ -41,7 +41,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         grid = gameObject.transform.parent.gameObject;
 
         /* Get a reference to the player's inventory. */
-        playerInventory = grid.transform.parent.gameObject.GetComponent<PlayerInventory>();
+        playerInventory = PlayerInventory.Instance;
     }
 
     public void OnPointerClick(PointerEventData data)

@@ -5,11 +5,10 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
-    Inputs inputs;
     Rigidbody2D rb;
     Animator anim;
     public GameObject inventoryGameObj; // UNITY
-    [HideInInspector] public PlayerInventory inventory;
+    [HideInInspector] public PlayerInventory inventory; // could use singleton, but playercontroller is there on start and there will always be just one so it's fine
 
     /* Movement params. */
     float moveDistance = 3.5f;
@@ -50,7 +49,6 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
-        inputs = gameObject.AddComponent<Inputs>();
         anim = GetComponent<Animator>();
         animationState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
         inventory = inventoryGameObj.GetComponent<PlayerInventory>();
