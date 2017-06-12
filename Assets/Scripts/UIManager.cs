@@ -37,8 +37,9 @@ public class UIManager : MonoBehaviour {
         } else if (_instance != this)
         {
             Destroy(this);
+            return;
         }
-
+        DontDestroyOnLoad(gameObject);
 
         playerController = player.GetComponent<PlayerController>();
         playerInventory = inventory.GetComponent<PlayerInventory>();

@@ -52,7 +52,9 @@ public class PlayerInventory : MonoBehaviour {
         } else if (_instance != this)
         {
             Destroy(this);
+            return;
         }
+        DontDestroyOnLoad(gameObject);
 
         /* Load in the inventory tab buttons. */
         buttonOnSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_focused");
