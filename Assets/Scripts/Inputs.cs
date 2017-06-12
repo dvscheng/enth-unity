@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Inputs : MonoBehaviour {
+    private static Inputs _instance; // singleton behaviour
+    public static Inputs Instance
+    {
+        get { return _instance; }
+    }
+
     public bool right_key;
     public bool left_key;
     public bool up_key;
@@ -13,16 +19,26 @@ public class Inputs : MonoBehaviour {
     public bool equipment_key_down;
     public bool interaction_key_down;
 
-    private void Awake()
+    void Awake()
+    {
+        /* Singleton behaviour. */
+        if (_instance == null)
+        {
+            _instance = this;
+        } else if (_instance != this)
+        {
+            Destroy(this);
+        }
+
+        BindKeys();
+    }
+
+    void Update()
     {
         BindKeys();
     }
 
-    private void Update()
-    {
-        BindKeys();
-    }
-
+    /* Always check for inputs.*/
     private void BindKeys()
     {
         right_key = Input.GetKey(KeyCode.D);

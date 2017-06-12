@@ -10,12 +10,10 @@ public class NPCs : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject DialogueUIObj;
     DialogueManager DialogueMan;
-    [HideInInspector] Inputs inputs;
 
     // Use this for initialization
     void Awake()
     {
-        inputs = gameObject.AddComponent<Inputs>();
         DialogueMan = DialogueUIObj.GetComponent<DialogueManager>();
     }
 
@@ -32,7 +30,7 @@ public class NPCs : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player"))
         {
-            if (!DialogueMan.dialogueUIOn && inputs.interaction_key_down)
+            if (!DialogueMan.dialogueUIOn && Inputs.Instance.interaction_key_down)
             {
                 DialogueMan.StartDialogue(ID, isQuestGiver);
                 

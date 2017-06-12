@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
+    private static UIManager _instance;   // singleton behaviour.
+    public static UIManager Instance
+    {
+        get { return _instance; }
+    }
+
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
@@ -13,7 +19,6 @@ public class UIManager : MonoBehaviour {
     [HideInInspector] public PlayerInventory playerInventory;
     public GameObject dialogue;
     [HideInInspector] public DialogueManager dialogueMan;
-    Inputs inputs;
     public int playerHp;
     public Text hpText;
 
@@ -25,7 +30,16 @@ public class UIManager : MonoBehaviour {
 
     // Use this for initialization
     void Awake () {
-        inputs = gameObject.AddComponent<Inputs>();
+        /* Singleton behaviour. */
+        if (_instance == null)
+        {
+            _instance = this;
+        } else if (_instance != this)
+        {
+            Destroy(this);
+        }
+
+
         playerController = player.GetComponent<PlayerController>();
         playerInventory = inventory.GetComponent<PlayerInventory>();
         dialogueMan = dialogue.GetComponent<DialogueManager>();
@@ -42,7 +56,7 @@ public class UIManager : MonoBehaviour {
     void Update()
     {
         /* Check for UI toggles. */
-        if (inputs.inventory_key_down)
+        if (Inputs.Instance.inventory_key_down)
         {
             playerInventory.ToggleOnOff();
         }

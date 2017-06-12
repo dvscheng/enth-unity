@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour {
-    [HideInInspector] Inputs inputs;
     NPCDatabase NPCData;
 
     /* Dialogue prefab. */
@@ -22,7 +21,6 @@ public class DialogueManager : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         questDialogueObj = null;
-        inputs = gameObject.AddComponent<Inputs>();
         NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
         dialogueUIOn = true;
 	}
@@ -30,7 +28,7 @@ public class DialogueManager : MonoBehaviour {
     private void Update()
     {
         /* Handle displaying the text. */
-        if (inputs.interaction_key_down)
+        if (Inputs.Instance.interaction_key_down)
         {
             if (dialogueUIOn && NPCDialogueText != null)
             {

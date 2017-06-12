@@ -32,8 +32,6 @@ public class PlayerInventory : MonoBehaviour {
     public Button matsTabButton;
 
 
-    Inputs inputs;
-
     public bool inventoryUIOn;
     public int tabInFocus;  // 0 = equips, 1 = use, 2 = mats
 
@@ -88,7 +86,6 @@ public class PlayerInventory : MonoBehaviour {
         matsNextAvailableSlot = new int[2];
 
 
-        inputs = gameObject.AddComponent<Inputs>();
         inventoryUIOn = true;
         tabInFocus = (int)ItemDatabase.ItemType.mats;
     }
