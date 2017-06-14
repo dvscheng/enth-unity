@@ -178,11 +178,13 @@ MonoBehaviour:
   dialogueMan: {fileID: 0}
   dialogue: {fileID: 0}
   firstImage: {fileID: 1977149654669378}
-  firstID: 0
   firstText: {fileID: 1368507851112480}
   secondImage: {fileID: 1281629074248296}
-  secondID: 0
   secondText: {fileID: 1503260218736970}
+  firstItemID: 0
+  firstAmount: 0
+  secondItemID: 0
+  secondAmount: 0
 --- !u!114 &114252457153007210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -304,7 +306,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114151447359973810}
-        m_MethodName: Decline
+        m_MethodName: Close
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

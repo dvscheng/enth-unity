@@ -93,9 +93,7 @@ public class DialogueManager : MonoBehaviour {
 
         /* If a quest dialogue exists, destroy it too. */
         if (questDialogueObj != null)
-        {
             Destroy(questDialogueObj);
-        }
     }
 
     /* Toggles this UI's display on or off in Unity. */

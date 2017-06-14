@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class CollectQuest {
+public class CollectQuest : MonoBehaviour {
+    QuestTrackerUI questTracker;
+
     public static readonly int MAX_COLLECT_AMOUNT = 4;
     int firstItemID;
     int secondItemID;
@@ -11,7 +13,12 @@ public class CollectQuest {
     int secondAmount;
     // show quests on top right with kill/collect count?
 
-    public CollectQuest(int firstItemID, int secondItemID, int firstAmount, int secondAmount)
+    public void Awake()
+    {
+        questTracker = QuestTrackerUI.Instance;
+    }
+
+    public void Initialize(int firstItemID, int secondItemID, int firstAmount, int secondAmount)
     {
         this.firstItemID = firstItemID;
         this.secondItemID = secondItemID;
@@ -20,7 +27,7 @@ public class CollectQuest {
     }
 
     /* Called by QuestDialogue. */
-    public void NotifyQuestTrackerUI()
+    public void AddToQuestTrackerUI()
     {
         // refresh the quest UI.
     }
