@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,10 +15,18 @@ public class UIManager : MonoBehaviour {
     public Vector2 hotSpot = Vector2.zero;
     public GameObject player;
     [HideInInspector] public PlayerController playerController;
+
     public GameObject inventory;
     [HideInInspector] public PlayerInventory playerInventory;
+    bool inventoryUIOn;
+
+    public GameObject questTracker;
+    bool questTrackerOn;
+
     public GameObject dialogue;
     [HideInInspector] public DialogueManager dialogueMan;
+    public bool dialogueUIOn;
+
     public int playerHp;
     public Text hpText;
 
@@ -41,16 +49,22 @@ public class UIManager : MonoBehaviour {
         }
         DontDestroyOnLoad(gameObject);
 
+        inventoryUIOn = false;
+        questTrackerOn = false;
+        dialogueUIOn = false;
+
         playerController = player.GetComponent<PlayerController>();
         playerInventory = inventory.GetComponent<PlayerInventory>();
         dialogueMan = dialogue.GetComponent<DialogueManager>();
         playerHp = playerController.Hp;
 
         /* Turn on (initialize) the UI, then turn it back off (assumes they're hidden in Unity editor at start). */
-        playerInventory.ToggleOnOff();
-        playerInventory.ToggleOnOff();
-        dialogueMan.ToggleOnOff();
-        dialogueMan.ToggleOnOff();
+        inventory.SetActive(true);
+        inventory.SetActive(false);
+        questTracker.SetActive(true);
+        questTracker.SetActive(false);
+        dialogue.SetActive(true);
+        dialogue.SetActive(false);
     }
 
     // Update is called once per frame
@@ -59,8 +73,15 @@ public class UIManager : MonoBehaviour {
         /* Check for UI toggles. */
         if (Inputs.Instance.inventory_key_down)
         {
-            playerInventory.ToggleOnOff();
+            inventoryUIOn = !inventoryUIOn;
+            inventory.SetActive(inventoryUIOn);
         }
+        if (Inputs.Instance.quest_tracker_collapse_down)
+        {
+            questTrackerOn = !questTrackerOn;
+            questTracker.SetActive(questTrackerOn);
+        }
+
 
         /* Show HP. */
         playerHp = playerController.Hp;

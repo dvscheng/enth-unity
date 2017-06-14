@@ -1,22 +1,27 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
 
 public class CollectQuest : MonoBehaviour {
-    QuestTrackerUI questTracker;
 
     public static readonly int MAX_COLLECT_AMOUNT = 4;
-    int firstItemID;
-    int secondItemID;
-    int firstAmount;
-    int secondAmount;
-    // show quests on top right with kill/collect count?
+    public int firstItemID;
+    public int firstAmount;
+    public int secondItemID;
+    public int secondAmount;
+    public int firstCompleted;
+    public int secondCompleted;
 
-    public void Awake()
-    {
-        questTracker = QuestTrackerUI.Instance;
-    }
+    /* Unity inspector stuff. */
+    public GameObject firstImage;
+    public GameObject firstText;
+    public GameObject secondImage;
+    public GameObject secondText;
+
+
+    /* Position in the traker is defaulted to -1, meaning it's not in the tracker. */
+    public int posInTracker = -1;
 
     public void Initialize(int firstItemID, int secondItemID, int firstAmount, int secondAmount)
     {
@@ -24,11 +29,12 @@ public class CollectQuest : MonoBehaviour {
         this.secondItemID = secondItemID;
         this.firstAmount = firstAmount;
         this.secondAmount = secondAmount;
+        AddToQuestTrackerUI();
     }
 
     /* Called by QuestDialogue. */
     public void AddToQuestTrackerUI()
     {
-        // refresh the quest UI.
+        QuestTrackerUI.Instance.AddQuest(this);
     }
 }

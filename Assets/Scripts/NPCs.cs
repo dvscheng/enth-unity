@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,7 +30,7 @@ public class NPCs : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player"))
         {
-            if (!DialogueMan.dialogueUIOn && Inputs.Instance.interaction_key_down)
+            if (!UIManager.Instance.dialogueUIOn && Inputs.Instance.interaction_key_down)
             {
                 DialogueMan.StartDialogue(ID, isQuestGiver);
                 
@@ -44,7 +44,7 @@ public class NPCs : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player"))
         {
-            if(DialogueMan.dialogueUIOn)
+            if(UIManager.Instance.dialogueUIOn)
             {
                 DialogueMan.ResetDialogue();
             }

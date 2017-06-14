@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +31,8 @@ public class PlayerInventory : MonoBehaviour {
     public int numUse = 0;
     public int numMats = 0;
 
+    ItemDatabase itemDB;
+
     /* Should be referenced in Unity editor. */
     [HideInInspector] public Sprite[] buttonOnSprites;
     [HideInInspector] public Sprite[] buttonOffSprites;
@@ -38,8 +40,6 @@ public class PlayerInventory : MonoBehaviour {
     public Button useTabButton;
     public Button matsTabButton;
 
-
-    public bool inventoryUIOn;
     public int tabInFocus;  // 0 = equips, 1 = use, 2 = mats
 
 
@@ -54,7 +54,9 @@ public class PlayerInventory : MonoBehaviour {
             Destroy(this);
             return;
         }
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject); already in UI
+
+        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
 
         /* Load in the inventory tab buttons. */
         buttonOnSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_focused");
@@ -103,8 +105,6 @@ public class PlayerInventory : MonoBehaviour {
         useNextAvailableSlot = new int[2];
         matsNextAvailableSlot = new int[2];
 
-
-        inventoryUIOn = true;
         tabInFocus = (int)ItemDatabase.ItemType.mats;
     }
 
@@ -113,6 +113,9 @@ public class PlayerInventory : MonoBehaviour {
     {
         int type = item.Type;
         int itemID = item.ItemID;
+        if (type != (int)ItemDatabase.ItemType.error)
+            QuestTrackerUI.Instance.NotifyQuestTracker(item);
+
         /* Depending on the item's type, update the appropriate grid and add the item to the new slot/increase the count (assumes accessing array in dictionary
          *  is not a reference) . */
         switch (type)
@@ -174,6 +177,43 @@ public class PlayerInventory : MonoBehaviour {
         return false;
     }
 
+    /* Returns the amount of the item in the inventory, else returns -1. */
+    public int FindInInventory(int itemID)
+    {
+        int type = itemDB.itemIDToType[itemID];
+        ItemSlot[,] grid;
+
+        switch (type)
+        {
+            case (int)ItemDatabase.ItemType.equip:
+                grid = equipmentGrid;
+                break;
+
+            case (int)ItemDatabase.ItemType.use:
+                grid = useGrid;
+                break;
+
+            default:
+            case (int)ItemDatabase.ItemType.mats:
+                grid = materialsGrid;
+                break;
+        }
+
+        ItemSlot itemSlot;
+        for (int y = 0; y < grid.GetLength(0); y++)
+        {
+            for (int x = 0; x < grid.GetLength(1); x++)
+            {
+                itemSlot = grid[y, x];
+                if (itemSlot.HasItem && itemSlot.Item.ItemID == itemID)
+                {
+                    return itemSlot.Item.Amount;
+                }
+            }
+        }
+        return -1;
+    }
+
     /* Sets a tab to be in focus, changing the tab sprite and grid displayed. */
     public void SetTabInFocus(int tabNumber)
     {
@@ -210,12 +250,5 @@ public class PlayerInventory : MonoBehaviour {
         {
             Debug.Log("Incorrect tabNumber:" + tabNumber + " was passed into SetTabInFocus in PlayerInventory.");
         }
-    }
-
-    /* Toggles this UI's display on or off in Unity. */
-    public void ToggleOnOff()
-    {
-        inventoryUIOn = !inventoryUIOn;
-        gameObject.SetActive(inventoryUIOn);
     }
 }

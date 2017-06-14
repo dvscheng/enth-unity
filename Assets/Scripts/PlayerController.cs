@@ -1,10 +1,18 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Singleton Behaviour
+    private static PlayerController _instance;   // singleton behaviour
+    public static PlayerController Instance
+    {
+        get { return _instance; }
+    }
+    #endregion
+
     Rigidbody2D rb;
     Animator anim;
     public GameObject inventoryGameObj; // UNITY
@@ -47,7 +55,21 @@ public class PlayerController : MonoBehaviour
     Vector2 movement = Vector2.zero;
 
     // Use this for initialization
-    void Start () {
+    void Awake() {
+        #region Singleton Behaviour
+        /* Singleton behaviour. */
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+        #endregion
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         animationState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;

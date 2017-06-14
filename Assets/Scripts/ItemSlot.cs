@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +8,16 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private Item item;
-    public Item Item { get; set; }
+    public Item Item
+    {
+        get { return item; }
+        set { item = value; }
+    }
     
     GameObject grid;
     GameObject itemImage;
     GameObject count;
 
-    ItemDatabase itemDB;
     PlayerInventory playerInventory;
 
     private bool hasItem;
@@ -23,14 +26,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         get { return hasItem; }
     }
 
-    int PADDING = 10;
 
     // Use this for initialization
     void Awake() {
         item = null;
         hasItem = false;
-
-        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
 
         /* Get the "Item Image" GameObject. Alpha value is set to 0 in prefab.
          * Get the "Text" GameObject. Default to be invisible. */
@@ -56,7 +56,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public void SetItemAndSprite(Item newItem)
     {
         /* Set this item slot's corresponding item to newItem, AND indicate that we have an item in the slot. */
-        item = newItem;
+        this.item = newItem;
         hasItem = true;
 
         /* Set the "Item Image" GameObject's image to the new item's sprite;

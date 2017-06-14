@@ -1,13 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 
 public class QuestDialogue : MonoBehaviour {
-    
+
     ItemDatabase itemDB;
-    GameObject newQuest;
     [HideInInspector] public DialogueManager dialogueMan;
 
 
@@ -20,10 +19,11 @@ public class QuestDialogue : MonoBehaviour {
     public int firstAmount;
     public int secondItemID;
     public int secondAmount;
+    bool initialized;
 
     // Use this for initialization
     void Awake () {
-        newQuest = null;
+        initialized = false;
         itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
 	}
 
@@ -45,16 +45,18 @@ public class QuestDialogue : MonoBehaviour {
         secondImage.GetComponent<Image>().sprite = itemDB.itemDictionary[secondItemID];
         firstText.GetComponent<Text>().text = "" + firstAmount;
         secondText.GetComponent<Text>().text = "" + secondAmount;
+
+        initialized = true;
     }
 
     public void Accept()
     {
-        if (newQuest == null)
+        if (!initialized)
             Debug.Log("Item was not created in QuestDialogue; check that Initialize() was called.");
         else
         {
             /* Initialize the prefab for the quest UI item. */
-            newQuest = Instantiate(Resources.Load<GameObject>("Prefabs/QuestItem"), QuestTrackerUI.Instance.questObjectArea.transform);
+            GameObject newQuest = Instantiate(Resources.Load<GameObject>("Prefabs/QuestItem"), QuestTrackerUI.Instance.questObjectArea.transform);
             newQuest.GetComponent<CollectQuest>().Initialize(firstItemID, secondItemID, firstAmount, secondAmount);
             Close();
         }

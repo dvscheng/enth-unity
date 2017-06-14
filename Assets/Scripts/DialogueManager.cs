@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,11 +6,10 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour {
     NPCDatabase NPCData;
 
+
     /* Dialogue prefab. */
     GameObject dialogue;
 
-    /* If dialogueUIOn, then the text should exist, else it'll be null. */
-    public bool dialogueUIOn;
     Text NPCDialogueText;
     string[] textLines;
     int lineNumber = 1;
@@ -22,7 +21,6 @@ public class DialogueManager : MonoBehaviour {
     void Awake () {
         questDialogueObj = null;
         NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
-        dialogueUIOn = true;
 	}
 
     private void Update()
@@ -30,7 +28,7 @@ public class DialogueManager : MonoBehaviour {
         /* Handle displaying the text. */
         if (Inputs.Instance.interaction_key_down)
         {
-            if (dialogueUIOn && NPCDialogueText != null)
+            if (UIManager.Instance.dialogueUIOn && NPCDialogueText != null)
             {
                 /* If we reach the end of the dialogue. */
                 if (lineNumber == textLines.Length)
@@ -77,8 +75,9 @@ public class DialogueManager : MonoBehaviour {
         NPCDialogueText = dialogue.transform.GetChild(2).gameObject.GetComponent<Text>();
         NPCDialogueText.text = textLines[0];
 
-        ToggleOnOff();
-        dialogueUIOn = true;
+        gameObject.SetActive(true);
+        dialogue.SetActive(true);
+        UIManager.Instance.dialogueUIOn = true;
     }
 
     /* Destroys and resets the dialogue manager, including the quest dialogue if there is one. */
@@ -88,18 +87,13 @@ public class DialogueManager : MonoBehaviour {
         {
             Destroy(dialogue);
             lineNumber = 1;
-            ToggleOnOff();
+
+            UIManager.Instance.dialogueUIOn = false;
+            gameObject.SetActive(false);
         }
 
         /* If a quest dialogue exists, destroy it too. */
         if (questDialogueObj != null)
             Destroy(questDialogueObj);
-    }
-
-    /* Toggles this UI's display on or off in Unity. */
-    public void ToggleOnOff()
-    {
-        dialogueUIOn = !dialogueUIOn;
-        gameObject.SetActive(dialogueUIOn);
     }
 }

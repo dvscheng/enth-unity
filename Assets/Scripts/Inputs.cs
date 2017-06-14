@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +18,7 @@ public class Inputs : MonoBehaviour {
     public bool inventory_key_down;
     public bool equipment_key_down;
     public bool interaction_key_down;
+    public bool quest_tracker_collapse_down;
 
     void Awake()
     {
@@ -50,5 +51,6 @@ public class Inputs : MonoBehaviour {
         inventory_key_down = Input.GetKeyDown(KeyCode.B);
         equipment_key_down = Input.GetKeyDown(KeyCode.E);
         interaction_key_down = Input.GetKeyDown(KeyCode.Space);
+        quest_tracker_collapse_down = Input.GetKeyDown(KeyCode.L);
     }
 }
