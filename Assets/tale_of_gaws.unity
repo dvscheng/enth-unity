@@ -6592,7 +6592,7 @@ SpriteRenderer:
   m_SortingLayerID: -95058861
   m_SortingLayer: 3
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: d5b272f631e6a734582aee17965c4f76, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c744511e2cd8af44889b7726844d660, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11771,6 +11771,71 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!1 &1171836639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1171836641}
+  - component: {fileID: 1171836640}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1171836640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1171836639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6e18386dd336146933a2f416683df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Swing 1
+    clip: {fileID: 8300000, guid: 47bc461a99e44f842bff96b28abe5ed0, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Slime Hit
+    clip: {fileID: 8300000, guid: 0151fd7c16eab234e9b0ceac93ae1738, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Default Hit
+    clip: {fileID: 8300000, guid: f0ca2c9110d8e164b8da408148bd73fe, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Item Pickup
+    clip: {fileID: 8300000, guid: b1b6bcd5e168bcf42abd98bb094b6b43, type: 3}
+    volume: 0.15
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &1171836641
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1171836639}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.9790878, y: 0.98396564, z: -8.614068}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1178561465
 GameObject:
   m_ObjectHideFlags: 0
@@ -19297,6 +19362,11 @@ Prefab:
         type: 2}
       propertyPath: m_Offset.y
       value: 0.010531753
+      objectReference: {fileID: 0}
+    - target: {fileID: 50640827133390842, guid: 2b0cbfc2e4397ef4e8067f6b4e2975db,
+        type: 2}
+      propertyPath: m_BodyType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2b0cbfc2e4397ef4e8067f6b4e2975db, type: 2}

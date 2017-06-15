@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour {
 
     int currentState = (int)State.STATE_IDLE;
     bool stateReady = true;
+    bool wandering = false;
 
     private enum State : int
     {
@@ -99,11 +100,10 @@ public class Enemy : MonoBehaviour {
                 movement = Vector2.zero;
                 currentState = (int)State.STATE_IDLE;
                 stateReady = false;
-                StartCoroutine(Wait(3));
+                StartCoroutine(Wait(2));
             }
         }
     }
-
 
     private void Update() {
         switch (currentState)
@@ -115,20 +115,41 @@ public class Enemy : MonoBehaviour {
                     if (roll > 50)
                     {
                         currentState = (int)State.STATE_WANDERING;
-                        stateReady = false;
-                        StartCoroutine(Wait(3));
+                        return;
                     }
                     stateReady = false;
-                    StartCoroutine(Wait(1));
+                    StartCoroutine(Wait(2));
                 }
                 break;
 
             case (int)State.STATE_WANDERING:
                 if (stateReady)
                 {
-                    // go to random pos
+                    if (wandering)
+                    {
+                        movement = Vector2.zero;
+                        wandering = false;
+
+                        int roll = Random.Range(0, 100);
+                        if (roll > 50)
+                        {
+                            currentState = (int)State.STATE_IDLE;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        // go to random pos
+                        float dirX = Random.Range(-1f, 1f);
+                        float dirY = Random.Range(-1f, 1f);
+                        movement = new Vector2(dirX, dirY);
+
+                        stateReady = false;
+                        wandering = true;   
+                        StartCoroutine(Wait(2));
+                    }
                 }
-                    break;
+                break;
                 
             case (int)State.STATE_CHASING:
                 // chase
@@ -139,13 +160,20 @@ public class Enemy : MonoBehaviour {
                     float enemyX = gameObject.transform.position.x;
                     float enemyY = gameObject.transform.position.y;
 
-                    float forceX = (enemyX - playerX > 0) ? -100 : 100;
-                    float forceY = (enemyY - playerY > 0) ? -100 : 100;
-                    movement = (new Vector2(forceX, forceY)) * 0.01f;
+                    float forceX = (enemyX - playerX > 0) ? -1 : 1;
+                    float forceY = (enemyY - playerY > 0) ? -1 : 1;
+                    /* Removes jittering. */
+                    if (System.Math.Abs(playerX - enemyX) < .01f)
+                        forceX = 0;
+                    if (System.Math.Abs(playerY - enemyY) < .01f)
+                        forceY = 0;
+
+                    movement = new Vector2(forceX, forceY);
                 }
                 break;
-
         }
+
+
         if (hp <= 0)
         {
             OnDeath();

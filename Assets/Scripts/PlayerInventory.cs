@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour {
+    #region Singleton Behaviour
     private static PlayerInventory _instance;   // singleton behaviour
     public static PlayerInventory Instance
     {
         get { return _instance; }
     }
-
+    #endregion
 
     private readonly int WIDTH = 4;
     private readonly int HEIGHT = 6;
@@ -45,6 +46,7 @@ public class PlayerInventory : MonoBehaviour {
 
     public void Awake()
     {
+        #region Singleton Behaviour
         /* Singleton behaviour. */
         if (_instance == null)
         {
@@ -54,6 +56,7 @@ public class PlayerInventory : MonoBehaviour {
             Destroy(this);
             return;
         }
+        #endregion
         //DontDestroyOnLoad(gameObject); already in UI
 
         itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
@@ -144,6 +147,8 @@ public class PlayerInventory : MonoBehaviour {
         {
             int[] itemSlotLocation = gridLocation[itemID];
             grid[itemSlotLocation[0], itemSlotLocation[1]].AddToExistingItem(item.Amount);
+
+            AudioManager.Instance.Play("Item Pickup");
             return true;
         }
         else if (FindNextAvailableSlot(grid, ref nextAvailableSlot))
@@ -151,6 +156,8 @@ public class PlayerInventory : MonoBehaviour {
             grid[nextAvailableSlot[1], nextAvailableSlot[0]].SetItemAndSprite(item);
             gridLocation.Add(item.ItemID, new int[2] { nextAvailableSlot[1], nextAvailableSlot[0] });
             numOfType++;
+
+            AudioManager.Instance.Play("Item Pickup");
             return true;
         }
 

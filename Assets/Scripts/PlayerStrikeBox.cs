@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +26,25 @@ public class PlayerStrikeBox : MonoBehaviour {
             if (collision.Equals(enemyScript.sightRange) || collision.Equals(enemyScript.boxTrigger))
                 Physics2D.IgnoreCollision(bc, collision);
             else
+            {
                 enemyScript.Hp -= playerController.BaseDamage;
+
+                /* Play the appropriate enemy damage sound. */
+                switch (enemyScript.mobID)
+                {
+                    case (int)ItemDatabase.MobID.slime:
+                        AudioManager.Instance.Play("Slime Hit");
+                        break;
+
+                    case (int)ItemDatabase.MobID.blueSlime:
+                        AudioManager.Instance.Play("Slime Hit");
+                        break;
+
+                    default:
+                        AudioManager.Instance.Play("Default Hit");
+                        break;
+                }
+            }
         }
     }
 }

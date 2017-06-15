@@ -35,14 +35,6 @@ public class PlayerController : MonoBehaviour
         get { return hp; }
     }
 
-    /* Applies the damage and resets to 0 if hp goes below 0. */
-    public void TakeDamage(int damage)
-    {
-        hp -= damage;
-
-        if (hp <= 0)
-            hp = 0;
-    }
 
     private int baseDamage = 10;
     public int BaseDamage
@@ -53,6 +45,15 @@ public class PlayerController : MonoBehaviour
     public bool attacking; // UNITY
 
     Vector2 movement = Vector2.zero;
+
+    /* Applies the damage and resets to 0 if hp goes below 0. */
+    public void TakeDamage(int damage)
+    {
+        hp -= damage;
+
+        if (hp <= 0)
+            hp = 0;
+    }
 
     // Use this for initialization
     void Awake() {
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!attacking)
         {
-            /* Mouse clicks. */
+            /* Attacking */
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 /* Gets the mouse's world position, not screen position. */
@@ -160,6 +161,8 @@ public class PlayerController : MonoBehaviour
                 /* Start the coroutines for the hitbox spawntime and animation time. */
                 StartCoroutine(HitBoxTimer(0.1f, hitBox));
                 StartCoroutine(AttackAnimationDone(0.5f));
+
+                AudioManager.Instance.Play("Swing 1");
             }
         }
         if (!attacking)
