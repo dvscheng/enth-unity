@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Inputs : MonoBehaviour {
+    #region Singleton Behaviour
     private static Inputs _instance; // singleton behaviour
     public static Inputs Instance
     {
         get { return _instance; }
     }
+    #endregion
 
     public bool right_key;
     public bool left_key;
@@ -22,6 +24,7 @@ public class Inputs : MonoBehaviour {
 
     void Awake()
     {
+        #region Singleton Behaviour
         /* Singleton behaviour. */
         if (_instance == null)
         {
@@ -30,6 +33,8 @@ public class Inputs : MonoBehaviour {
         {
             Destroy(this);
         }
+        #endregion
+        DontDestroyOnLoad(gameObject);
 
         BindKeys();
     }
