@@ -252,7 +252,7 @@ public class Enemy : MonoBehaviour {
                     Debug.Log("Item created in enemy RollForDrops has type error.");
                     break;
             }
-            print(chances + "% roll success; dropped itemID: " + itemID);
+            Debug.Log(chances + "% roll success; Item: " + ((ItemDatabase.ItemID)itemID).ToString() + " of ID: " + itemID);
 
             return true;
         }

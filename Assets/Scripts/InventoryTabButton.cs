@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,5 +12,6 @@ public class InventoryTabButton : MonoBehaviour {
     public void ButtonOnClick()
     {
         PlayerInventory.Instance.SetTabInFocus(tabNumber);
+        AudioManager.Instance.Play("Tab Change");
     }
 }
