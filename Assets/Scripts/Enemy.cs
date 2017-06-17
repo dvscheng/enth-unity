@@ -182,7 +182,8 @@ public class Enemy : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        rb.velocity = movement;
+        rb.MovePosition((Vector2)transform.position + movement * Time.deltaTime);
+        //rb.velocity = movement;
     }
 
     /* Roll for drops, then destroy the Game Object. */
@@ -254,7 +255,6 @@ public class Enemy : MonoBehaviour {
 
             return true;
         }
-        print(chances + "% roll fail");
 
         return false;
     }

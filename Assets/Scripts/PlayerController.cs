@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public PlayerInventory inventory; // could use singleton, but playercontroller is there on start and there will always be just one so it's fine
 
     /* Movement params. */
-    float moveDistance = 3.5f;
+    float moveDistance = 175f;
     public float inputX; // UNITY
     public float inputY; // UNITY
     public bool isMoving; // UNITY
@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
     /* Used to apply movement to the character. */
     void FixedUpdate()
     {
-        rb.velocity = movement;
+        rb.velocity = movement * Time.deltaTime;
     }
     
     /* 
