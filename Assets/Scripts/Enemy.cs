@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour {
     int baseDamage = 5;
 
     Vector2 movement = Vector2.zero;
+    [Range(25f, 100f)] public float moveSpeed = 40f;
 
     int currentState = (int)State.STATE_IDLE;
     bool stateReady = true;
@@ -182,8 +183,8 @@ public class Enemy : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        rb.MovePosition((Vector2)transform.position + movement * Time.deltaTime);
-        //rb.velocity = movement;
+        //rb.MovePosition((Vector2)transform.position + movement * Time.deltaTime);
+        rb.velocity = movement * moveSpeed * Time.deltaTime;
     }
 
     /* Roll for drops, then destroy the Game Object. */
