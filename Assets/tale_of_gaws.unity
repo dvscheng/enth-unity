@@ -5312,11 +5312,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryGameObj: {fileID: 494646189}
   inventory: {fileID: 0}
+  moveDistance: 175
   inputX: 0
   inputY: 0
   isMoving: 0
   lastFacing: {x: 0, y: 0}
   attacking: 0
+  STATE_MOVING: 0
+  STATE_IDLE: 0
+  STATE_ATTACKING_1: 0
+  STATE_ATTACKING_2: 0
+  STATE_ATTACKING_3: 0
 --- !u!61 &443277857
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13797,6 +13803,18 @@ MonoBehaviour:
   sounds:
   - name: Swing 1
     clip: {fileID: 8300000, guid: 47bc461a99e44f842bff96b28abe5ed0, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Swing 2
+    clip: {fileID: 8300000, guid: cf3df8358280a654884793011069dbe4, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Swing 3
+    clip: {fileID: 8300000, guid: 5f23070bbb7494a4fbdc0acb51991dc3, type: 3}
     volume: 0.4
     pitch: 1
     loop: 0
