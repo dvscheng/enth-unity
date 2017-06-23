@@ -28,10 +28,14 @@ public class PlayerController : MonoBehaviour
     Vector2 movement = Vector2.zero;
     int animationState;
 
-    public bool attacking; // UNITY
-    public int attackCount = 0;
+    public bool attacking = false; // UNITY
+    public bool attackAnimDone = true;
+    public bool attackDelayDone = true;
+    public bool attackGraceDone = true;
+    public int attacksInputted = 0;
+    public int attacksDone = 0;
     public const int MAX_ATTACKS = 3;
-    public IEnumerator attackCoroutine;
+    public IEnumerator gracePeriod;
 
 
     public int currentState;
@@ -83,7 +87,7 @@ public class PlayerController : MonoBehaviour
         lastFacing = Vector2.zero;
     }
 
-    void oldControls()
+    void OldControls()
     {
         if (!attacking)
         {
@@ -209,10 +213,10 @@ public class PlayerController : MonoBehaviour
         {
             default:
             case (STATE_IDLE):
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && !EventSystem.current.IsPointerOverGameObject() && attackDelayDone)
                 {
                     currentState = STATE_ATTACKING;
-                    attacking = true;
+                    attacksInputted = 1;
                     break;
                 }
                 inputX = Input.GetAxisRaw("HorizontalAD");
@@ -231,10 +235,10 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case (STATE_MOVING):
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && !EventSystem.current.IsPointerOverGameObject() && attackDelayDone)
                 {
                     currentState = STATE_ATTACKING;
-                    attacking = true;
+                    attacksInputted = 1;
                     break;
                 }
                 inputX = Input.GetAxisRaw("HorizontalAD");
@@ -265,107 +269,133 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case (STATE_ATTACKING):
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && attackCount < MAX_ATTACKS)
+                if ((!attackGraceDone && attackAnimDone) && (attacksInputted < MAX_ATTACKS)
+                        && (Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && !EventSystem.current.IsPointerOverGameObject())
                 {
-                    StopCoroutine(attackCoroutine);
-                    attacking = true;
-                    attackCount++;
+                    /* If the grace period between combo hits is NOT over AND the attack animation is over. */
+                    attacksInputted++;
+
+                    /* Stop the coroutine (set bool to false for safety), then restart the coroutine. */
+                    StopCoroutine(gracePeriod);
+                    attackGraceDone = false;
+                    gracePeriod = AttackGraceTimer(0.7f);
+                    StartCoroutine(gracePeriod);
                 }
-                if (!attacking)
+                if (attackAnimDone && attackGraceDone && attacksDone == attacksInputted)
                 {
+                    /* Change the state to idle and trigger the appropriate animation change. */
+                    anim.SetTrigger("doneAttacking");
                     currentState = STATE_IDLE;
-                    attackCount = 0;
+
+                    /* Set the timer for the delay between attacks so you can't attack endlessly. */
+                    attackDelayDone = false;
+                    StartCoroutine(AttackDelayTimer(0.5f));
+
+                    /* Reset the attacks done and inputted variables. */
+                    attacksDone = 0;
+                    attacksInputted = 0;
+
                     break;
                 }
-
-
-                /* Gets the mouse's world position, not screen position. */
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                /*        |  above  |
-                 *        |         |
-                 *        |---------|
-                 * left   | Player  |   right
-                 *        |---------|
-                 *        |         |
-                 *        |  below  |
-                 **/
-                BoxCollider2D playerCollider = gameObject.GetComponent<BoxCollider2D>();
-                Vector2 playerPos = gameObject.transform.position;
-                Vector2 playerColliderSize = gameObject.GetComponent<BoxCollider2D>().size;
-                float playerRight = playerPos.x + playerColliderSize.x / 2;
-                float playerLeft = playerPos.x - playerColliderSize.x / 2;
-
-                bool above = ((mousePos.y > playerPos.y) && ((playerLeft < mousePos.x) && (mousePos.x < playerRight))) ? true : false;
-                bool below = ((mousePos.y < playerPos.y) && ((playerLeft < mousePos.x) && (mousePos.x < playerRight))) ? true : false;
-                bool left = (mousePos.x < playerLeft) ? true : false;
-                bool right = (playerRight < mousePos.x) ? true : false;
-
-                /* Depending on the direction of the mouse click, creates a hitbox at the appropriate position,
-                 * and setup the animation triggers and idle position for after the animation ends. */
-                Vector3 hitBoxPos;
-                float rotation;
-                string triggerName;
-                if (above)
+                else if (attackAnimDone && attacksDone != attacksInputted)
                 {
-                    hitBoxPos = new Vector2(playerPos.x, playerPos.y + playerColliderSize.y);
-                    rotation = 90;
-                    triggerName = "playerAttackUp";
-                    lastFacing = new Vector2(0, 1);
-                }
-                else if (below)
-                {
-                    hitBoxPos = new Vector2(playerPos.x, playerPos.y - playerColliderSize.y);
-                    rotation = -90;
-                    triggerName = "playerAttackDown";
-                    lastFacing = new Vector2(0, -1);
 
-                }
-                else if (left)
-                {
-                    hitBoxPos = new Vector2(playerPos.x - playerColliderSize.x, playerPos.y);
-                    rotation = 180;
-                    triggerName = "playerAttackLeft";
-                    lastFacing = new Vector2(-1, 0);
+                    /* Gets the mouse's world position, not screen position. */
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-                }
-                else // right
-                {
-                    hitBoxPos = new Vector2(playerPos.x + playerColliderSize.x, playerPos.y);
-                    rotation = 0;
-                    triggerName = "playerAttackRight";
-                    lastFacing = new Vector2(1, 0);
+                    /*        |  above  |
+                     *        |         |
+                     *        |---------|
+                     * left   | Player  |   right
+                     *        |---------|
+                     *        |         |
+                     *        |  below  |
+                     **/
+                    BoxCollider2D playerCollider = gameObject.GetComponent<BoxCollider2D>();
+                    Vector2 playerPos = gameObject.transform.position;
+                    Vector2 playerColliderSize = gameObject.GetComponent<BoxCollider2D>().size;
+                    float playerRight = playerPos.x + playerColliderSize.x / 2;
+                    float playerLeft = playerPos.x - playerColliderSize.x / 2;
 
-                }
-                GameObject hitBox = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerStrikeBox"), hitBoxPos, Quaternion.identity);
-                hitBox.transform.Rotate(new Vector3(0, 0, rotation));
-                attacking = true;
-                movement = Vector2.zero;
+                    bool above = ((mousePos.y > playerPos.y) && ((playerLeft < mousePos.x) && (mousePos.x < playerRight))) ? true : false;
+                    bool below = ((mousePos.y < playerPos.y) && ((playerLeft < mousePos.x) && (mousePos.x < playerRight))) ? true : false;
+                    bool left = (mousePos.x < playerLeft) ? true : false;
+                    bool right = (playerRight < mousePos.x) ? true : false;
 
-                anim.SetTrigger(triggerName);
-                anim.SetFloat("LastFacingX", lastFacing.x);
-                anim.SetFloat("LastFacingY", lastFacing.y);
+                    /* Depending on the direction of the mouse click, create a hitbox at the appropriate position,
+                     * and setup the animation triggers and idle position for after the animation ends. */
+                    Vector3 hitBoxPos;
+                    float rotation;
+                    string triggerName;
+                    if (above)
+                    {
+                        hitBoxPos = new Vector2(playerPos.x, playerPos.y + playerColliderSize.y);
+                        rotation = 90;
+                        triggerName = "playerAttackUp";
+                        lastFacing = new Vector2(0, 1);
+                    }
+                    else if (below)
+                    {
+                        hitBoxPos = new Vector2(playerPos.x, playerPos.y - playerColliderSize.y);
+                        rotation = -90;
+                        triggerName = "playerAttackDown";
+                        lastFacing = new Vector2(0, -1);
 
-                /* Start the coroutines for the hitbox spawntime and animation time. */
-                StartCoroutine(HitBoxTimer(0.1f, hitBox));
-                attackCoroutine = AttackAnimationDone(0.5f);
-                StartCoroutine(attackCoroutine);
+                    }
+                    else if (left)
+                    {
+                        hitBoxPos = new Vector2(playerPos.x - playerColliderSize.x, playerPos.y);
+                        rotation = 180;
+                        triggerName = "playerAttackLeft";
+                        lastFacing = new Vector2(-1, 0);
 
-                /* Play the appropriate sound. */
-                switch (attackCount)
-                {
-                    default:
-                    case (0):
-                        AudioManager.Instance.Play("Swing 1");
-                        break;
+                    }
+                    else // right
+                    {
+                        hitBoxPos = new Vector2(playerPos.x + playerColliderSize.x, playerPos.y);
+                        rotation = 0;
+                        triggerName = "playerAttackRight";
+                        lastFacing = new Vector2(1, 0);
 
-                    case (1):
-                        AudioManager.Instance.Play("Swing 2");
-                        break;
+                    }
+                    GameObject hitBox = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerStrikeBox"), hitBoxPos, Quaternion.identity);
+                    hitBox.transform.Rotate(new Vector3(0, 0, rotation));
+                    movement = Vector2.zero;
 
-                    case (2):
-                        AudioManager.Instance.Play("Swing 3");
-                        break;
+                    anim.SetTrigger(triggerName);
+                    anim.SetFloat("LastFacingX", lastFacing.x);
+                    anim.SetFloat("LastFacingY", lastFacing.y);
+
+                    /* Start the coroutines for the hitbox spawntime and animation time. */
+                    StartCoroutine(HitBoxTimer(0.1f, hitBox));
+
+                    attackAnimDone = false;
+                    StartCoroutine(AttackAnimationDone(0.4f));
+                    attackGraceDone = false;
+                    gracePeriod = AttackGraceTimer(0.7f);
+                    StartCoroutine(gracePeriod);
+
+                    attacksDone++;
+                    /* Play the appropriate sound. */
+                    int sound = Random.Range(1, 3);
+                    AudioManager.Instance.Play("Swing " + sound);
+                    /*
+                    switch (attacksDone)
+                    {
+                        default:
+                        case (1):
+                            AudioManager.Instance.Play("Swing 1");
+                            break;
+
+                        case (2):
+                            AudioManager.Instance.Play("Swing 2");
+                            break;
+
+                        case (3):
+                            AudioManager.Instance.Play("Swing 3");
+                            break;
+                    }
+                    */
                 }
 
                 break;
@@ -400,8 +430,21 @@ public class PlayerController : MonoBehaviour
     public IEnumerator AttackAnimationDone(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        attacking = false;
-        anim.SetTrigger("doneAttacking");
+        attackAnimDone = true;
         // change to moving?
+    }
+
+    /* Called to signal an end to the grace period between combo attacks. */
+    public IEnumerator AttackGraceTimer(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        attackGraceDone = true;
+    }
+
+    /* Called to signal an end of the delay between combos. */
+    public IEnumerator AttackDelayTimer(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        attackDelayDone = true;
     }
 }
