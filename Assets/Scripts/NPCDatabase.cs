@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -12,7 +12,8 @@ public class NPCDatabase : ScriptableObject
         yellowHood,
     }
 
-    /* (NPC_ID, ["Name", "Sprite Directory"]) */
+    /* (NPC_ID, [["Name"], ["Sprite Directory"], ["Initial text"], ["Quest complete text"]]).
+     * EVERY NPC MUST HAVE AT LEAST 4 STRING[]s. */
     public readonly Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
 
     public void OnEnable()
@@ -21,7 +22,8 @@ public class NPCDatabase : ScriptableObject
         {
             new string[] { "Yellow Hood" },
             new string[] { "Sprites/mushroom (2)" },
-            new string[] { "Hi there! How are you?", "I've been having trouble collecting some items.", "Are you up for a task?" }
+            new string[] { "Hi there! How are you?", "I've been having trouble collecting some items.", "Are you up for a task?" },
+            new string[] { "All done?" }
         };
     }
 }

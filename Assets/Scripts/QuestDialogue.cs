@@ -7,8 +7,6 @@ using System;
 public class QuestDialogue : MonoBehaviour {
 
     ItemDatabase itemDB;
-    [HideInInspector] public DialogueManager dialogueMan;
-
 
     public GameObject dialogue;
     public GameObject firstImage;
@@ -58,6 +56,8 @@ public class QuestDialogue : MonoBehaviour {
             /* Initialize the prefab for the quest UI item. */
             GameObject newQuest = Instantiate(Resources.Load<GameObject>("Prefabs/QuestItem"), QuestTrackerUI.Instance.questObjectArea.transform);
             newQuest.GetComponent<CollectQuest>().Initialize(firstItemID, secondItemID, firstAmount, secondAmount);
+            UIManager.Instance.dialogue.NPC.givenQuest = true;
+
             Close();
         }
     }
@@ -66,7 +66,7 @@ public class QuestDialogue : MonoBehaviour {
     public void Close()
     {
         // delete the quest
-        dialogueMan.ResetDialogue();
+        UIManager.Instance.dialogue.ResetDialogue();
         Destroy(gameObject);
     }
 }

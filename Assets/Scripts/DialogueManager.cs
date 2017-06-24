@@ -6,86 +6,89 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour {
     NPCDatabase NPCData;
 
-
     /* Dialogue prefab. */
-    GameObject dialogue;
-
+    GameObject newDialogue;
+    NPCs _NPC;
     Text NPCDialogueText;
     string[] textLines;
     int lineNumber = 1;
-    bool isQuestGiver;
 
     GameObject questDialogueObj;
 
+    public NPCs NPC {
+        get { return _NPC; }
+    }
+
     // Use this for initialization
     void Awake () {
-        questDialogueObj = null;
         NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
 	}
 
+    /* StartDialogue should ALWAYS be called first. */
     private void Update()
     {
-        /* Handle displaying the text. */
-        if (Inputs.Instance.interaction_key_down)
+        /* If users presses space, the dialogue UI is on and, just in case, StartDialogue has been called... */
+        if (Inputs.Instance.interaction_key_down && UIManager.Instance.dialogueUIOn && NPC != null)
         {
-            if (UIManager.Instance.dialogueUIOn && NPCDialogueText != null)
+            /* If we reach the end of the dialogue... */
+            if (lineNumber >= textLines.Length)
             {
-                /* If we reach the end of the dialogue. */
-                if (lineNumber == textLines.Length)
+                /* If the NPC is a quest giver AND there isn't already a quest window, then create one. */
+                if (NPC.isQuestGiver && questDialogueObj == null)
                 {
-                    if (isQuestGiver && questDialogueObj == null)
-                    {
-                        questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
-                        QuestDialogue questDialogue = questDialogueObj.GetComponent<QuestDialogue>();
-                        questDialogue.dialogueMan = this;
-                        questDialogue.Initialize();
-                    }
-                    else if (questDialogueObj == null)
-                    {
-                        ResetDialogue();
-                    }
+                    questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
+                    QuestDialogue questDialogue = questDialogueObj.GetComponent<QuestDialogue>();
+                    questDialogue.Initialize();
                 }
-                else
+                else if (questDialogueObj == null)
                 {
-                    NPCDialogueText.text = textLines[lineNumber];
-                    lineNumber++;
+                    ResetDialogue();
                 }
+            }
+            else
+            {
+                NPCDialogueText.text = textLines[lineNumber];
+                lineNumber++;
             }
         }
     }
 
     /* Creates and displays the dialogue box. Assumes that there is text to be displayed. */
-    public void StartDialogue(int NPC_ID, bool isQuestGiver)
+    public void StartDialogue(NPCs NPC_ID, bool isQuestGiver)
     {
         /* Get the NPC's dialogue values. */
-        string[][] values = NPCData.valuesDictionary[NPC_ID];
+        string[][] values = NPCData.valuesDictionary[NPC_ID.ID];
         string name = values[0][0];
         string spriteLocation = values[1][0];
         textLines = values[2];
-        this.isQuestGiver = isQuestGiver;
 
         /* Create and map values to the Dialogue GameObject's name and portait. */
-        dialogue = Instantiate(Resources.Load<GameObject>("Prefabs/NPC Dialogue"), gameObject.transform);
-        GameObject NPCName = dialogue.transform.GetChild(0).gameObject;
-        GameObject NPCPortait = dialogue.transform.GetChild(1).gameObject;
+        newDialogue = Instantiate(Resources.Load<GameObject>("Prefabs/NPC Dialogue"), gameObject.transform);
+        GameObject NPCName = newDialogue.transform.GetChild(0).gameObject;
+        GameObject NPCPortait = newDialogue.transform.GetChild(1).gameObject;
         NPCName.GetComponent<Text>().text = name;
         NPCPortait.GetComponent<Image>().sprite = Resources.Load<Sprite>(spriteLocation);
 
         /* Handle displaying the text. */
-        NPCDialogueText = dialogue.transform.GetChild(2).gameObject.GetComponent<Text>();
+        NPCDialogueText = newDialogue.transform.GetChild(2).gameObject.GetComponent<Text>();
         NPCDialogueText.text = textLines[0];
 
-        gameObject.SetActive(true);
-        dialogue.SetActive(true);
-        UIManager.Instance.dialogueUIOn = true;
+        UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, true);
+
+        /* Indicates that initialization was a success. */
+        _NPC = NPC_ID;
+    }
+
+    public void CompleteQuestDialogue(NPCs NPC_ID)
+    {
     }
 
     /* Destroys and resets the dialogue manager, including the quest dialogue if there is one. */
     public void ResetDialogue()
     {
-        if (dialogue != null)
+        if (newDialogue != null)
         {
-            Destroy(dialogue);
+            Destroy(newDialogue);
             lineNumber = 1;
 
             UIManager.Instance.dialogueUIOn = false;

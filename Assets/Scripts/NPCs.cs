@@ -6,15 +6,13 @@ public class NPCs : MonoBehaviour
 {
     public int ID;
     public bool isQuestGiver;
+    public bool givenQuest = false;
     public CircleCollider2D interactRange;
     public Rigidbody2D rb;
-    public GameObject DialogueUIObj;
-    DialogueManager DialogueMan;
 
     // Use this for initialization
     void Awake()
     {
-        DialogueMan = DialogueUIObj.GetComponent<DialogueManager>();
     }
 
     /* Keeps the rigidbody awake to check for player interaction. */
@@ -32,9 +30,11 @@ public class NPCs : MonoBehaviour
         {
             if (!UIManager.Instance.dialogueUIOn && Inputs.Instance.interaction_key_down)
             {
-                DialogueMan.StartDialogue(ID, isQuestGiver);
-                
-                // second "page" will have buttons (green check red x) to click on to accept or not
+                if (givenQuest)
+                    UIManager.Instance.dialogue.CompleteQuestDialogue(this);
+                else
+                    UIManager.Instance.dialogue.StartDialogue(this, isQuestGiver);
+
             }
         }
     }
@@ -46,7 +46,7 @@ public class NPCs : MonoBehaviour
         {
             if(UIManager.Instance.dialogueUIOn)
             {
-                DialogueMan.ResetDialogue();
+                UIManager.Instance.dialogue.ResetDialogue();
             }
             rb.sleepMode = RigidbodySleepMode2D.StartAwake;
         }

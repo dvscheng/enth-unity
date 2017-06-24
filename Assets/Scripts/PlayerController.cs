@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public int attacksDone = 0;
     public const int MAX_ATTACKS = 3;
     public IEnumerator gracePeriod;
+    public IEnumerator attackAnim;
 
 
     public int currentState;
@@ -280,6 +281,13 @@ public class PlayerController : MonoBehaviour
                     attackGraceDone = false;
                     gracePeriod = AttackGraceTimer(0.7f);
                     StartCoroutine(gracePeriod);
+
+                    /*
+                    StopCoroutine(attackAnim);
+                    attackAnimDone = false;
+                    attackAnim = AttackAnimationDone(0.4f);
+                    StartCoroutine(attackAnim);
+                    */
                 }
                 if (attackAnimDone && attackGraceDone && attacksDone == attacksInputted)
                 {
@@ -370,7 +378,8 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(HitBoxTimer(0.1f, hitBox));
 
                     attackAnimDone = false;
-                    StartCoroutine(AttackAnimationDone(0.4f));
+                    attackAnim = AttackAnimationDone(0.4f);
+                    StartCoroutine(attackAnim);
                     attackGraceDone = false;
                     gracePeriod = AttackGraceTimer(0.7f);
                     StartCoroutine(gracePeriod);

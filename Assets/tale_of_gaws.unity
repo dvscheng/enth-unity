@@ -3021,6 +3021,7 @@ GameObject:
   - component: {fileID: 225398505}
   - component: {fileID: 225398504}
   - component: {fileID: 225398503}
+  - component: {fileID: 225398506}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -3073,6 +3074,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &225398506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 225398502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077929e2a48d16b4a908ebb3713a18f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &227420644
 GameObject:
   m_ObjectHideFlags: 0
@@ -5318,11 +5330,12 @@ MonoBehaviour:
   isMoving: 0
   lastFacing: {x: 0, y: 0}
   attacking: 0
-  STATE_MOVING: 0
-  STATE_IDLE: 0
-  STATE_ATTACKING_1: 0
-  STATE_ATTACKING_2: 0
-  STATE_ATTACKING_3: 0
+  attackAnimDone: 1
+  attackDelayDone: 1
+  attackGraceDone: 1
+  attacksInputted: 0
+  attacksDone: 0
+  currentState: 0
 --- !u!61 &443277857
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7256,6 +7269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   isQuestGiver: 1
+  givenQuest: 0
   interactRange: {fileID: 604141262}
   rb: {fileID: 604141265}
   DialogueUIObj: {fileID: 2097614151}
@@ -24921,6 +24935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3381763307f26c448a7755c5ec44c995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NPC_ID: {fileID: 0}
 --- !u!95 &2097614156
 Animator:
   serializedVersion: 3
