@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb;
     Animator anim;
+    public GameObject UIManagerObj;
+    UIManager UIMan;
     public GameObject inventoryGameObj; // UNITY
     [HideInInspector] public PlayerInventory inventory; // could use singleton, but playercontroller is there on start and there will always be just one so it's fine
 
@@ -50,6 +52,13 @@ public class PlayerController : MonoBehaviour
     {
         get { return hp; }
     }
+    private int maxHp = 100;
+    public int MaxHp {
+        get
+        {
+            return maxHp;
+        }
+    }
     private int baseDamage = 10;
     public int BaseDamage
     {
@@ -77,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        UIMan = UIManagerObj.GetComponent<UIManager>();
         animationState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
         inventory = inventoryGameObj.GetComponent<PlayerInventory>();
 
@@ -424,8 +434,13 @@ public class PlayerController : MonoBehaviour
 
         if (hp <= 0)
             hp = 0;
+
+        /* Notify the health bar of an update. */
+        UIMan.healthBar.UpdateHealth();
+
+        // Die()
     }
-    
+
     /* 
      * After the given wait time, destroys the strike's hitbox.
      * */

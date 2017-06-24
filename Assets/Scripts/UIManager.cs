@@ -33,6 +33,10 @@ public class UIManager : MonoBehaviour {
     public GameObject questTracker;
     bool questTrackerOn;
 
+    public GameObject healthBarObj;
+    public HealthBar healthBar;
+    bool healthBarOn;
+
 
     public int playerHp;
     public Text hpText;
@@ -62,10 +66,12 @@ public class UIManager : MonoBehaviour {
         inventoryUIOn = false;
         questTrackerOn = false;
         dialogueUIOn = false;
+        healthBarOn = true;
 
         playerController = player.GetComponent<PlayerController>();
         playerInventory = inventory.GetComponent<PlayerInventory>();
         dialogue = dialogueObj.GetComponent<DialogueManager>();
+        healthBar = healthBarObj.GetComponent<HealthBar>();
         playerHp = playerController.Hp;
 
         /* Turn on (initialize) the UI, then turn it back off (assumes they're hidden in Unity editor at start). */
@@ -91,8 +97,6 @@ public class UIManager : MonoBehaviour {
         }
 
         /* Show HP. (move elsewhere later) */
-        playerHp = playerController.Hp;
-        hpText.text = "HP: " + playerHp;
     }
 
     /* Given the UI type to manipualte, turn it OnOff. */
