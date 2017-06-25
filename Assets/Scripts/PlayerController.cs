@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     UIManager UIMan;
     public GameObject inventoryGameObj; // UNITY
     [HideInInspector] public PlayerInventory inventory; // could use singleton, but playercontroller is there on start and there will always be just one so it's fine
+    public GameObject inputManagerObj;
+    [HideInInspector] public Inputs inputs;
 
     [Header("Movement and Animation")]
     /* Movement and animtor params. */
@@ -40,11 +42,13 @@ public class PlayerController : MonoBehaviour
     public IEnumerator gracePeriod;
     public IEnumerator attackAnim;
 
+    public bool dashed = false;
 
     public int currentState;
     public const int STATE_IDLE = 0;
     public const int STATE_MOVING = 1;
     public const int STATE_ATTACKING = 2;
+    public const int STATE_DASHING = 3;
 
     /* Game stats. */
     private int hp = 100;
@@ -87,6 +91,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         UIMan = UIManagerObj.GetComponent<UIManager>();
+        inputs = inputManagerObj.GetComponent<Inputs>();
         animationState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
         inventory = inventoryGameObj.GetComponent<PlayerInventory>();
 
@@ -224,6 +229,11 @@ public class PlayerController : MonoBehaviour
         {
             default:
             case (STATE_IDLE):
+                if (Inputs.Instance.dash_key_down)
+                {
+                    currentState = STATE_DASHING;
+                    break;
+                }
                 if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && !EventSystem.current.IsPointerOverGameObject() && attackDelayDone)
                 {
                     currentState = STATE_ATTACKING;
@@ -246,6 +256,11 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case (STATE_MOVING):
+                if (Inputs.Instance.dash_key_down)
+                {
+                    currentState = STATE_DASHING;
+                    break;
+                }
                 if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && !EventSystem.current.IsPointerOverGameObject() && attackDelayDone)
                 {
                     currentState = STATE_ATTACKING;
@@ -395,28 +410,33 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(gracePeriod);
 
                     attacksDone++;
+
                     /* Play the appropriate sound. */
                     int sound = Random.Range(1, 3);
                     AudioManager.Instance.Play("Swing " + sound);
-                    /*
-                    switch (attacksDone)
-                    {
-                        default:
-                        case (1):
-                            AudioManager.Instance.Play("Swing 1");
-                            break;
-
-                        case (2):
-                            AudioManager.Instance.Play("Swing 2");
-                            break;
-
-                        case (3):
-                            AudioManager.Instance.Play("Swing 3");
-                            break;
-                    }
-                    */
                 }
+                break;
 
+            case (STATE_DASHING):
+                // if () check when dashing is done, return to idle state;
+                if (dashed)
+                {
+                    currentState = STATE_IDLE;
+                    dashed = false;
+                    break;
+                }
+                if (!dashed)
+                {
+                    inputX = Input.GetAxisRaw("HorizontalAD");
+                    inputY = Input.GetAxisRaw("VerticalWS");
+                    Vector2 force;
+                    if (inputX == 0 && inputY == 0)
+                        force = lastFacing;
+                    else
+                        force = new Vector2(inputX, inputY);
+                    rb.AddForce(force * 1000f);
+                    dashed = true;
+                }
                 break;
         }
     }

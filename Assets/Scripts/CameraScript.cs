@@ -13,7 +13,7 @@ public class CameraScript : MonoBehaviour {
     #endregion
 
     public GameObject player;
-    public float pixelToUnits = 40f;
+    public float pixelToUnits = 32f;
 
     /* Camera not moving outside of map. */
     private Camera cameraComponent;

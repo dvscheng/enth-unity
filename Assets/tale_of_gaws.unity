@@ -5325,6 +5325,8 @@ MonoBehaviour:
   UIManagerObj: {fileID: 820899302}
   inventoryGameObj: {fileID: 494646189}
   inventory: {fileID: 0}
+  inputManagerObj: {fileID: 2039424284}
+  inputs: {fileID: 0}
   moveDistance: 175
   inputX: 0
   inputY: 0
@@ -5336,6 +5338,7 @@ MonoBehaviour:
   attackGraceDone: 1
   attacksInputted: 0
   attacksDone: 0
+  dashed: 0
   currentState: 0
 --- !u!61 &443277857
 BoxCollider2D:
@@ -11615,8 +11618,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 38.646973, y: -17.5}
-  m_SizeDelta: {x: 44, y: 16}
+  m_AnchoredPosition: {x: 57.350006, y: -16.800003}
+  m_SizeDelta: {x: 62.7, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1026932805
 MonoBehaviour:
@@ -11644,7 +11647,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -20201,8 +20204,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -438.34998, y: 268.5}
-  m_SizeDelta: {x: 200, y: 32}
+  m_AnchoredPosition: {x: -473, y: 246.3}
+  m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1674857260
 MonoBehaviour:

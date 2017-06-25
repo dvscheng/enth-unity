@@ -97,6 +97,8 @@ public class UIManager : MonoBehaviour {
         }
 
         /* Show HP. (move elsewhere later) */
+        playerHp = playerController.Hp;
+        hpText.text = "HP: " + playerHp;
     }
 
     /* Given the UI type to manipualte, turn it OnOff. */
