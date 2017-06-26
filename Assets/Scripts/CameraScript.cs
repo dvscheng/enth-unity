@@ -57,7 +57,8 @@ public class CameraScript : MonoBehaviour {
             float rounded_y = RoundToNearestPixel(player_y);
 
             Vector3 new_pos = new Vector3(rounded_x, rounded_y, -10.0f); // this is 2d, so my camera is that far from the screen.
-            gameObject.transform.position = new_pos;
+
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new_pos, 10f * Time.deltaTime);
         }
         if (mapBounds == null)
         {
