@@ -9,15 +9,18 @@ public class DamageText : MonoBehaviour {
     public Vector2 size;
     public Vector3 position;
     public int damage;
+    private float damageShown;
     public Text text;
     private Color _origColor;
     private Color _newColor;
+    private float _newColorAlpha;
 
     const float MIN_WIDTH = -0.5f;
     const float MAX_WIDTH = 0.5f;
     const float MIN_HEIGHT = 0.5f;
     const float MAX_HEIGHT = 1f;
-    const float DISAPPEAR_TIME = 1f;
+    const float DISAPPEAR_DELAY = 1.5f;
+    readonly Vector3 DISAPPEAR_DIST = new Vector3(0f, 0.1f, 0f);
     bool timeToDisappear = false;
 
     /* Get the size of the text box. */
@@ -39,9 +42,8 @@ public class DamageText : MonoBehaviour {
         float relMaxHeight = character.transform.position.y + MAX_HEIGHT;
         position = new Vector2(Random.Range(relMinWidth, relMaxWidth), Random.Range(relMinHeight, relMaxHeight));
         gameObject.transform.position = position;
-        text.text = "" + damage;
 
-        StartCoroutine(VisibilityTimer(DISAPPEAR_TIME));
+        StartCoroutine(VisibilityTimer(DISAPPEAR_DELAY));
     }
 
     /* Causes the text to fade after a certain time and keep it at the same position despite camera movement. */
@@ -56,10 +58,22 @@ public class DamageText : MonoBehaviour {
             }
             else
             {
+                /* Make the text start to fade. */
                 _newColor = _origColor;
-                _newColor.a -= 1f * Time.deltaTime;
+                _newColor.a -= 2.5f * Time.deltaTime;
                 text.color = _newColor;
+
+                /* Make the text move up. */
+                position += DISAPPEAR_DIST * Time.deltaTime;
             }
+        }
+        else if (damageShown != damage)
+        {
+            /* Count up to the number. */
+            damageShown += (damage / (DISAPPEAR_DELAY/10) * Time.deltaTime);
+            text.text = "" + (int)damageShown;
+            if (damageShown > damage)
+                damageShown = damage;
         }
         gameObject.transform.position = position;
     }
