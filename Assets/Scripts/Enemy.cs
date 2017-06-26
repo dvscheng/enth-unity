@@ -3,50 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-    GameObject go;
+    GameObject UIObj;
     GameObject player;
+    ItemDatabase itemDB;
     Rigidbody2D rb;
+    EnemyHealthBar healthBar;
     public BoxCollider2D boxCollider; // UNITY
     public BoxCollider2D boxTrigger; // UNITY
     public CircleCollider2D sightRange; // UNITY
-    [HideInInspector] public BoxCollider2D playerCollider;
-
-    ItemDatabase itemDB;
-
-    public int playerOnTriggerEnterCount = 0; // UNITY
+    [HideInInspector]
+    public BoxCollider2D playerCollider;
+    public GameObject healthBarObj;
 
     public int mobID; // UNITY
-
-    private int hp = 15;
-    public int Hp
-    {
-        get { return hp; }
-        set { hp = value; }
-    }
-
+    public int hp = 15;
+    public int maxHp = 15;
     int baseDamage = 5;
 
-    Vector2 movement = Vector2.zero;
-    [Range(25f, 100f)] public float moveSpeed = 40f;
-
-    int currentState = (int)State.STATE_IDLE;
+    private const int STATE_IDLE = 0;
+    private const int STATE_WANDERING = 1;
+    private const int STATE_CHASING = 2;
+    private int currentState = 0;
     bool stateReady = true;
     bool wandering = false;
-
-    private enum State : int
-    {
-        STATE_IDLE,
-        STATE_WANDERING,
-        STATE_CHASING
-    }
+    Vector2 movement = Vector2.zero;
+    [Range(25f, 100f)]
+    public float moveSpeed = 40f;
+    public int playerOnTriggerEnterCount = 0; // UNITY
 
     private void Start()
     {
-        go = GetComponent<GameObject>();
-        rb = GetComponent<Rigidbody2D>();
+        UIObj = GameObject.Find("UI");
         player = GameObject.Find("Player");
-        playerCollider = player.GetComponent<BoxCollider2D>();
         itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        rb = GetComponent<Rigidbody2D>();
+        healthBar = healthBarObj.GetComponent<EnemyHealthBar>();
+        playerCollider = player.GetComponent<BoxCollider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -59,7 +51,7 @@ public class Enemy : MonoBehaviour {
             if (playerOnTriggerEnterCount == 1)
             {
                 stateReady = true;
-                currentState = (int)State.STATE_CHASING;
+                currentState = STATE_CHASING;
             }
             else if (playerOnTriggerEnterCount == 2)
             {
@@ -99,7 +91,7 @@ public class Enemy : MonoBehaviour {
             } else if (playerOnTriggerEnterCount == 0)
             {
                 movement = Vector2.zero;
-                currentState = (int)State.STATE_IDLE;
+                currentState = STATE_IDLE;
                 stateReady = false;
                 StartCoroutine(Wait(2));
             }
@@ -109,13 +101,13 @@ public class Enemy : MonoBehaviour {
     private void Update() {
         switch (currentState)
         {
-            case (int)State.STATE_IDLE:
+            case (STATE_IDLE):
                 if (stateReady)
                 {
                     int roll = Random.Range(0, 100);
                     if (roll > 50)
                     {
-                        currentState = (int)State.STATE_WANDERING;
+                        currentState = STATE_WANDERING;
                         return;
                     }
                     stateReady = false;
@@ -123,7 +115,7 @@ public class Enemy : MonoBehaviour {
                 }
                 break;
 
-            case (int)State.STATE_WANDERING:
+            case STATE_WANDERING:
                 if (stateReady)
                 {
                     if (wandering)
@@ -134,7 +126,7 @@ public class Enemy : MonoBehaviour {
                         int roll = Random.Range(0, 100);
                         if (roll > 50)
                         {
-                            currentState = (int)State.STATE_IDLE;
+                            currentState = STATE_IDLE;
                             return;
                         }
                     }
@@ -152,7 +144,7 @@ public class Enemy : MonoBehaviour {
                 }
                 break;
                 
-            case (int)State.STATE_CHASING:
+            case STATE_CHASING:
                 // chase
                 if (stateReady)
                 {
@@ -185,6 +177,18 @@ public class Enemy : MonoBehaviour {
     {
         //rb.MovePosition((Vector2)transform.position + movement * Time.deltaTime);
         rb.velocity = movement * moveSpeed * Time.deltaTime;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        /* Update the health and healthBar. */
+        hp -= amount;
+        healthBar.UpdateBar();
+
+        /* Show the damage text. */
+        GameObject damageText = Instantiate(Resources.Load<GameObject>("Prefabs/DamageText"), UIObj.transform);
+        damageText.GetComponent<DamageText>().Initialize(gameObject, amount);
+        // consider keeping a list of dmg texts and shove some out if it gets too big
     }
 
     /* Roll for drops, then destroy the Game Object. */
@@ -257,12 +261,6 @@ public class Enemy : MonoBehaviour {
             return true;
         }
 
-        return false;
-    }
-
-    private bool PlayerWithinRange()
-    {
-        // generate direction;
         return false;
     }
 

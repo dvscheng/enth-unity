@@ -27,7 +27,9 @@ public class PlayerStrikeBox : MonoBehaviour {
                 Physics2D.IgnoreCollision(bc, collision);
             else
             {
-                enemyScript.Hp -= playerController.BaseDamage;
+                int damageDealt = Random.Range((int) (playerController.BaseDamage * playerController.Mastery), playerController.BaseDamage);
+                enemyScript.TakeDamage(damageDealt);
+                // display damage;
 
                 /* Play the appropriate enemy damage sound. */
                 switch (enemyScript.mobID)

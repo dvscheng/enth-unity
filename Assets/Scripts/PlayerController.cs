@@ -68,6 +68,11 @@ public class PlayerController : MonoBehaviour
     {
         get { return baseDamage; }
     }
+    private float mastery = .50f;
+    public float Mastery
+    {
+        get { return mastery; }
+    }
 
 
     /* Applies the damage and resets to 0 if hp goes below 0. */
