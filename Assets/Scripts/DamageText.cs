@@ -10,6 +10,8 @@ public class DamageText : MonoBehaviour {
     public Vector3 position;
     public int damage;
     public Text text;
+    private Color _origColor;
+    private Color _newColor;
 
     const float MIN_WIDTH = -0.5f;
     const float MAX_WIDTH = 0.5f;
@@ -47,15 +49,16 @@ public class DamageText : MonoBehaviour {
     {
         if (timeToDisappear)
         {
-            if (text.color.a == 0)
+            _origColor = text.color;
+            if (_origColor.a <= 0)
             {
                 Destroy(gameObject);
             }
             else
             {
-                Color c = text.color;
-                c.a -= 1f * Time.deltaTime;
-                text.color = c;
+                _newColor = _origColor;
+                _newColor.a -= 1f * Time.deltaTime;
+                text.color = _newColor;
             }
         }
         gameObject.transform.position = position;

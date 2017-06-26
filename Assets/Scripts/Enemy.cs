@@ -179,15 +179,15 @@ public class Enemy : MonoBehaviour {
         rb.velocity = movement * moveSpeed * Time.deltaTime;
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int damage)
     {
         /* Update the health and healthBar. */
-        hp -= amount;
+        hp -= damage;
         healthBar.UpdateBar();
 
         /* Show the damage text. */
         GameObject damageText = Instantiate(Resources.Load<GameObject>("Prefabs/DamageText"), UIObj.transform);
-        damageText.GetComponent<DamageText>().Initialize(gameObject, amount);
+        damageText.GetComponent<DamageText>().Initialize(gameObject, damage);
         // consider keeping a list of dmg texts and shove some out if it gets too big
     }
 

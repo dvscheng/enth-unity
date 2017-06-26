@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -463,6 +464,10 @@ public class PlayerController : MonoBehaviour
         /* Notify the health bar of an update. */
         UIMan.healthBar.UpdateHealth();
 
+        /* Show the damage text. */
+        GameObject damageText = Instantiate(Resources.Load<GameObject>("Prefabs/DamageText"), UIManagerObj.transform);
+        damageText.GetComponent<Text>().color = Color.red;
+        damageText.GetComponent<DamageText>().Initialize(gameObject, damage);
         // Die()
     }
 

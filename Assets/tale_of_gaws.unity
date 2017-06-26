@@ -23557,6 +23557,21 @@ Prefab:
       propertyPath: moveSpeed
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 212944727447966020, guid: 2b0cbfc2e4397ef4e8067f6b4e2975db,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212944727447966020, guid: 2b0cbfc2e4397ef4e8067f6b4e2975db,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212944727447966020, guid: 2b0cbfc2e4397ef4e8067f6b4e2975db,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2b0cbfc2e4397ef4e8067f6b4e2975db, type: 2}
   m_IsPrefabParent: 0
