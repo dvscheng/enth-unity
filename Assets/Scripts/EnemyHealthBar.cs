@@ -13,6 +13,7 @@ public class EnemyHealthBar : MonoBehaviour {
     public int currentHealth;
     public int maxHealth;
     public float currentPercentHealth;
+    private float origWidth;
 
 
 
@@ -23,6 +24,7 @@ public class EnemyHealthBar : MonoBehaviour {
         fill = fillObj.GetComponent<SpriteRenderer>();
         currentHealth = parent.Hp;
         maxHealth = parent.MaxHp;
+        origWidth = fill.transform.localScale.x;
         CalculateHealthPercent();
     }
 	
@@ -31,7 +33,7 @@ public class EnemyHealthBar : MonoBehaviour {
         currentHealth = parent.Hp;
         maxHealth = parent.MaxHp;
         CalculateHealthPercent();
-        fill.transform.localScale = new Vector3(fill.transform.localScale.x * currentPercentHealth, fill.transform.localScale.y, fill.transform.localScale.z);
+        fill.transform.localScale = new Vector3(origWidth * currentPercentHealth, fill.transform.localScale.y, fill.transform.localScale.z);
     }
 
     void CalculateHealthPercent()

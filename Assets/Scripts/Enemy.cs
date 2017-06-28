@@ -43,8 +43,8 @@ public class Enemy : MonoBehaviour
     {
         // TODO eventually have a database for monster data given mob id 
         Level = 1;
-        Hp = 100;
-        MaxHp = 100;
+        Hp = 10;
+        MaxHp = 10;
         BaseAtt = 5;
         AdditionalAtt = 0;
         Defence = 0;
