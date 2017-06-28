@@ -7,6 +7,7 @@ public class NPCs : MonoBehaviour
     public int ID;
     public bool isQuestGiver;
     public bool givenQuest = false;
+    public CollectQuest Quest { get; set; }
     public CircleCollider2D interactRange;
     public Rigidbody2D rb;
 
@@ -29,13 +30,7 @@ public class NPCs : MonoBehaviour
         if (collision.gameObject.name.Equals("Player"))
         {
             if (!UIManager.Instance.dialogueUIOn && Inputs.Instance.interaction_key_down)
-            {
-                if (givenQuest)
-                    UIManager.Instance.dialogue.CompleteQuestDialogue(this);
-                else
-                    UIManager.Instance.dialogue.StartDialogue(this, isQuestGiver);
-
-            }
+                UIManager.Instance.dialogue.NPCInteraction(this, Quest);
         }
     }
 

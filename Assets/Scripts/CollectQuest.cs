@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CollectQuest : MonoBehaviour {
 
+    public NPCs _NPC;
+    public bool IsComplete { get; set; }
     public static readonly int MAX_COLLECT_AMOUNT = 4;
     public int firstItemID;
     public int firstAmount;
@@ -23,8 +25,9 @@ public class CollectQuest : MonoBehaviour {
     /* Position in the traker is defaulted to -1, meaning it's not in the tracker. */
     public int posInTracker = -1;
 
-    public void Initialize(int firstItemID, int secondItemID, int firstAmount, int secondAmount)
+    public void Initialize(NPCs NPC, int firstItemID, int secondItemID, int firstAmount, int secondAmount)
     {
+        _NPC = NPC;
         this.firstItemID = firstItemID;
         this.secondItemID = secondItemID;
         this.firstAmount = firstAmount;
@@ -36,5 +39,13 @@ public class CollectQuest : MonoBehaviour {
     public void AddToQuestTrackerUI()
     {
         QuestTrackerUI.Instance.AddQuest(this);
+    }
+
+    public void Complete()
+    {
+        _NPC.Quest = null;
+        _NPC.givenQuest = false;
+
+        // give player rewards
     }
 }

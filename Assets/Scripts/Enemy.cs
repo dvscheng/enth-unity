@@ -261,15 +261,15 @@ public class Enemy : MonoBehaviour
             switch (itemType)
             {
                 case ((int)ItemDatabase.ItemType.equip):
-                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new EquipItems(itemID, 1));
+                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new EquipItems(itemID, 5));
                     break;
 
                 case ((int)ItemDatabase.ItemType.use):
-                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new UseItems(itemID, 1));
+                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new UseItems(itemID, 5));
                     break;
 
                 case ((int)ItemDatabase.ItemType.mats):
-                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new MatItems(itemID, 1));
+                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new MatItems(itemID, 5));
                     break;
 
                 case ((int)ItemDatabase.ItemType.error):

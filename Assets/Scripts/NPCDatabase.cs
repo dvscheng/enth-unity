@@ -16,6 +16,11 @@ public class NPCDatabase : ScriptableObject
      * EVERY NPC MUST HAVE AT LEAST 4 STRING[]s. */
     public readonly Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
 
+    public string[] QuestNotCompleteString
+    {
+        get { return new string[] { "You don't seem to have finished the quest." }; }
+    }
+
     public void OnEnable()
     {
         valuesDictionary[(int)ID.yellowHood] = new string[][]
@@ -23,7 +28,7 @@ public class NPCDatabase : ScriptableObject
             new string[] { "Yellow Hood" },
             new string[] { "Sprites/mushroom (2)" },
             new string[] { "Hi there! How are you?", "I've been having trouble collecting some items.", "Are you up for a task?" },
-            new string[] { "All done?" }
+            new string[] { "Thanks for your help, friend!" }
         };
     }
 }

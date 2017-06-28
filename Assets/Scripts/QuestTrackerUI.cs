@@ -128,6 +128,13 @@ public class QuestTrackerUI : MonoBehaviour {
                 questInfo.secondCompleted += item.Amount;
                 DoRefreshing(quest);
             }
+
+            /* If the quest is finished... */
+            if (questInfo.firstCompleted >= questInfo.firstAmount && questInfo.secondCompleted >= questInfo.secondAmount)
+            {
+                print("iscomplete = true");
+                questInfo.IsComplete = true;
+            }
         }
     }
 }

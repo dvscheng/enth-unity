@@ -8,6 +8,7 @@ public class QuestDialogue : MonoBehaviour {
 
     ItemDatabase itemDB;
 
+    public NPCs _NPC;
     public GameObject dialogue;
     public GameObject firstImage;
     public GameObject firstText;
@@ -25,7 +26,7 @@ public class QuestDialogue : MonoBehaviour {
         itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
 	}
 
-    public void Initialize()
+    public void Initialize(NPCs NPC)
     {
         /* Generate the items, get their sprites, and get the amounts-to-collect. */
         int numItems = Enum.GetValues(typeof(ItemDatabase.ItemID)).Length;
@@ -44,20 +45,26 @@ public class QuestDialogue : MonoBehaviour {
         firstText.GetComponent<Text>().text = "" + firstAmount;
         secondText.GetComponent<Text>().text = "" + secondAmount;
 
+        _NPC = NPC;
+
         initialized = true;
     }
 
     public void Accept()
     {
         if (!initialized)
+        {
             Debug.Log("Item was not created in QuestDialogue; check that Initialize() was called.");
+        }
         else
         {
             /* Initialize the prefab for the quest UI item. */
             GameObject newQuest = Instantiate(Resources.Load<GameObject>("Prefabs/QuestItem"), QuestTrackerUI.Instance.questObjectArea.transform);
-            newQuest.GetComponent<CollectQuest>().Initialize(firstItemID, secondItemID, firstAmount, secondAmount);
+            CollectQuest quest = newQuest.GetComponent<CollectQuest>();
+            quest.Initialize(_NPC, firstItemID, secondItemID, firstAmount, secondAmount);
             UIManager.Instance.dialogue.NPC.givenQuest = true;
 
+            _NPC.Quest = quest;
             Close();
         }
     }
