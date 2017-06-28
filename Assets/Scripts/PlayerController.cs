@@ -14,14 +14,16 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Unity Inspectors | References
     Rigidbody2D rb;
     Animator anim;
     public GameObject UIManagerObj;
     UIManager UIMan;
-    public GameObject inventoryGameObj; // UNITY
+    public GameObject inventoryGameObj;
     [HideInInspector] public PlayerInventory inventory; // could use singleton, but playercontroller is there on start and there will always be just one so it's fine
     public GameObject inputManagerObj;
     [HideInInspector] public Inputs inputs;
+    #endregion
 
     [Header("Movement and Animation")]
     /* Movement and animtor params. */
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public bool isMoving; // UNITY
     public Vector2 lastFacing; // UNITY
     Vector2 movement = Vector2.zero;
-    int animationState;
+    //int animationState;
 
     public bool attacking = false; // UNITY
     public bool attackAnimDone = true;
@@ -52,28 +54,14 @@ public class PlayerController : MonoBehaviour
     public const int STATE_DASHING = 3;
 
     /* Game stats. */
-    private int hp = 100;
-    public int Hp
-    {
-        get { return hp; }
-    }
-    private int maxHp = 100;
-    public int MaxHp {
-        get
-        {
-            return maxHp;
-        }
-    }
-    private int baseDamage = 10;
-    public int BaseDamage
-    {
-        get { return baseDamage; }
-    }
-    private float mastery = .50f;
-    public float Mastery
-    {
-        get { return mastery; }
-    }
+    public int Level { get; set; }
+    public int Hp { get; set; }
+    public int MaxHp { get; set; }
+    public int BaseAtt { get; set; }
+    public int AdditionalAtt { get; set; }
+    public int Defence { get; set; }
+    public float DefencePen { get; set; }
+    public float Mastery { get; set; }
 
 
     /* Applies the damage and resets to 0 if hp goes below 0. */
@@ -93,12 +81,21 @@ public class PlayerController : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         #endregion
+        Level = 1;
+        Hp = 100;
+        MaxHp = 100;
+        BaseAtt = 10;
+        AdditionalAtt = 0;
+        Defence = 0;
+        DefencePen = 0.01f;
+        Mastery = 0.50f;
+
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         UIMan = UIManagerObj.GetComponent<UIManager>();
         inputs = inputManagerObj.GetComponent<Inputs>();
-        animationState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
+        //animationState = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
         inventory = inventoryGameObj.GetComponent<PlayerInventory>();
 
         /* Initialize movement parameters. */
@@ -221,7 +218,7 @@ public class PlayerController : MonoBehaviour
 
 
             /* Checks when the player dies. */
-            if (hp <= 0)
+            if (Hp <= 0)
             {
                 //game over
             }
@@ -453,13 +450,12 @@ public class PlayerController : MonoBehaviour
         rb.velocity = movement * Time.deltaTime;
     }
 
-    /**/
     public void TakeDamage(int damage)
     {
-        hp -= damage;
-
-        if (hp <= 0)
-            hp = 0;
+        Hp -= damage;
+        if (Hp < 0)
+            Hp = 0;
+        //Die()
 
         /* Notify the health bar of an update. */
         UIMan.healthBar.UpdateHealth();

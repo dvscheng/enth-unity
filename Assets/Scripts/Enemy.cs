@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
     GameObject UIObj;
     GameObject player;
     ItemDatabase itemDB;
@@ -15,11 +16,6 @@ public class Enemy : MonoBehaviour {
     public BoxCollider2D playerCollider;
     public GameObject healthBarObj;
 
-    public int mobID; // UNITY
-    public int hp = 15;
-    public int maxHp = 15;
-    int baseDamage = 5;
-
     private const int STATE_IDLE = 0;
     private const int STATE_WANDERING = 1;
     private const int STATE_CHASING = 2;
@@ -31,8 +27,30 @@ public class Enemy : MonoBehaviour {
     public float moveSpeed = 40f;
     public int playerOnTriggerEnterCount = 0; // UNITY
 
+    public int mobID; // UNITY
+
+    /* Game stats. */
+    public int Level { get; set; }
+    public int Hp { get; set; }
+    public int MaxHp { get; set; }
+    public int BaseAtt { get; set; }
+    public int AdditionalAtt { get; set; }
+    public int Defence { get; set; }
+    public int DefencePen { get; set; }
+    public float Mastery { get; set; }
+
     private void Start()
     {
+        // TODO eventually have a database for monster data given mob id 
+        Level = 1;
+        Hp = 100;
+        MaxHp = 100;
+        BaseAtt = 5;
+        AdditionalAtt = 0;
+        Defence = 0;
+        DefencePen = 0;
+        Mastery = 0.90f;
+
         UIObj = GameObject.Find("UI");
         player = GameObject.Find("Player");
         itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
@@ -70,7 +88,7 @@ public class Enemy : MonoBehaviour {
 
                 /* Apply damage. */
                 // playerObj.GetComponent<Rigidbody2D>().AddForce(force);
-                playerObj.GetComponent<PlayerController>().TakeDamage(baseDamage);
+                playerObj.GetComponent<PlayerController>().TakeDamage(BaseAtt);
 
                 movement = Vector2.zero;
                 stateReady = false;
@@ -166,8 +184,7 @@ public class Enemy : MonoBehaviour {
                 break;
         }
 
-
-        if (hp <= 0)
+        if (Hp <= 0)
         {
             OnDeath();
         }
@@ -182,7 +199,10 @@ public class Enemy : MonoBehaviour {
     public void TakeDamage(int damage)
     {
         /* Update the health and healthBar. */
-        hp -= damage;
+        Hp -= damage;
+        if (Hp < 0)
+            Hp = 0;
+
         healthBar.UpdateBar();
 
         /* Show the damage text. */

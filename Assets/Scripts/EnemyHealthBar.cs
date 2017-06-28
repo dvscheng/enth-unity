@@ -21,15 +21,15 @@ public class EnemyHealthBar : MonoBehaviour {
         parent = parentObj.GetComponent<Enemy>();
         background = GetComponent<SpriteRenderer>();
         fill = fillObj.GetComponent<SpriteRenderer>();
-        currentHealth = parent.hp;
-        maxHealth = parent.maxHp;
+        currentHealth = parent.Hp;
+        maxHealth = parent.MaxHp;
         CalculateHealthPercent();
     }
 	
 	public void UpdateBar()
     {
-        currentHealth = parent.hp;
-        maxHealth = parent.maxHp;
+        currentHealth = parent.Hp;
+        maxHealth = parent.MaxHp;
         CalculateHealthPercent();
         fill.transform.localScale = new Vector3(fill.transform.localScale.x * currentPercentHealth, fill.transform.localScale.y, fill.transform.localScale.z);
     }

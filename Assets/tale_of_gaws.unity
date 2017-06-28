@@ -13954,7 +13954,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Item Pickup
     clip: {fileID: 8300000, guid: b1b6bcd5e168bcf42abd98bb094b6b43, type: 3}
-    volume: 0.15
+    volume: 0.1
     pitch: 1
     loop: 0
     source: {fileID: 0}
