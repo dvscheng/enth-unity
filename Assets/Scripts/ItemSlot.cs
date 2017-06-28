@@ -78,6 +78,17 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         UpdateTextCount();
     }
 
+    public void RemoveFromExistingItem(int amount)
+    {
+        item.Amount -= amount;
+        UpdateTextCount();
+        if (item.Amount <= 0)
+        {
+            print("Removed item");
+            RemoveItem();
+        }
+    }
+
     // TODO
     /* Remove the item from the slot, remove the sprite, and set the color to be transparent. */
     public void RemoveItem()

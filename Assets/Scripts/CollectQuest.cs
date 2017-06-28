@@ -4,7 +4,6 @@ using System;
 using UnityEngine;
 
 public class CollectQuest : MonoBehaviour {
-
     public NPCs _NPC;
     public bool IsComplete { get; set; }
     public static readonly int MAX_COLLECT_AMOUNT = 4;
@@ -43,9 +42,10 @@ public class CollectQuest : MonoBehaviour {
 
     public void Complete()
     {
-        _NPC.Quest = null;
-        _NPC.givenQuest = false;
-
+        PlayerInventory.Instance.RemoveFromInventory(firstItemID, (int)ItemDatabase.ItemType.mats, firstAmount);
+        PlayerInventory.Instance.RemoveFromInventory(secondItemID, (int)ItemDatabase.ItemType.mats, secondAmount);
+        QuestTrackerUI.Instance.RemoveQuest(this);
+        _NPC.IsQuestGiver = false;
         // give player rewards
     }
 }

@@ -12,7 +12,7 @@ public class NPCDatabase : ScriptableObject
         yellowHood,
     }
 
-    /* (NPC_ID, [["Name"], ["Sprite Directory"], ["Initial text"], ["Quest complete text"]]).
+    /* (NPC_ID, [["Name"], ["Sprite Directory"], ["Initial text"], ["Quest complete text"], ["Dialogue after quest complete."]]).
      * EVERY NPC MUST HAVE AT LEAST 4 STRING[]s. */
     public readonly Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
 
@@ -28,7 +28,8 @@ public class NPCDatabase : ScriptableObject
             new string[] { "Yellow Hood" },
             new string[] { "Sprites/mushroom (2)" },
             new string[] { "Hi there! How are you?", "I've been having trouble collecting some items.", "Are you up for a task?" },
-            new string[] { "Thanks for your help, friend!" }
+            new string[] { "Thanks for your help, friend!" },
+            new string[] { "Thanks again for the help." }
         };
     }
 }

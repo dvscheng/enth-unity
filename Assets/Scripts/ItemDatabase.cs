@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -57,13 +57,13 @@ public class ItemDatabase : ScriptableObject {
         int numDropRateTypes = Enum.GetValues(typeof(ItemDropRate)).Length;
         dropTable = new int[numMobs, numDropRateTypes];
         dropTable[(int)MobID.slime, (int)ItemDropRate.common] = (int)ItemID.mushroom;
-        dropTable[(int)MobID.slime, (int)ItemDropRate.uncommon] = (int)ItemID.rock;
-        dropTable[(int)MobID.slime, (int)ItemDropRate.rare] = (int)ItemID.leatherMail;
-        dropTable[(int)MobID.slime, (int)ItemDropRate.legendary] = (int)ItemID.leatherMail;
+        dropTable[(int)MobID.slime, (int)ItemDropRate.uncommon] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.slime, (int)ItemDropRate.rare] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.slime, (int)ItemDropRate.legendary] = (int)ItemID.rock;
         dropTable[(int)MobID.blueSlime, (int)ItemDropRate.common] = (int)ItemID.rock;
-        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.uncommon] = (int)ItemID.leatherMail;
-        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.rare] = (int)ItemID.mushroom;
-        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.legendary] = (int)ItemID.leatherMail;
+        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.uncommon] = (int)ItemID.rock;
+        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.rare] = (int)ItemID.rock;
+        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.legendary] = (int)ItemID.mushroom;
 
 
         int numItems = Enum.GetValues(typeof(ItemID)).Length;

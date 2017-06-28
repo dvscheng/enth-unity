@@ -5,7 +5,7 @@ using UnityEngine;
 public class NPCs : MonoBehaviour
 {
     public int ID;
-    public bool isQuestGiver;
+    public bool IsQuestGiver { get; set; }
     public bool givenQuest = false;
     public CollectQuest Quest { get; set; }
     public CircleCollider2D interactRange;
@@ -14,6 +14,8 @@ public class NPCs : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        IsQuestGiver = true;
+        Quest = null;
     }
 
     /* Keeps the rigidbody awake to check for player interaction. */
@@ -39,7 +41,7 @@ public class NPCs : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player"))
         {
-            if(UIManager.Instance.dialogueUIOn)
+            if (UIManager.Instance.dialogueUIOn)
             {
                 UIManager.Instance.dialogue.ResetDialogue();
             }

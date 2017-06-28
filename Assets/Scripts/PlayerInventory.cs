@@ -164,6 +164,39 @@ public class PlayerInventory : MonoBehaviour {
         return false;
     }
 
+    public bool RemoveFromInventory(int itemID, int itemType, int amount)
+    {
+        switch (itemType)
+        {
+            case (int)ItemDatabase.ItemType.error:
+                Debug.Log("Item of type error passed into AddToInventory.");
+                break;
+
+            case (int)ItemDatabase.ItemType.equip:
+                return RemoveItemFromSpecificGrid(equipmentGridLocation, equipmentGrid, ref equipNextAvailableSlot, ref numEquips, itemID, amount);
+
+            case (int)ItemDatabase.ItemType.use:
+                return RemoveItemFromSpecificGrid(useGridLocation, useGrid, ref useNextAvailableSlot, ref numUse, itemID, amount);
+
+            case (int)ItemDatabase.ItemType.mats:
+                return RemoveItemFromSpecificGrid(materialsGridLocation, materialsGrid, ref matsNextAvailableSlot, ref numMats, itemID, amount);
+        }
+        return false;
+    }
+
+    //TODO check ref on numOfType in unity editor
+    private bool RemoveItemFromSpecificGrid(Dictionary<int, int[]> gridLocation, ItemSlot[,] grid, ref int[] nextAvailableSlot, ref int numOfType, int itemID, int amount)
+    {
+        if (gridLocation.ContainsKey(itemID))
+        {
+            int[] itemSlotLocation = gridLocation[itemID];
+            grid[itemSlotLocation[0], itemSlotLocation[1]].RemoveFromExistingItem(amount);
+            FindNextAvailableSlot(grid, ref nextAvailableSlot);
+            return true;
+        }
+        return false;
+    }
+
     /* Returns true IFF there is an available slot in the given grid. */
     private bool FindNextAvailableSlot(ItemSlot[,] inventoryGrid, ref int[] whichAvailableSlot)
     {

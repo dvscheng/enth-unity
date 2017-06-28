@@ -80,6 +80,12 @@ public class QuestTrackerUI : MonoBehaviour {
         questInfo.secondImage.GetComponent<Image>().sprite = itemDB.itemDictionary[questInfo.secondItemID];
         questInfo.firstText.GetComponent<Text>().text = questInfo.firstCompleted + "/" + questInfo.firstAmount;
         questInfo.secondText.GetComponent<Text>().text = questInfo.secondCompleted + "/" + questInfo.secondAmount;
+
+        /* If the quest is finished... */
+        if (questInfo.firstCompleted >= questInfo.firstAmount && questInfo.secondCompleted >= questInfo.secondAmount)
+        {
+            questInfo.IsComplete = true;
+        }
     }
 
 	public void AddQuest(CollectQuest quest)
@@ -101,6 +107,7 @@ public class QuestTrackerUI : MonoBehaviour {
     public void RemoveQuest(CollectQuest quest)
     {
         quests.RemoveAt(quest.posInTracker);
+        Destroy(quest.gameObject);
 
         /* Update the posInTracker variables for each quest. */
         for (int i = 0; i < quests.Count; i++)
@@ -132,7 +139,6 @@ public class QuestTrackerUI : MonoBehaviour {
             /* If the quest is finished... */
             if (questInfo.firstCompleted >= questInfo.firstAmount && questInfo.secondCompleted >= questInfo.secondAmount)
             {
-                print("iscomplete = true");
                 questInfo.IsComplete = true;
             }
         }

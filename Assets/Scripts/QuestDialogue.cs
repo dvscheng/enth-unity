@@ -29,7 +29,7 @@ public class QuestDialogue : MonoBehaviour {
     public void Initialize(NPCs NPC)
     {
         /* Generate the items, get their sprites, and get the amounts-to-collect. */
-        int numItems = Enum.GetValues(typeof(ItemDatabase.ItemID)).Length;
+        int numItems = Enum.GetValues(typeof(ItemDatabase.ItemID)).Length-1;
         firstItemID = UnityEngine.Random.Range(1, numItems);
         secondItemID = UnityEngine.Random.Range(1, numItems);
         while (firstItemID == secondItemID)
