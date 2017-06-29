@@ -51,7 +51,7 @@ public class Inputs : MonoBehaviour {
         left_key = Input.GetKey(KeyCode.A);
         up_key = Input.GetKey(KeyCode.W);
         down_key = Input.GetKey(KeyCode.S);
-        dash_key_down = Input.GetKeyDown(KeyCode.V);
+        dash_key_down = Input.GetMouseButtonDown(1);
         attack_key_down = Input.GetKeyDown(KeyCode.C);
         inventory_key_down = Input.GetKeyDown(KeyCode.B);
         equipment_key_down = Input.GetKeyDown(KeyCode.E);
