@@ -224,7 +224,7 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-
+        PlayerController.Instance.GainEXP(30);
         Destroy(gameObject);
     }
 

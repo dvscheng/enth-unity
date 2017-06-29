@@ -22,7 +22,6 @@ public class HealthBar : MonoBehaviour {
         healthBar.value = CalculateHealth();
 	}
 
-	// Update is called once per frame
 	public void UpdateHealth()
     {
         SetHealth();

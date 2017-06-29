@@ -55,6 +55,8 @@ public class PlayerController : MonoBehaviour
 
     /* Game stats. */
     public int Level { get; set; }
+    public int Exp { get; set; }
+    public int MaxExp { get; set; }
     public int Hp { get; set; }
     public int MaxHp { get; set; }
     public int BaseAtt { get; set; }
@@ -82,6 +84,8 @@ public class PlayerController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         #endregion
         Level = 1;
+        Exp = 0;
+        MaxExp = 100;
         Hp = 100;
         MaxHp = 100;
         BaseAtt = 10;
@@ -465,6 +469,29 @@ public class PlayerController : MonoBehaviour
         damageText.GetComponent<Text>().color = Color.red;
         damageText.GetComponent<DamageText>().Initialize(gameObject, damage);
         // Die()
+    }
+
+    public void GainEXP(int amount)
+    {
+        Exp += amount;
+        /* Level up. */
+        if (Exp >= MaxExp)
+        {
+            /* Handle levels and exp bar. */
+            Level++;
+            Exp = Exp % MaxExp;
+            MaxExp = (int)(MaxExp * 1.5f);
+
+            /* Boost stats. */
+            BaseAtt++;
+            Defence++;
+            MaxHp += 10;
+
+            /* Replenish health. */
+            Hp = MaxHp;
+            UIManager.Instance.healthBar.UpdateHealth();
+        }
+        UIManager.Instance.expBar.UpdateExp();
     }
 
     /* 

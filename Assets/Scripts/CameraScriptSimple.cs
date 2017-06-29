@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraScript : MonoBehaviour {
+public class CameraScriptSimple : MonoBehaviour {
 
     #region Singleton Behaviour
-    private static CameraScript _instance;   // singleton behaviour
-    public static CameraScript Instance
+    private static CameraScriptSimple _instance;   // singleton behaviour
+    public static CameraScriptSimple Instance
     {
         get { return _instance; }
     }
     #endregion
 
     public GameObject player;
-    public float pixelToUnits = 32f;
     public float smoothTime = 10f;
-    public Vector3 velocity = Vector3.zero;
+    public Vector2 velocity = Vector2.zero;
 
     /* Camera not moving outside of map. */
     private Camera cameraComponent;
@@ -26,7 +25,8 @@ public class CameraScript : MonoBehaviour {
     private Vector3 maxBounds;
 
     // Use this for initialization
-    void Awake() {
+    void Awake()
+    {
         #region Singleton Behaviour
         /* Singleton behaviour. */
         if (_instance == null)
@@ -48,20 +48,14 @@ public class CameraScript : MonoBehaviour {
         maxBounds = mapBounds.bounds.max;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (player != null)
         {
-            float player_x = player.transform.position.x;
-            float player_y = player.transform.position.y;
-
-            float rounded_x = RoundToNearestPixel(player_x);
-            float rounded_y = RoundToNearestPixel(player_y);
-
-            Vector3 new_pos = new Vector3(rounded_x, rounded_y, -10.0f); // this is 2d, so my camera is that far from the screen.
-
-            gameObject.transform.position = Vector3.SmoothDamp(gameObject.transform.position, new_pos, ref velocity, smoothTime * Time.deltaTime);
-            //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new_pos, 10f * Time.deltaTime);
+            Vector3 newPos = new Vector3(0, 0, -10);
+            newPos = newPos + player.transform.position;
+            //gameObject.transform.position = Vector2.SmoothDamp(gameObject.transform.position, player.transform.position, ref velocity, smoothTime, 11f, Time.deltaTime);
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPos, 10f * Time.deltaTime);
         }
         if (mapBounds == null)
         {
@@ -80,13 +74,5 @@ public class CameraScript : MonoBehaviour {
         float clampedX = Mathf.Clamp(transform.position.x, minBounds.x + camHalfWidth, maxBounds.x - camHalfWidth);
         float clampedY = Mathf.Clamp(transform.position.y, minBounds.y + camHalfHeight, maxBounds.y - camHalfHeight);
         transform.position = new Vector3(clampedX, clampedY, transform.position.z);
-    }
-
-    public float RoundToNearestPixel(float unityUnits)
-    {
-        float valueInPixels = unityUnits * pixelToUnits;
-        valueInPixels = Mathf.Round(valueInPixels);
-        float roundedUnityUnits = valueInPixels * (1 / pixelToUnits);
-        return roundedUnityUnits;
     }
 }
