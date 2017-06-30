@@ -33,6 +33,11 @@ public class UIManager : MonoBehaviour {
     public GameObject questTracker;
     bool questTrackerOn;
 
+    public GameObject insigniaObj;
+    [HideInInspector]
+    public InsigniaPanel insigniaPanel;
+    bool insigniaOn;
+
     public GameObject healthBarObj;
     [HideInInspector]
     public HealthBar healthBar;
@@ -43,6 +48,8 @@ public class UIManager : MonoBehaviour {
     public EXPBar expBar;
     bool expBarOn;
 
+    
+
 
     public int playerHp;
     public Text hpText;
@@ -51,7 +58,8 @@ public class UIManager : MonoBehaviour {
     {
         inventory,
         questTracker,
-        dialogue
+        dialogue,
+        insigniaPanel
     }
 
     // Use this for initialization
@@ -72,12 +80,14 @@ public class UIManager : MonoBehaviour {
         inventoryUIOn = false;
         questTrackerOn = false;
         dialogueUIOn = false;
+        insigniaOn = false;
         healthBarOn = true;
         expBarOn = true;
 
         playerController = player.GetComponent<PlayerController>();
         playerInventory = inventory.GetComponent<PlayerInventory>();
         dialogue = dialogueObj.GetComponent<DialogueManager>();
+        insigniaPanel = insigniaObj.GetComponent<InsigniaPanel>();
         healthBar = healthBarObj.GetComponent<HealthBar>();
         expBar = expBarObj.GetComponent<EXPBar>();
         playerHp = playerController.Hp;
@@ -89,6 +99,8 @@ public class UIManager : MonoBehaviour {
         questTracker.SetActive(false);
         dialogueObj.SetActive(true);
         dialogueObj.SetActive(false);
+        insigniaObj.SetActive(true);
+        insigniaObj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -102,6 +114,10 @@ public class UIManager : MonoBehaviour {
         if (Inputs.Instance.quest_tracker_collapse_down)
         {
             TurnOnOffUI(UI_Type.questTracker, !questTrackerOn);
+        }
+        if (Inputs.Instance.insignia_key_down)
+        {
+            TurnOnOffUI(UI_Type.insigniaPanel, !insigniaOn);
         }
 
         /* Show HP. (move elsewhere later) */
@@ -128,6 +144,19 @@ public class UIManager : MonoBehaviour {
                 dialogueUIOn = OnOff;
                 dialogueObj.SetActive(OnOff);
                 break;
+
+            case (UI_Type.insigniaPanel):
+                insigniaOn = OnOff;
+                insigniaObj.SetActive(OnOff);
+                break;
         }
+    }
+
+    /* Called by PlayerController on level up. */
+    public void OnLevelUp()
+    {
+        healthBar.UpdateHealth();
+        insigniaPanel.Refresh();
+        expBar.UpdateExp();
     }
 }

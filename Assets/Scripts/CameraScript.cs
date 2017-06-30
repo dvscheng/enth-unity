@@ -61,7 +61,7 @@ public class CameraScript : MonoBehaviour {
             Vector3 new_pos = new Vector3(rounded_x, rounded_y, -10.0f); // this is 2d, so my camera is that far from the screen.
 
             gameObject.transform.position = Vector3.SmoothDamp(gameObject.transform.position, new_pos, ref velocity, smoothTime * Time.deltaTime);
-            //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new_pos, 10f * Time.deltaTime);
+            //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, new_pos, smoothTime * Time.deltaTime);
         }
         if (mapBounds == null)
         {

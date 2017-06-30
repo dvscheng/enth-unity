@@ -53,18 +53,22 @@ public class PlayerController : MonoBehaviour
     public const int STATE_ATTACKING = 2;
     public const int STATE_DASHING = 3;
 
-    /* Game stats. */
+    #region Stats
     public int Level { get; set; }
     public int Exp { get; set; }
     public int MaxExp { get; set; }
     public int Hp { get; set; }
     public int MaxHp { get; set; }
+    public int BonusHp { get; set; }
     public int BaseAtt { get; set; }
-    public int AdditionalAtt { get; set; }
+    public int BonusAtt { get; set; }
     public int Defence { get; set; }
+    public int BonusDef { get; set; }
     public float DefencePen { get; set; }
+    public float BonusDefPen { get; set; }
     public float Mastery { get; set; }
-
+    public float BonusMastery { get; set; }
+    #endregion
 
     /* Applies the damage and resets to 0 if hp goes below 0. */
 
@@ -83,17 +87,23 @@ public class PlayerController : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         #endregion
+
+        #region Stats initialization
         Level = 1;
         Exp = 0;
         MaxExp = 100;
         Hp = 100;
         MaxHp = 100;
+        BonusHp = 0;
         BaseAtt = 10;
-        AdditionalAtt = 0;
+        BonusAtt = 0;
         Defence = 0;
+        BonusDef = 0;
         DefencePen = 0.01f;
+        BonusDefPen = 0;
         Mastery = 0.50f;
-
+        BonusMastery = 0;
+        #endregion
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -489,9 +499,8 @@ public class PlayerController : MonoBehaviour
 
             /* Replenish health. */
             Hp = MaxHp;
-            UIManager.Instance.healthBar.UpdateHealth();
         }
-        UIManager.Instance.expBar.UpdateExp();
+        UIManager.Instance.OnLevelUp();
     }
 
     /* 

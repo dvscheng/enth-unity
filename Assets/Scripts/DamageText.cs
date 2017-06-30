@@ -19,7 +19,7 @@ public class DamageText : MonoBehaviour {
     const float MAX_WIDTH = 0.5f;
     const float MIN_HEIGHT = 0.5f;
     const float MAX_HEIGHT = 1f;
-    const float DISAPPEAR_DELAY = 1.5f;
+    const float DISAPPEAR_DELAY = 0.5f;
     readonly Vector3 DISAPPEAR_DIST = new Vector3(0f, 0.1f, 0f);
     bool timeToDisappear = false;
 

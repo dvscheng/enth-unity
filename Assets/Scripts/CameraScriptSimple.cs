@@ -13,8 +13,8 @@ public class CameraScriptSimple : MonoBehaviour {
     #endregion
 
     public GameObject player;
-    public float smoothTime = 10f;
-    public Vector2 velocity = Vector2.zero;
+    public float smoothTime = 6f;
+    public Vector3 velocity = Vector3.zero;
 
     /* Camera not moving outside of map. */
     private Camera cameraComponent;
@@ -54,8 +54,8 @@ public class CameraScriptSimple : MonoBehaviour {
         {
             Vector3 newPos = new Vector3(0, 0, -10);
             newPos = newPos + player.transform.position;
-            //gameObject.transform.position = Vector2.SmoothDamp(gameObject.transform.position, player.transform.position, ref velocity, smoothTime, 11f, Time.deltaTime);
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPos, 10f * Time.deltaTime);
+            gameObject.transform.position = Vector3.SmoothDamp(gameObject.transform.position, newPos, ref velocity, smoothTime * Time.deltaTime, 11f, Time.deltaTime);
+            //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPos, smoothTime * Time.deltaTime);
         }
         if (mapBounds == null)
         {

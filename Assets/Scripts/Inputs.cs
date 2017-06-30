@@ -18,7 +18,7 @@ public class Inputs : MonoBehaviour {
     public bool dash_key_down;
     public bool attack_key_down;
     public bool inventory_key_down;
-    public bool equipment_key_down;
+    public bool insignia_key_down;
     public bool interaction_key_down;
     public bool quest_tracker_collapse_down;
 
@@ -54,7 +54,7 @@ public class Inputs : MonoBehaviour {
         dash_key_down = Input.GetMouseButtonDown(1);
         attack_key_down = Input.GetKeyDown(KeyCode.C);
         inventory_key_down = Input.GetKeyDown(KeyCode.B);
-        equipment_key_down = Input.GetKeyDown(KeyCode.E);
+        insignia_key_down = Input.GetKeyDown(KeyCode.E);
         interaction_key_down = Input.GetKeyDown(KeyCode.Space);
         quest_tracker_collapse_down = Input.GetKeyDown(KeyCode.L);
     }
