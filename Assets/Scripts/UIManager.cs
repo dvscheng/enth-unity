@@ -153,7 +153,7 @@ public class UIManager : MonoBehaviour {
     }
 
     /* Called by PlayerController on level up. */
-    public void OnLevelUp()
+    public void RefreshStats()
     {
         healthBar.UpdateHealth();
         insigniaPanel.Refresh();

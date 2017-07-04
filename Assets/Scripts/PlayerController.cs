@@ -17,10 +17,13 @@ public class PlayerController : MonoBehaviour
     #region Unity Inspectors | References
     Rigidbody2D rb;
     Animator anim;
+
     public GameObject UIManagerObj;
     UIManager UIMan;
+
     public GameObject inventoryGameObj;
     [HideInInspector] public PlayerInventory inventory; // could use singleton, but playercontroller is there on start and there will always be just one so it's fine
+
     public GameObject inputManagerObj;
     [HideInInspector] public Inputs inputs;
     #endregion
@@ -41,17 +44,21 @@ public class PlayerController : MonoBehaviour
     public bool attackGraceDone = true;
     public int attacksInputted = 0;
     public int attacksDone = 0;
-    public const int MAX_ATTACKS = 3;
-    public IEnumerator gracePeriod;
-    public IEnumerator attackAnim;
+    const int MAX_ATTACKS = 3;
+    const float HITBOX_LIFE_TIME = 0.1f;
+    const float ATTACK_GRACE_PERIOD = 0.3f;
+    const float ATTACK_ANIM_PERIOD = 0.2f;
+    const float ATTACK_DELAY_BTWN_ATTACKS = 0.2f;
+    IEnumerator gracePeriod;
+    IEnumerator attackAnim;
 
-    public bool dashed = false;
+    bool dashed = false;
 
     public int currentState;
-    public const int STATE_IDLE = 0;
-    public const int STATE_MOVING = 1;
-    public const int STATE_ATTACKING = 2;
-    public const int STATE_DASHING = 3;
+    const int STATE_IDLE = 0;
+    const int STATE_MOVING = 1;
+    const int STATE_ATTACKING = 2;
+    const int STATE_DASHING = 3;
 
     #region Stats
     public int Level { get; set; }
@@ -95,7 +102,7 @@ public class PlayerController : MonoBehaviour
         Hp = 100;
         MaxHp = 100;
         BonusHp = 0;
-        BaseAtt = 10;
+        BaseAtt = 5;
         BonusAtt = 0;
         Defence = 0;
         BonusDef = 0;
@@ -321,7 +328,7 @@ public class PlayerController : MonoBehaviour
                     /* Stop the coroutine (set bool to false for safety), then restart the coroutine. */
                     StopCoroutine(gracePeriod);
                     attackGraceDone = false;
-                    gracePeriod = AttackGraceTimer(0.7f);
+                    gracePeriod = AttackGraceTimer(ATTACK_GRACE_PERIOD);
                     StartCoroutine(gracePeriod);
 
                     /*
@@ -338,8 +345,11 @@ public class PlayerController : MonoBehaviour
                     currentState = STATE_IDLE;
 
                     /* Set the timer for the delay between attacks so you can't attack endlessly. */
-                    attackDelayDone = false;
-                    StartCoroutine(AttackDelayTimer(0.5f));
+                    if (attacksInputted == MAX_ATTACKS)
+                    {
+                        attackDelayDone = false;
+                        StartCoroutine(AttackDelayTimer(ATTACK_DELAY_BTWN_ATTACKS));
+                    }
 
                     /* Reset the attacks done and inputted variables. */
                     attacksDone = 0;
@@ -417,25 +427,40 @@ public class PlayerController : MonoBehaviour
                     anim.SetFloat("LastFacingY", lastFacing.y);
 
                     /* Start the coroutines for the hitbox spawntime and animation time. */
-                    StartCoroutine(HitBoxTimer(0.1f, hitBox));
+                    StartCoroutine(HitBoxTimer(HITBOX_LIFE_TIME, hitBox));
 
                     attackAnimDone = false;
-                    attackAnim = AttackAnimationDone(0.4f);
+                    attackAnim = AttackAnimationDone(ATTACK_ANIM_PERIOD);
                     StartCoroutine(attackAnim);
                     attackGraceDone = false;
-                    gracePeriod = AttackGraceTimer(0.7f);
+                    gracePeriod = AttackGraceTimer(ATTACK_GRACE_PERIOD);
                     StartCoroutine(gracePeriod);
 
                     attacksDone++;
 
                     /* Play the appropriate sound. */
-                    int sound = Random.Range(1, 3);
+                    //int sound = Random.Range(1, 3);
+                    int sound;
+                    switch (attacksDone)
+                    {
+                        default:
+                        case (1):
+                            sound = 1;
+                            break;
+
+                        case (2):
+                            sound = 2;
+                            break;
+
+                        case (3):
+                            sound = 3;
+                            break;
+                    }
                     AudioManager.Instance.Play("Swing " + sound);
                 }
                 break;
 
             case (STATE_DASHING):
-                // if () check when dashing is done, return to idle state;
                 if (dashed)
                 {
                     currentState = STATE_IDLE;
@@ -500,7 +525,7 @@ public class PlayerController : MonoBehaviour
             /* Replenish health. */
             Hp = MaxHp;
         }
-        UIManager.Instance.OnLevelUp();
+        UIManager.Instance.RefreshStats();
     }
 
     /* 

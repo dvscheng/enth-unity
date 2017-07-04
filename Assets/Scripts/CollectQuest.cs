@@ -46,6 +46,11 @@ public class CollectQuest : MonoBehaviour {
         PlayerInventory.Instance.RemoveFromInventory(secondItemID, (int)ItemDatabase.ItemType.mats, secondAmount);
         QuestTrackerUI.Instance.RemoveQuest(this);
         _NPC.IsQuestGiver = false;
+
         // give player rewards
+        PlayerController.Instance.BonusAtt += 2;
+        PlayerController.Instance.BonusDef += 2;
+        PlayerController.Instance.BonusDefPen += 1.99f;
+        UIManager.Instance.RefreshStats();
     }
 }

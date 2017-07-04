@@ -88,7 +88,11 @@ public class Enemy : MonoBehaviour
 
                 /* Apply damage. */
                 // playerObj.GetComponent<Rigidbody2D>().AddForce(force);
-                playerObj.GetComponent<PlayerController>().TakeDamage(BaseAtt);
+                // add defence too
+                PlayerController playerController = playerObj.GetComponent<PlayerController>();
+                int playerDefence = playerController.Defence + playerController.BonusDef;
+                int damageDealt = (BaseAtt * BaseAtt) / (BaseAtt + (playerDefence - (int)(playerDefence * DefencePen)));
+                playerController.TakeDamage(damageDealt);
 
                 movement = Vector2.zero;
                 stateReady = false;

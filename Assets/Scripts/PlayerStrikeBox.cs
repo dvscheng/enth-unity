@@ -30,7 +30,8 @@ public class PlayerStrikeBox : MonoBehaviour {
                 /* Formula: dmg = att * att / (att + (def - (def * defPen)))
                  *   from https://gamedev.stackexchange.com/questions/129319/rpg-formula-attack-and-defense 
                  */
-                int damageDealt = (playerController.BaseAtt * playerController.BaseAtt) / (playerController.BaseAtt + (enemyScript.Defence - (int)(enemyScript.Defence * playerController.DefencePen)));
+                int playerTotalAtt = playerController.BaseAtt + playerController.BonusAtt;
+                int damageDealt = (playerTotalAtt * playerTotalAtt) / (playerTotalAtt + (enemyScript.Defence - (int)(enemyScript.Defence * playerController.DefencePen)));
                 damageDealt = Random.Range((int) (damageDealt * playerController.Mastery), damageDealt);
                 enemyScript.TakeDamage(damageDealt);
 

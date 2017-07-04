@@ -38,7 +38,7 @@ public class InsigniaPanel : MonoBehaviour {
     private readonly int TOTAL_POS = 3;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         #region Text children initialization
         healthName = health.transform.GetChild(NAME_POS).GetComponent<Text>();
         healthBase = health.transform.GetChild(BASE_POS).GetComponent<Text>();
