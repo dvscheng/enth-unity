@@ -35,6 +35,9 @@ public class PlayerStrikeBox : MonoBehaviour {
                 damageDealt = Random.Range((int) (damageDealt * playerController.Mastery), damageDealt);
                 enemyScript.TakeDamage(damageDealt);
 
+                Vector2 direction = gameObject.transform.position - player.transform.position;
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(direction * PlayerController.Instance.moveDistance * 10f);
+
                 /* Play the appropriate enemy damage sound. */
                 switch (enemyScript.mobID)
                 {

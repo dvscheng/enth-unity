@@ -360,6 +360,20 @@ public class PlayerController : MonoBehaviour
                 else if (attackAnimDone && attacksDone != attacksInputted)
                 {
 
+                    /* Moves player forward on hit. */
+                    inputX = Input.GetAxisRaw("HorizontalAD");
+                    inputY = Input.GetAxisRaw("VerticalWS");
+                    if (inputX != 0 || inputY != 0)
+                    {
+                        if (inputX != 0 && inputY != 0)
+                        {
+                            inputX = inputX / 1.5f;
+                            inputY = inputY / 1.5f;
+                        }
+                        Vector2 force = new Vector2(inputX, inputY);
+                        rb.AddForce(force * moveDistance * 4f);
+                    }
+
                     /* Gets the mouse's world position, not screen position. */
                     Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 

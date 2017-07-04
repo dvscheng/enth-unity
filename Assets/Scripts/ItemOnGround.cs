@@ -1,11 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
+/* Pip from stackexchange: https://gamedev.stackexchange.com/questions/96878/how-to-animate-objects-with-bobbing-up-and-down-motion-in-unity
+ *  for the idea of using Math.Sin as a natural fluctuation.
+ */
 public class ItemOnGround : MonoBehaviour {
     // Custom inspector GUI, look at ItemOnGroundEditor.cs
     public BoxCollider2D itemBc;
     public Item item;
+
+    float originalY;
+    float fluctuation = 0.25f;
+
+    void Start()
+    {
+        originalY = gameObject.transform.position.y;
+    }
+
+    void Update()
+    {
+        /* Apply 'bobbing' affect on the item. */
+        float newY = originalY + ((float)Math.Sin(Time.time) * 0.02f);
+        gameObject.transform.position = new Vector3(gameObject.transform.position.x, newY, gameObject.transform.position.z);
+    }
 
     public void SetItem(Item item)
     {
