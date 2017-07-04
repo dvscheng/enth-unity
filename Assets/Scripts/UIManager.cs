@@ -105,6 +105,7 @@ public class UIManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        // OnMouseEnter changes cursor would be better, but find a way to change it for ALL UI elements at the same time
         /* Cursor; if the cursor is over a UI element, reset the cursor. Else set the custom one. */
         if (EventSystem.current.IsPointerOverGameObject())
             Cursor.SetCursor(null, Vector2.zero, cursorMode);
