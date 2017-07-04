@@ -5,8 +5,9 @@ using UnityEngine;
  *  for the idea of using Math.Sin as a natural fluctuation.
  */
 public class ItemOnGround : MonoBehaviour {
-    // Custom inspector GUI, look at ItemOnGroundEditor.cs
-    public BoxCollider2D itemBc;
+    /* Custom inspector GUI, look at ItemOnGroundEditor.cs */
+    public BoxCollider2D itemBcTrigger;
+    public BoxCollider2D itemBcHitbox;
     public Item item;
 
     float originalY;
@@ -15,6 +16,10 @@ public class ItemOnGround : MonoBehaviour {
     void Start()
     {
         originalY = gameObject.transform.position.y;
+
+        // assumes player only has one boxcollider
+        Physics2D.IgnoreCollision(itemBcHitbox, PlayerController.Instance.GetComponent<BoxCollider2D>());
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Item"), LayerMask.NameToLayer("Enemy"));
     }
 
     void Update()

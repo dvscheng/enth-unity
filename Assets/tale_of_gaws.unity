@@ -5570,7 +5570,6 @@ MonoBehaviour:
   attackGraceDone: 1
   attacksInputted: 0
   attacksDone: 0
-  dashed: 0
   currentState: 0
 --- !u!61 &443277857
 BoxCollider2D:
