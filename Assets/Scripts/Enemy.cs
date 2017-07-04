@@ -16,12 +16,14 @@ public class Enemy : MonoBehaviour
     public BoxCollider2D playerCollider;
     public GameObject healthBarObj;
 
-    private const int STATE_IDLE = 0;
-    private const int STATE_WANDERING = 1;
-    private const int STATE_CHASING = 2;
-    private int currentState = 0;
+    const int STATE_IDLE = 0;
+    const int STATE_WANDERING = 1;
+    const int STATE_CHASING = 2;
+    int currentState = 0;
     bool stateReady = true;
     bool wandering = false;
+    const float KNOCKBACK_STUN_TIME = 0.8f;
+    bool knockbacked = false;
     Vector2 movement = Vector2.zero;
     [Range(25f, 100f)]
     public float moveSpeed = 40f;
@@ -170,20 +172,27 @@ public class Enemy : MonoBehaviour
                 // chase
                 if (stateReady)
                 {
-                    float playerX = player.transform.position.x;
-                    float playerY = player.transform.position.y;
-                    float enemyX = gameObject.transform.position.x;
-                    float enemyY = gameObject.transform.position.y;
+                    if (knockbacked)
+                    {
+                        movement = Vector2.zero;
+                    }
+                    else
+                    {
+                        float playerX = player.transform.position.x;
+                        float playerY = player.transform.position.y;
+                        float enemyX = gameObject.transform.position.x;
+                        float enemyY = gameObject.transform.position.y;
 
-                    float forceX = (enemyX - playerX > 0) ? -1 : 1;
-                    float forceY = (enemyY - playerY > 0) ? -1 : 1;
-                    /* Removes jittering. */
-                    if (System.Math.Abs(playerX - enemyX) < .01f)
-                        forceX = 0;
-                    if (System.Math.Abs(playerY - enemyY) < .01f)
-                        forceY = 0;
+                        float forceX = (enemyX - playerX > 0) ? -1 : 1;
+                        float forceY = (enemyY - playerY > 0) ? -1 : 1;
+                        /* Removes jittering. */
+                        if (System.Math.Abs(playerX - enemyX) < .01f)
+                            forceX = 0;
+                        if (System.Math.Abs(playerY - enemyY) < .01f)
+                            forceY = 0;
 
-                    movement = new Vector2(forceX, forceY);
+                        movement = new Vector2(forceX, forceY);
+                    }
                 }
                 break;
         }
@@ -213,6 +222,9 @@ public class Enemy : MonoBehaviour
         GameObject damageText = Instantiate(Resources.Load<GameObject>("Prefabs/DamageText"), UIObj.transform);
         damageText.GetComponent<DamageText>().Initialize(gameObject, damage);
         // consider keeping a list of dmg texts and shove some out if it gets too big
+
+        knockbacked = true;
+        StartCoroutine(KnockBackDelay(KNOCKBACK_STUN_TIME));
     }
 
     /* Roll for drops, then destroy the Game Object. */
@@ -292,5 +304,11 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         stateReady = true;
+    }
+
+    private IEnumerator KnockBackDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        knockbacked = false;
     }
 }

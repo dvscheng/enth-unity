@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +13,7 @@ public class UIManager : MonoBehaviour {
 
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
+    Vector2 hotSpot;
 
     public GameObject player;
     [HideInInspector]
@@ -48,8 +47,6 @@ public class UIManager : MonoBehaviour {
     public EXPBar expBar;
     bool expBarOn;
 
-    
-
 
     public int playerHp;
     public Text hpText;
@@ -76,6 +73,8 @@ public class UIManager : MonoBehaviour {
         }
         DontDestroyOnLoad(gameObject);
         #endregion
+
+        hotSpot = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);   // middle of the crossheir
 
         inventoryUIOn = false;
         questTrackerOn = false;
@@ -106,6 +105,12 @@ public class UIManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        /* Cursor; if the cursor is over a UI element, reset the cursor. Else set the custom one. */
+        if (EventSystem.current.IsPointerOverGameObject())
+            Cursor.SetCursor(null, Vector2.zero, cursorMode);
+        else
+            Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+
         /* Check for UI toggles. */
         if (Inputs.Instance.inventory_key_down)
         {
