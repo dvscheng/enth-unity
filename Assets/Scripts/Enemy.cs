@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     GameObject UIObj;
     GameObject player;
+    Spawner spawner;
     ItemDatabase itemDB;
     Rigidbody2D rb;
     EnemyHealthBar healthBar;
@@ -40,6 +41,11 @@ public class Enemy : MonoBehaviour
     public int Defence { get; set; }
     public int DefencePen { get; set; }
     public float Mastery { get; set; }
+
+    public void SetSpawner(Spawner spawner)
+    {
+        this.spawner = spawner;
+    }
 
     private void Start()
     {
@@ -241,6 +247,9 @@ public class Enemy : MonoBehaviour
             }
         }
         PlayerController.Instance.GainEXP(30);
+
+        spawner.OnEnemyDeath();
+
         Destroy(gameObject);
     }
 
@@ -253,8 +262,33 @@ public class Enemy : MonoBehaviour
         int diceRoll = Random.Range(0, 100);
         if (diceRoll < chances)
         {
-            // drop an item
-            Vector2 dropPos = new Vector2(gameObject.transform.position.x + Random.Range(-1, 1), gameObject.transform.position.y + Random.Range(-1, 1));
+            Vector2 enemyPos = gameObject.transform.position;
+            Vector2 dropPos = new Vector2(enemyPos.x, enemyPos.y);
+            /*
+            int retries = 3;
+            while (retries > 0)
+            {
+                dropPos = new Vector2(enemyPos.x + Random.Range(-0.8f, 0.8f), enemyPos.y + Random.Range(-0.8f, 0.8f));
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(dropPos, 1f);
+                if (colliders.Length > 1)
+                {
+                    foreach (Collider2D collider in colliders)
+                    {
+                        string cTag = collider.gameObject.tag;
+                        if (cTag == "Player" || cTag == "Wall")
+                        {
+                            print("bad area");
+                            retries -= 1;
+                            break;
+                        }
+                    }
+                    retries = -1;       // found a good place to drop
+                }
+            }
+            if (retries == 0)       // if after 3 retries and there is no good position, just drop at enemy pos
+                dropPos = new Vector2(enemyPos.x, enemyPos.y);
+            */
+
             GameObject itemOnGround = (GameObject)Instantiate(Resources.Load("Prefabs/ItemOnGround"), dropPos, Quaternion.identity) as GameObject;
 
             int dropRate;

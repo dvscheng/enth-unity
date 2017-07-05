@@ -41,11 +41,11 @@ public class PlayerStrikeBox : MonoBehaviour {
                 /* Play the appropriate enemy damage sound. */
                 switch (enemyScript.mobID)
                 {
-                    case (int)ItemDatabase.MobID.slime:
+                    case (int)ItemDatabase.MobID.Slime:
                         AudioManager.Instance.Play("Slime Hit");
                         break;
 
-                    case (int)ItemDatabase.MobID.blueSlime:
+                    case (int)ItemDatabase.MobID.BlueSlime:
                         AudioManager.Instance.Play("Slime Hit");
                         break;
 

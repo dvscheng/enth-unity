@@ -24,8 +24,8 @@ public class ItemDatabase : ScriptableObject {
 
     public enum MobID
     {
-        slime,
-        blueSlime,
+        Slime,
+        BlueSlime,
     }
 
     // common, uncommon, rare, and legendary.
@@ -48,6 +48,8 @@ public class ItemDatabase : ScriptableObject {
     public int[] itemIDToType;
 
     public readonly Dictionary<int, Sprite> itemDictionary = new Dictionary<int, Sprite>();
+
+    public readonly Dictionary<int, Sprite> mobToSprite = new Dictionary<int, Sprite>();
     
     public void OnEnable()
     {
@@ -56,14 +58,14 @@ public class ItemDatabase : ScriptableObject {
         int numMobs = Enum.GetValues(typeof(MobID)).Length;
         int numDropRateTypes = Enum.GetValues(typeof(ItemDropRate)).Length;
         dropTable = new int[numMobs, numDropRateTypes];
-        dropTable[(int)MobID.slime, (int)ItemDropRate.common] = (int)ItemID.mushroom;
-        dropTable[(int)MobID.slime, (int)ItemDropRate.uncommon] = (int)ItemID.mushroom;
-        dropTable[(int)MobID.slime, (int)ItemDropRate.rare] = (int)ItemID.mushroom;
-        dropTable[(int)MobID.slime, (int)ItemDropRate.legendary] = (int)ItemID.rock;
-        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.common] = (int)ItemID.rock;
-        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.uncommon] = (int)ItemID.rock;
-        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.rare] = (int)ItemID.rock;
-        dropTable[(int)MobID.blueSlime, (int)ItemDropRate.legendary] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)ItemDropRate.common] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)ItemDropRate.uncommon] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)ItemDropRate.rare] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)ItemDropRate.legendary] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)ItemDropRate.common] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)ItemDropRate.uncommon] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)ItemDropRate.rare] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)ItemDropRate.legendary] = (int)ItemID.mushroom;
 
 
         int numItems = Enum.GetValues(typeof(ItemID)).Length;
@@ -73,11 +75,12 @@ public class ItemDatabase : ScriptableObject {
         itemIDToType[(int)ItemID.rock] = (int)ItemType.mats;
         itemIDToType[(int)ItemID.leatherMail] = (int)ItemType.equip;
 
-
-
         itemDictionary[(int)ItemID.none] = Resources.Load<Sprite>("Sprites/spr_item_slot");
         itemDictionary[(int)ItemID.mushroom] = Resources.Load<Sprite>("Sprites/spr_mushroom");
         itemDictionary[(int)ItemID.rock] = Resources.Load<Sprite>("Sprites/spr_rock");
         itemDictionary[(int)ItemID.leatherMail] = Resources.Load<Sprite>("Sprites/spr_leather_mail");
+
+        mobToSprite[(int)MobID.Slime] = Resources.Load<Sprite>("Sprites/spr_slime_strip2");
+        mobToSprite[(int)MobID.BlueSlime] = Resources.Load<Sprite>("Sprites/spr_slime_blue_strip");
     }
 }

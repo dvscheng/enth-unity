@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator gracePeriod;
     IEnumerator attackAnim;
 
-    bool dashed = false;
+    bool dashed = false;    // for states
 
     public int currentState;
     const int STATE_IDLE = 0;
@@ -92,8 +92,8 @@ public class PlayerController : MonoBehaviour
             Destroy(this);
             return;
         }
-        DontDestroyOnLoad(gameObject);
         #endregion
+        DontDestroyOnLoad(gameObject);
 
         #region Stats initialization
         Level = 1;
