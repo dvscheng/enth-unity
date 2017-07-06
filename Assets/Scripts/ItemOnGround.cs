@@ -20,6 +20,9 @@ public class ItemOnGround : MonoBehaviour {
         // assumes player only has one boxcollider
         Physics2D.IgnoreCollision(itemBcHitbox, PlayerController.Instance.GetComponent<BoxCollider2D>());
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Item"), LayerMask.NameToLayer("Enemy"));
+
+        item = new MatItems(1, 1);
+        SetItem(new MatItems(item.ItemID, item.Amount));
     }
 
     void Update()

@@ -3409,6 +3409,54 @@ SpriteRenderer:
   m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!1001 &254288820
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -3.506358
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.7915275
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101546274980164, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 212765283268696470, guid: b7a295f07d8a2c143832faedf0c36381,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 611e1673f9120b743954134a0940269a,
+        type: 3}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b7a295f07d8a2c143832faedf0c36381, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &262373372
 GameObject:
   m_ObjectHideFlags: 0

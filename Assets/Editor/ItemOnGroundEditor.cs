@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -25,7 +23,8 @@ public class ItemOnGroundEditor : Editor {
 
         // TODO: bug, doesnt initialize the item until you play the game THEN edit the id.
         /* Show/set the item ID, changes the item as you set it. */
-        myItemOnGround.item.ItemID = EditorGUILayout.IntField("Item ID", myItemOnGround.item.ItemID);
+        myItemOnGround.item.ItemID = EditorGUILayout.IntSlider("Item ID", myItemOnGround.item.ItemID, 1, 3);
+        //myItemOnGround.item.ItemID = EditorGUILayout.IntField("Item ID", myItemOnGround.item.ItemID);
         int itemType = itemDB.itemIDToType[myItemOnGround.item.ItemID];
         switch (itemType) {
             case ((int)ItemDatabase.ItemType.equip):
