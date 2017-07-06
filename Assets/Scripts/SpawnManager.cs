@@ -14,6 +14,7 @@ public class SpawnManager : MonoBehaviour {
     Dictionary<string, Spawner[]> sceneToSpawners = new Dictionary<string, Spawner[]>();
     Dictionary<string, bool> sceneHasLoaded = new Dictionary<string, bool>();
 
+
     void Awake()
     {
         #region Singleton Behaviour
