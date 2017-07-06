@@ -32,6 +32,9 @@ public class Enemy : MonoBehaviour
 
     public int mobID; // UNITY
 
+    public delegate void EnemyDelegate(int mobID);
+    public static event EnemyDelegate onDeath; 
+
     /* Game stats. */
     public int Level { get; set; }
     public int Hp { get; set; }
@@ -249,6 +252,9 @@ public class Enemy : MonoBehaviour
         PlayerController.Instance.GainEXP(30);
 
         spawner.OnEnemyDeath();
+
+        if (onDeath != null)
+            onDeath(mobID);     // delegate callback
 
         Destroy(gameObject);
     }

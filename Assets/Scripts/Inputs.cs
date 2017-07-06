@@ -21,6 +21,7 @@ public class Inputs : MonoBehaviour {
     public bool insignia_key_down;
     public bool interaction_key_down;
     public bool quest_tracker_collapse_down;
+    public bool journal_key_down;
 
     void Awake()
     {
@@ -57,5 +58,6 @@ public class Inputs : MonoBehaviour {
         insignia_key_down = Input.GetKeyDown(KeyCode.E);
         interaction_key_down = Input.GetKeyDown(KeyCode.Space);
         quest_tracker_collapse_down = Input.GetKeyDown(KeyCode.L);
+        journal_key_down = Input.GetKeyDown(KeyCode.J);
     }
 }

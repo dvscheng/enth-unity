@@ -37,6 +37,11 @@ public class UIManager : MonoBehaviour {
     public InsigniaPanel insigniaPanel;
     bool insigniaOn;
 
+    public GameObject journalObj;
+    [HideInInspector]
+    public Journal journal;
+    bool journalOn;
+
     public GameObject healthBarObj;
     [HideInInspector]
     public HealthBar healthBar;
@@ -56,7 +61,8 @@ public class UIManager : MonoBehaviour {
         inventory,
         questTracker,
         dialogue,
-        insigniaPanel
+        insigniaPanel,
+        journal
     }
 
     // Use this for initialization
@@ -80,6 +86,7 @@ public class UIManager : MonoBehaviour {
         questTrackerOn = false;
         dialogueUIOn = false;
         insigniaOn = false;
+        journalOn = false;
         healthBarOn = true;
         expBarOn = true;
 
@@ -88,6 +95,7 @@ public class UIManager : MonoBehaviour {
         dialogue = dialogueObj.GetComponent<DialogueManager>();
         insigniaPanel = insigniaObj.GetComponent<InsigniaPanel>();
         healthBar = healthBarObj.GetComponent<HealthBar>();
+        journal = journalObj.GetComponent<Journal>();
         expBar = expBarObj.GetComponent<EXPBar>();
         playerHp = playerController.Hp;
 
@@ -100,6 +108,8 @@ public class UIManager : MonoBehaviour {
         dialogueObj.SetActive(false);
         insigniaObj.SetActive(true);
         insigniaObj.SetActive(false);
+        journalObj.SetActive(true);
+        journalObj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -124,6 +134,10 @@ public class UIManager : MonoBehaviour {
         if (Inputs.Instance.insignia_key_down)
         {
             TurnOnOffUI(UI_Type.insigniaPanel, !insigniaOn);
+        }
+        if (Inputs.Instance.journal_key_down)
+        {
+            TurnOnOffUI(UI_Type.journal, !journalOn);
         }
 
         /* Show HP. (move elsewhere later) */
@@ -154,6 +168,11 @@ public class UIManager : MonoBehaviour {
             case (UI_Type.insigniaPanel):
                 insigniaOn = OnOff;
                 insigniaObj.SetActive(OnOff);
+                break;
+
+            case (UI_Type.journal):
+                journalOn = OnOff;
+                journalObj.SetActive(OnOff);
                 break;
         }
     }
