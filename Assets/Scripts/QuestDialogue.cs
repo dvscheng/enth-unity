@@ -40,8 +40,8 @@ public class QuestDialogue : MonoBehaviour {
         secondAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
 
         /* Sets the sprites and amounts for the two items. */
-        firstImage.GetComponent<Image>().sprite = itemDB.itemDictionary[firstItemID];
-        secondImage.GetComponent<Image>().sprite = itemDB.itemDictionary[secondItemID];
+        firstImage.GetComponent<Image>().sprite = itemDB.itemToSprite[firstItemID];
+        secondImage.GetComponent<Image>().sprite = itemDB.itemToSprite[secondItemID];
         firstText.GetComponent<Text>().text = "" + firstAmount;
         secondText.GetComponent<Text>().text = "" + secondAmount;
 

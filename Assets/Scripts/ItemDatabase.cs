@@ -1,17 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-//[CreateAssetMenu]
 public class ItemDatabase : ScriptableObject {
 
     public enum ItemType
     {
+        error,
         equip,
         use,
-        mats,
-        error
+        mats
     }
 
     public enum ItemID
@@ -28,7 +26,6 @@ public class ItemDatabase : ScriptableObject {
         BlueSlime,
     }
 
-    // common, uncommon, rare, and legendary.
     public enum ItemDropRate
     {
         common,
@@ -37,6 +34,7 @@ public class ItemDatabase : ScriptableObject {
         legendary,
     }
 
+    /* Percentages, used in Enemy.RollForDrops() */
     public int COMMON = 40;
     public int UNCOMMON = 40;
     public int RARE = 10;
@@ -45,11 +43,14 @@ public class ItemDatabase : ScriptableObject {
     // TODO: check scriptable object and stuff
     public int[,] dropTable;    // TODO: change to readonly somehow
 
+    /* ItemID to its type. */
     public int[] itemIDToType;
 
-    public readonly Dictionary<int, Sprite> itemDictionary = new Dictionary<int, Sprite>();
+    /* ItemID to its Sprite. */
+    public Sprite[] itemToSprite;
 
-    public readonly Dictionary<int, Sprite> mobToSprite = new Dictionary<int, Sprite>();
+    /* MobID to its Sprite. */
+    public Sprite[] mobToSprite;
     
     public void OnEnable()
     {
@@ -67,19 +68,23 @@ public class ItemDatabase : ScriptableObject {
         dropTable[(int)MobID.BlueSlime, (int)ItemDropRate.rare] = (int)ItemID.rock;
         dropTable[(int)MobID.BlueSlime, (int)ItemDropRate.legendary] = (int)ItemID.mushroom;
 
-
+        /* Map ItemIDs to item types. */
         int numItems = Enum.GetValues(typeof(ItemID)).Length;
         itemIDToType = new int[numItems];
-        // one for none?
+        itemIDToType[(int)ItemID.none] = (int)ItemType.mats;
         itemIDToType[(int)ItemID.mushroom] = (int)ItemType.mats;
         itemIDToType[(int)ItemID.rock] = (int)ItemType.mats;
         itemIDToType[(int)ItemID.leatherMail] = (int)ItemType.equip;
 
-        itemDictionary[(int)ItemID.none] = Resources.Load<Sprite>("Sprites/spr_item_slot");
-        itemDictionary[(int)ItemID.mushroom] = Resources.Load<Sprite>("Sprites/spr_mushroom");
-        itemDictionary[(int)ItemID.rock] = Resources.Load<Sprite>("Sprites/spr_rock");
-        itemDictionary[(int)ItemID.leatherMail] = Resources.Load<Sprite>("Sprites/spr_leather_mail");
+        /* Map ItemIDs to Sprites. */
+        itemToSprite = new Sprite[numItems];
+        itemToSprite[(int)ItemID.none] = Resources.Load<Sprite>("Sprites/spr_item_slot");
+        itemToSprite[(int)ItemID.mushroom] = Resources.Load<Sprite>("Sprites/spr_mushroom");
+        itemToSprite[(int)ItemID.rock] = Resources.Load<Sprite>("Sprites/spr_rock");
+        itemToSprite[(int)ItemID.leatherMail] = Resources.Load<Sprite>("Sprites/spr_leather_mail");
 
+        /* Map MobIDs to Sprites. */
+        mobToSprite = new Sprite[numMobs];
         mobToSprite[(int)MobID.Slime] = Resources.Load<Sprite>("Sprites/spr_slime_strip2");
         mobToSprite[(int)MobID.BlueSlime] = Resources.Load<Sprite>("Sprites/spr_slime_blue_strip");
     }

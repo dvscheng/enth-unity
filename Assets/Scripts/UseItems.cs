@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ public class UseItems : Item {
         type = (int)ItemDatabase.ItemType.use;
         itemID = ItemID;
         this.amount = amount;
-        sprite = itemDB.itemDictionary[itemID];
+        sprite = itemDB.itemToSprite[itemID];
 
     }
 

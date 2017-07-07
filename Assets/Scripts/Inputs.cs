@@ -32,7 +32,9 @@ public class Inputs : MonoBehaviour {
             _instance = this;
         } else if (_instance != this)
         {
+            Destroy(gameObject);
             Destroy(this);
+            return;
         }
         #endregion
         DontDestroyOnLoad(gameObject);

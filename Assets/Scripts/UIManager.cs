@@ -74,6 +74,7 @@ public class UIManager : MonoBehaviour {
             _instance = this;
         } else if (_instance != this)
         {
+            Destroy(gameObject);
             Destroy(this);
             return;
         }

@@ -76,8 +76,8 @@ public class QuestTrackerUI : MonoBehaviour {
         if (inventSecondAmount != -1)
             questInfo.secondCompleted += inventSecondAmount;
 
-        questInfo.firstImage.GetComponent<Image>().sprite = itemDB.itemDictionary[questInfo.firstItemID];
-        questInfo.secondImage.GetComponent<Image>().sprite = itemDB.itemDictionary[questInfo.secondItemID];
+        questInfo.firstImage.GetComponent<Image>().sprite = itemDB.itemToSprite[questInfo.firstItemID];
+        questInfo.secondImage.GetComponent<Image>().sprite = itemDB.itemToSprite[questInfo.secondItemID];
         questInfo.firstText.GetComponent<Text>().text = questInfo.firstCompleted + "/" + questInfo.firstAmount;
         questInfo.secondText.GetComponent<Text>().text = questInfo.secondCompleted + "/" + questInfo.secondAmount;
 

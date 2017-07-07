@@ -9274,6 +9274,67 @@ SpriteRenderer:
   m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!1001 &680368506
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 7.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436654430223552, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1792419845120376, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+      propertyPath: m_Name
+      value: Scene Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 114147221343988628, guid: 3193bcf3f12eb3c479288481549accb6,
+        type: 2}
+      propertyPath: sceneName
+      value: Player House
+      objectReference: {fileID: 0}
+    - target: {fileID: 114147221343988628, guid: 3193bcf3f12eb3c479288481549accb6,
+        type: 2}
+      propertyPath: startingPositionInNextScene.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114147221343988628, guid: 3193bcf3f12eb3c479288481549accb6,
+        type: 2}
+      propertyPath: startingPositionInNextScene.y
+      value: -4.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &686640265
 GameObject:
   m_ObjectHideFlags: 0
@@ -19529,6 +19590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1390905049}
   - component: {fileID: 1390905048}
+  - component: {fileID: 1390905050}
   m_Layer: 0
   m_Name: Map Bounds
   m_TagString: Untagged
@@ -19574,6 +19636,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1390905050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1390905047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a24c27d128f7536439bf0ea7b2c80dbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1391385774
 GameObject:
   m_ObjectHideFlags: 0
@@ -28282,7 +28355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 88}
+  m_AnchoredPosition: {x: 0, y: 115}
   m_SizeDelta: {x: 1046, y: 163}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2097614153

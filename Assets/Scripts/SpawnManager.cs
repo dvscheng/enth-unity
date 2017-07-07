@@ -14,6 +14,7 @@ public class SpawnManager : MonoBehaviour {
     Dictionary<string, Spawner[]> sceneToSpawners = new Dictionary<string, Spawner[]>();
     Dictionary<string, bool> sceneHasLoaded = new Dictionary<string, bool>();
 
+    Spawner[] spawnersInFocus;
 
     void Awake()
     {
@@ -25,6 +26,7 @@ public class SpawnManager : MonoBehaviour {
         }
         else if (_instance != this)
         {
+            Destroy(gameObject);
             Destroy(this);
             return;
         }
@@ -32,7 +34,15 @@ public class SpawnManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         /* Load all the scene names coupled with false. */
+        sceneToSpawners.Add("Desert Town", new Spawner[0]);
+        sceneToSpawners.Add("Player House", new Spawner[0]);
         sceneHasLoaded.Add("Desert Town", false);
+        sceneHasLoaded.Add("Player House", false);
+    }
+
+    void Update()
+    {
+        
     }
 
     /* When enabled, subscribe to SceneManager's sceneLoaded. */
@@ -57,6 +67,9 @@ public class SpawnManager : MonoBehaviour {
             FindAndSaveSpawners(scene.name);
         }
 
+        /* Used in Update() to countdown. */
+        spawnersInFocus = sceneToSpawners[scene.name];
+
         /* Check if the monster needs to respawn. */
         Spawner[] spawners = sceneToSpawners[scene.name];
         foreach (Spawner s in spawners)
@@ -66,15 +79,18 @@ public class SpawnManager : MonoBehaviour {
     /* Finds and adds all the spawners to the sceneToSpawner dictionary for later reference. */
     void FindAndSaveSpawners(string sceneName)
     {
-        GameObject spawners = GameObject.Find("Mobs").transform.GetChild(0).gameObject;
-        Transform spawnersTrans = spawners.transform;
-
-        int numSpawners = spawnersTrans.childCount;
-        Spawner[] listOfSpawners = new Spawner[numSpawners];
-        for (int i = 0; i < numSpawners; i++)
+        GameObject spawners = GameObject.Find("Mobs");
+        if (spawners != null)
         {
-            listOfSpawners[i] = spawnersTrans.GetChild(i).GetComponent<Spawner>();
+            Transform spawnersTrans = spawners.transform.GetChild(0);
+
+            int numSpawners = spawnersTrans.childCount;
+            Spawner[] listOfSpawners = new Spawner[numSpawners];
+            for (int i = 0; i < numSpawners; i++)
+            {
+                listOfSpawners[i] = spawnersTrans.GetChild(i).GetComponent<Spawner>();
+            }
+            sceneToSpawners[sceneName] = listOfSpawners;
         }
-        sceneToSpawners.Add(sceneName, listOfSpawners);
     }
 }
