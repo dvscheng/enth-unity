@@ -49,12 +49,12 @@ public class ItemDatabaseSO : ScriptableObject {
         itemList = new List<ItemObject>();
 
         /* Create the item objects. */
-        CreateAndAddItem((int)ItemID.mushroom, (int)ItemType.mats, ItemID.mushroom.ToString(),
-                            Resources.Load<Sprite>("Sprites/spr_mushroom"), false, "");
-        CreateAndAddItem((int)ItemID.rock, (int)ItemType.mats, ItemID.rock.ToString(),
-                            Resources.Load<Sprite>("Sprites/spr_rock"), false, "");
-        CreateAndAddItem((int)ItemID.leatherMail, (int)ItemType.equip, ItemID.leatherMail.ToString(),
-                            Resources.Load<Sprite>("Sprites/spr_leather_mail"), false, "");
+        CreateAndAddMat((int)ItemID.mushroom, (int)ItemType.mats, ItemID.mushroom.ToString(),
+                            Resources.Load<Sprite>("Sprites/spr_mushroom"), true, false, "", 255);
+        CreateAndAddMat((int)ItemID.rock, (int)ItemType.mats, ItemID.rock.ToString(),
+                            Resources.Load<Sprite>("Sprites/spr_rock"), true, false, "", 255);
+        CreateAndAddEquip((int)ItemID.leatherMail, (int)ItemType.equip, ItemID.leatherMail.ToString(),
+                            Resources.Load<Sprite>("Sprites/spr_leather_mail"), false, false, "", 0, 5, 10, 0f, 0f, 0);
 
         /* The drop table is a 2d array that is resized on runtime depending on how many mobs and drop types there are.
                 Accessed via dropTable[mobID, itemDropRateType]. */
@@ -72,17 +72,54 @@ public class ItemDatabaseSO : ScriptableObject {
     }
 
     /* Creates the item and adds it to the itemList. */
-    void CreateAndAddItem(int id, int type, string itemName, Sprite sprite, bool isQuestItem, string flavorText)
+    void CreateAndAddEquip(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+                                int attack, int defence, int hp, float defencePen, float mastery, int favorRequirement)
     {
-        ItemObject item = CreateInstance<ItemObject>();
-        item.id = id;
-        item.type = type;
-        item.itemName = itemName;
-        item.sprite = sprite;
-        item.isQuestItem = isQuestItem;
-        item.flavorText = flavorText;
+        ItemObject item = CreateInstance<EquipItems>();
+
+        InitializeBaseItem(item, id, type, itemName, sprite, isStackable, isQuestItem, flavorText);
+        (item as EquipItems).attack = attack;
+        (item as EquipItems).defence = defence;
+        (item as EquipItems).hp = hp;
+        (item as EquipItems).defencePen = defencePen;
+        (item as EquipItems).mastery = mastery;
+        (item as EquipItems).favorRequirement = favorRequirement;
 
         itemList.Add(item);
+    }
+
+    void CreateAndAddUse(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+                                int restoreHp, int maxAmount)
+    {
+        ItemObject item = CreateInstance<UseItems>();
+
+        InitializeBaseItem(item, id, type, itemName, sprite, isStackable, isQuestItem, flavorText);
+        (item as UseItems).restoreHp = restoreHp;
+        (item as UseItems).maxAmount = maxAmount;
+
+        itemList.Add(item);
+    }
+
+    void CreateAndAddMat(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+                                int maxAmount)
+    {
+        ItemObject item = CreateInstance<MatItems>();
+
+        InitializeBaseItem(item, id, type, itemName, sprite, isStackable, isQuestItem, flavorText);
+        (item as MatItems).maxAmount = maxAmount;
+
+        itemList.Add(item);
+    }
+
+    void InitializeBaseItem(ItemObject item, int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText)
+    {
+        item.id = id;
+        item.type = type;
+        item.isStackable = isStackable;
+        item.isQuestItem = isQuestItem;
+        item.itemName = itemName;
+        item.sprite = sprite;
+        item.flavorText = flavorText;
     }
 
     //        /* Map MobIDs to Sprites. */
