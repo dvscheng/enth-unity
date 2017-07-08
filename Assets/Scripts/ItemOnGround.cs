@@ -16,7 +16,17 @@ public class ItemOnGround : MonoBehaviour {
     float originalY;
     float fluctuation = 0.25f;
 
-    void Start()
+    /* ALWAYS call Initialize when creating the GameObject; fetches the appropriate item
+     *  from itemDatabase, sets the amount, and applies the sprite to the GameObject.*/
+    public void Initialize(int id, int amount)
+    {
+        item = itemDatabase.itemList[id];
+        this.amount = amount;
+        gameObject.GetComponent<SpriteRenderer>().sprite = item.sprite;
+    }
+
+    /* Initialize SO's and remove physics with the player and enemies. */
+    void Awake()
     {
         itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
@@ -27,32 +37,24 @@ public class ItemOnGround : MonoBehaviour {
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Item"), LayerMask.NameToLayer("Enemy"));
     }
 
+    /* Apply 'bobbing' affect on the item. */
     void Update()
     {
-        /* Apply 'bobbing' affect on the item. */
         float newY = originalY + ((float)Math.Sin(Time.time) * 0.02f);
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, newY, gameObject.transform.position.z);
     }
 
-    public void Initialize(int id, int amount)
-    {
-        item = itemDatabase.itemList[id];
-        this.amount = amount;
-        gameObject.GetComponent<SpriteRenderer>().sprite = item.sprite;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    /* Attempts to add the item to the player inventory upon player collision. */
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name.Equals("Player"))
         {
-            /* If item is successfully added to inventory, then destroy its GameObject. */
             PlayerInventory pInventory = collision.gameObject.GetComponent<PlayerController>().inventory;   // could just reference pinventory singleton
-            
-            if (pInventory.AddToInventory(item))
+            /* If item is successfully added to inventory, then destroy its GameObject. */
+            if (pInventory.AddToInventory(item, amount))
             {
                 Destroy(gameObject);
             }
         }
     }
-
 }

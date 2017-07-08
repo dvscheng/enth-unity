@@ -7,13 +7,13 @@ public class MatItems : Item {
     public MatItems(int ItemID, int amount)
     {
         /* Get a reference to the ItemDatabase. */
-        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
         /* Set the params. */
-        type = (int)ItemDatabase.ItemType.mats;
+        type = (int)ItemDatabaseSO.ItemType.mats;
         itemID = ItemID;
         this.amount = amount;
-        sprite = itemDB.itemToSprite[itemID];
+        sprite = itemDatabase.itemList[itemID].sprite;
     }
     
     override

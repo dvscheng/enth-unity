@@ -44,8 +44,18 @@ public class ItemDatabaseSO : ScriptableObject {
     public List<ItemObject> itemList;
     //public List<MobObject> mobList;
 
-    private void OnEnable()
+    void OnEnable()
     {
+        itemList = new List<ItemObject>();
+
+        /* Create the item objects. */
+        CreateAndAddItem((int)ItemID.mushroom, (int)ItemType.mats, ItemID.mushroom.ToString(),
+                            Resources.Load<Sprite>("Sprites/spr_mushroom"), false, "");
+        CreateAndAddItem((int)ItemID.rock, (int)ItemType.mats, ItemID.rock.ToString(),
+                            Resources.Load<Sprite>("Sprites/spr_rock"), false, "");
+        CreateAndAddItem((int)ItemID.leatherMail, (int)ItemType.equip, ItemID.leatherMail.ToString(),
+                            Resources.Load<Sprite>("Sprites/spr_leather_mail"), false, "");
+
         /* The drop table is a 2d array that is resized on runtime depending on how many mobs and drop types there are.
                 Accessed via dropTable[mobID, itemDropRateType]. */
         int numMobs = Enum.GetValues(typeof(MobID)).Length;
@@ -59,6 +69,20 @@ public class ItemDatabaseSO : ScriptableObject {
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.uncommon] = (int)ItemID.rock;
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.rare] = (int)ItemID.rock;
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.legendary] = (int)ItemID.mushroom;
+    }
+
+    /* Creates the item and adds it to the itemList. */
+    void CreateAndAddItem(int id, int type, string itemName, Sprite sprite, bool isQuestItem, string flavorText)
+    {
+        ItemObject item = CreateInstance<ItemObject>();
+        item.id = id;
+        item.type = type;
+        item.itemName = itemName;
+        item.sprite = sprite;
+        item.isQuestItem = isQuestItem;
+        item.flavorText = flavorText;
+
+        itemList.Add(item);
     }
 
     //        /* Map MobIDs to Sprites. */

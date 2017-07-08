@@ -7,13 +7,13 @@ public class UseItems : Item {
     public UseItems(int ItemID, int amount)
     {
         /* Get a reference to the ItemDatabase. */
-        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
         /* Set the params. */
-        type = (int)ItemDatabase.ItemType.use;
+        type = (int)ItemDatabaseSO.ItemType.use;
         itemID = ItemID;
         this.amount = amount;
-        sprite = itemDB.itemToSprite[itemID];
+        sprite = itemDatabase.itemList[itemID].sprite;
 
     }
 

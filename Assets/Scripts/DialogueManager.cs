@@ -52,8 +52,7 @@ public class DialogueManager : MonoBehaviour {
                         if (questDialogueObj == null)
                         {
                             questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
-                            QuestDialogue questDialogue = questDialogueObj.GetComponent<QuestDialogue>();
-                            questDialogue.Initialize(_NPC);
+                            questDialogueObj.GetComponent<QuestDialogue>().Initialize(_NPC);
                         }
                     }
                 }

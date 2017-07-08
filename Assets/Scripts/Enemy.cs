@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     GameObject UIObj;
     GameObject player;
     Spawner spawner;
-    ItemDatabaseSO itemDB;
+    ItemDatabaseSO itemDatabase;
     Rigidbody2D rb;
     EnemyHealthBar healthBar;
     public BoxCollider2D boxCollider; // UNITY
@@ -50,9 +50,9 @@ public class Enemy : MonoBehaviour
         this.spawner = spawner;
     }
 
-    private void Start()
+    void Start()
     {
-        // TODO eventually have a database for monster data given mob id 
+        // TODO regions
         Level = 1;
         Hp = 10;
         MaxHp = 10;
@@ -64,13 +64,14 @@ public class Enemy : MonoBehaviour
 
         UIObj = GameObject.Find("UI");
         player = GameObject.Find("Player");
-        itemDB = ScriptableObject.CreateInstance<ItemDatabaseSO>();
+        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
         rb = GetComponent<Rigidbody2D>();
         healthBar = healthBarObj.GetComponent<EnemyHealthBar>();
         playerCollider = player.GetComponent<BoxCollider2D>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /* Chases the player when inside the sight range, attacks player when inside attack range. */
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name.Equals("Player"))
         {
@@ -108,19 +109,19 @@ public class Enemy : MonoBehaviour
                 movement = Vector2.zero;
                 stateReady = false;
                 StartCoroutine(Wait(1));
-
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    /* Enemy stops chasing the player when exiting the sight range. */
+    void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.name.Equals("Player"))
         {
             playerOnTriggerEnterCount--;
             if (playerOnTriggerEnterCount < 0)
             {
-                Debug.Log("onTriggerEnterCount is < 0");
+                Debug.Log("onTriggerEnterCount is < 0; it should never be < 0.");
             } else if (playerOnTriggerEnterCount == 0)
             {
                 movement = Vector2.zero;
@@ -131,7 +132,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Update() {
+    /* FSM. */
+    void Update() {
         switch (currentState)
         {
             case (STATE_IDLE):
@@ -212,7 +214,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    /* Move the enemy. */
+    void FixedUpdate()
     {
         //rb.MovePosition((Vector2)transform.position + movement * Time.deltaTime);
         rb.velocity = movement * moveSpeed * Time.deltaTime;
@@ -237,15 +240,15 @@ public class Enemy : MonoBehaviour
     }
 
     /* Roll for drops, then destroy the Game Object. */
-    private void OnDeath()
+    void OnDeath()
     {
-        if (!RollForDrops(itemDB.LEGENDARY_DROPRATE))
+        if (!RollForDrops(itemDatabase.LEGENDARY_DROPRATE))
         {
-            if (!RollForDrops(itemDB.RARE_DROPRATE))
+            if (!RollForDrops(itemDatabase.RARE_DROPRATE))
             {
-                if (!RollForDrops(itemDB.UNCOMMON_DROPRATE))
+                if (!RollForDrops(itemDatabase.UNCOMMON_DROPRATE))
                 {
-                    RollForDrops(itemDB.COMMON_DROPRATE);
+                    RollForDrops(itemDatabase.COMMON_DROPRATE);
                 }
             }
         }
@@ -295,16 +298,15 @@ public class Enemy : MonoBehaviour
                 dropPos = new Vector2(enemyPos.x, enemyPos.y);
             */
 
-            GameObject itemOnGround = (GameObject)Instantiate(Resources.Load("Prefabs/ItemOnGround"), dropPos, Quaternion.identity) as GameObject;
 
             int dropRate;
-            if (chances == itemDB.LEGENDARY_DROPRATE)
+            if (chances == itemDatabase.LEGENDARY_DROPRATE)
             {
                 dropRate = (int)ItemDatabaseSO.DropRateType.legendary;
-            } else if (chances == itemDB.RARE_DROPRATE)
+            } else if (chances == itemDatabase.RARE_DROPRATE)
             {
                 dropRate = (int)ItemDatabaseSO.DropRateType.rare;
-            } else if (chances == itemDB.UNCOMMON_DROPRATE)
+            } else if (chances == itemDatabase.UNCOMMON_DROPRATE)
             {
                 dropRate = (int)ItemDatabaseSO.DropRateType.uncommon;
             } else // common
@@ -312,26 +314,11 @@ public class Enemy : MonoBehaviour
                 dropRate = (int)ItemDatabaseSO.DropRateType.common;
             }
 
-            int itemID = itemDB.dropTable[mobID, dropRate];
-            int itemType = itemDB.itemList[itemID].type;
-            switch (itemType)
-            {
-                case ((int)ItemDatabase.ItemType.equip):
-                    itemOnGround.GetComponent<ItemOnGround>().Initialize(itemID, 5);
-                    break;
+            int itemID = itemDatabase.dropTable[mobID, dropRate];
 
-                case ((int)ItemDatabase.ItemType.use):
-                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new UseItems(itemID, 5));
-                    break;
+            GameObject itemOnGround = (GameObject)Instantiate(Resources.Load("Prefabs/ItemOnGround"), dropPos, Quaternion.identity) as GameObject;
+            itemOnGround.GetComponent<ItemOnGround>().Initialize(itemID, 5);
 
-                case ((int)ItemDatabase.ItemType.mats):
-                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new MatItems(itemID, 5));
-                    break;
-
-                case ((int)ItemDatabase.ItemType.error):
-                    Debug.Log("Item created in enemy RollForDrops has type error.");
-                    break;
-            }
             //print(chances + "% roll success; Item: " + ((ItemDatabase.ItemID)itemID).ToString() + " of ID: " + itemID);
 
             return true;

@@ -46,7 +46,7 @@ public class Spawner : MonoBehaviour {
     {
         if (readyToSpawn && enemyDead && enemy == null)
         {
-            string name = ((ItemDatabase.MobID)enemyID).ToString();
+            string name = ((ItemDatabaseSO.MobID)enemyID).ToString();
             enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Mobs/" + name),
                                     location, Quaternion.identity, gameObject.transform.parent.parent);     //parent.parent is the Mobs GameObject
             enemy.GetComponent<Enemy>().SetSpawner(this);

@@ -8,12 +8,12 @@ public class ItemOnGroundEditor : Editor {
 	public void OnInspectorGUI ()
     {
         ItemOnGround myItemOnGround = (ItemOnGround)target;
-        ItemDatabase itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        ItemDatabaseSO itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
         /* Set the default item: 1 mushroom. */
         if (myItemOnGround.item == null)
         {
-            myItemOnGround.item = new MatItems(1, 1);
+            myItemOnGround.item = CreateInstance<ItemObject>();
         }
 
         myItemOnGround.itemBcTrigger = EditorGUILayout.ObjectField("Pickup Trigger Range", myItemOnGround.itemBcTrigger, typeof(BoxCollider2D), false) as BoxCollider2D;
@@ -23,25 +23,13 @@ public class ItemOnGroundEditor : Editor {
 
         // TODO: bug, doesnt initialize the item until you play the game THEN edit the id.
         /* Show/set the item ID, changes the item as you set it. */
-        myItemOnGround.item.ItemID = EditorGUILayout.IntSlider("Item ID", myItemOnGround.item.ItemID, 1, 3);
+        myItemOnGround.item.id = EditorGUILayout.IntSlider("Item ID", myItemOnGround.item.id, 0, 2);
         //myItemOnGround.item.ItemID = EditorGUILayout.IntField("Item ID", myItemOnGround.item.ItemID);
-        int itemType = itemDB.itemIDToType[myItemOnGround.item.ItemID];
-        switch (itemType) {
-            case ((int)ItemDatabase.ItemType.equip):
-                myItemOnGround.GetComponent<ItemOnGround>().SetItem(new EquipItems(myItemOnGround.item.ItemID, myItemOnGround.item.Amount));
-                break;
-
-            case ((int)ItemDatabase.ItemType.use):
-                myItemOnGround.GetComponent<ItemOnGround>().SetItem(new UseItems(myItemOnGround.item.ItemID, myItemOnGround.item.Amount));
-                break;
-
-            case ((int)ItemDatabase.ItemType.mats):
-                myItemOnGround.GetComponent<ItemOnGround>().SetItem(new MatItems(myItemOnGround.item.ItemID, myItemOnGround.item.Amount));
-                break;
-        }
+        int itemType = itemDatabase.itemList[myItemOnGround.item.id].type;
+        myItemOnGround.GetComponent<ItemOnGround>().Initialize(myItemOnGround.item.id, myItemOnGround.amount);
 
         /* Show/get the item amount. */
-        myItemOnGround.item.Amount = EditorGUILayout.IntField("Amount", myItemOnGround.item.Amount);
+        myItemOnGround.amount = EditorGUILayout.IntField("Amount", myItemOnGround.amount);
 
 
         /* Show the item type. */

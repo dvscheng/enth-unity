@@ -7,12 +7,8 @@ using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    private Item item;
-    public Item Item
-    {
-        get { return item; }
-        set { item = value; }
-    }
+    public ItemObject item;
+    public int amount;
     
     GameObject grid;
     GameObject itemImage;
@@ -44,20 +40,14 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         playerInventory = PlayerInventory.Instance;
     }
 
-    public void OnPointerClick(PointerEventData data)
-    {
-        if (item != null)
-        {
-            // snap onto the mouse
-        }
-    }
 
     /* Acts as the constructor: displays an item on the slot. */
-    public void SetItemAndSprite(Item newItem)
+    public void SetItemAndSprite(ItemObject newItem, int amount)
     {
         /* Set this item slot's corresponding item to newItem, AND indicate that we have an item in the slot. */
-        this.item = newItem;
+        item = newItem;
         hasItem = true;
+        this.amount = amount;
 
         /* Set the "Item Image" GameObject's image to the new item's sprite;
             Change the color to white so that the item image isn't transparent.*/
@@ -74,19 +64,16 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     /* Adds an AMOUNT to an already existing item. */
     public void AddToExistingItem(int amount)
     {
-        item.Amount += amount;
+        this.amount += amount;
         UpdateTextCount();
     }
 
     public void RemoveFromExistingItem(int amount)
     {
-        item.Amount -= amount;
+        this.amount -= amount;
         UpdateTextCount();
-        if (item.Amount <= 0)
-        {
-            print("Removed item");
+        if (this.amount <= 0)
             RemoveItem();
-        }
     }
 
     // TODO
@@ -108,9 +95,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     private void UpdateTextCount()
     {
         Text textCount = count.GetComponent<Text>();
-        if (item.Amount > 1)
+        if (amount > 1)
         {
-            textCount.text = "" + item.Amount;
+            textCount.text = "" + amount;
             textCount.enabled = true;
         } else
         {
@@ -134,5 +121,13 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public void OnPointerExit(PointerEventData eventData)
     {
         //throw new NotImplementedException();
+    }
+
+    public void OnPointerClick(PointerEventData data)
+    {
+        if (item != null)
+        {
+            // snap onto the mouse
+        }
     }
 }

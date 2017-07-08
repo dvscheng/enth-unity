@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,7 @@ public class PlayerInventory : MonoBehaviour {
     public int numUse = 0;
     public int numMats = 0;
 
-    ItemDatabase itemDB;
+    ItemDatabaseSO itemDatabase;
 
     /* Should be referenced in Unity editor. */
     [HideInInspector] public Sprite[] buttonOnSprites;
@@ -59,7 +60,7 @@ public class PlayerInventory : MonoBehaviour {
         #endregion
         //DontDestroyOnLoad(gameObject); already in UI
 
-        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
         /* Load in the inventory tab buttons. */
         buttonOnSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_focused");
@@ -108,53 +109,46 @@ public class PlayerInventory : MonoBehaviour {
         useNextAvailableSlot = new int[2];
         matsNextAvailableSlot = new int[2];
 
-        tabInFocus = (int)ItemDatabase.ItemType.mats;
+        tabInFocus = (int)ItemDatabaseSO.ItemType.mats;
     }
 
     /* Gets the correct grid depending on the item's type; returns true IFF item is added successfully. */
-    public bool AddToInventory(Item item)
+    public bool AddToInventory(ItemObject item, int amount)
     {
-        int type = item.Type;
-        int itemID = item.ItemID;
-        if (type != (int)ItemDatabase.ItemType.error)
-            QuestTrackerUI.Instance.NotifyQuestTracker(item);
+        QuestTrackerUI.Instance.NotifyQuestTracker(item, amount);
 
         /* Depending on the item's type, update the appropriate grid and add the item to the new slot/increase the count (assumes accessing array in dictionary
          *  is not a reference) . */
-        switch (type)
+        switch (item.type)
         {
-            case (int)ItemDatabase.ItemType.error:
-                Debug.Log("Item of type error passed into AddToInventory.");
-                break;
+            case (int)ItemDatabaseSO.ItemType.equip:
+                return AddItemToSpecificGrid(equipmentGridLocation, equipmentGrid, ref equipNextAvailableSlot, ref numEquips, item, amount);
 
-            case (int)ItemDatabase.ItemType.equip:
-                return AddItemToSpecificGrid(equipmentGridLocation, equipmentGrid, ref equipNextAvailableSlot, ref numEquips, item);
+            case (int)ItemDatabaseSO.ItemType.use:
+                return AddItemToSpecificGrid(useGridLocation, useGrid, ref useNextAvailableSlot, ref numUse, item, amount);
 
-            case (int)ItemDatabase.ItemType.use:
-                return AddItemToSpecificGrid(useGridLocation, useGrid, ref useNextAvailableSlot, ref numUse, item);
-
-            case (int)ItemDatabase.ItemType.mats:
-                return AddItemToSpecificGrid(materialsGridLocation, materialsGrid, ref matsNextAvailableSlot, ref numMats, item);
+            case (int)ItemDatabaseSO.ItemType.mats:
+                return AddItemToSpecificGrid(materialsGridLocation, materialsGrid, ref matsNextAvailableSlot, ref numMats, item, amount);
         }
         return false;
     }
 
     //TODO check ref on numOfType in unity editor
-    private bool AddItemToSpecificGrid(Dictionary<int, int[]> gridLocation, ItemSlot[,] grid, ref int[] nextAvailableSlot, ref int numOfType, Item item)
+    private bool AddItemToSpecificGrid(Dictionary<int, int[]> gridLocation, ItemSlot[,] grid, ref int[] nextAvailableSlot, ref int numOfType, ItemObject item, int amount)
     {
-        int itemID = item.ItemID;
+        int itemID = item.id;
         if (gridLocation.ContainsKey(itemID))
         {
             int[] itemSlotLocation = gridLocation[itemID];
-            grid[itemSlotLocation[0], itemSlotLocation[1]].AddToExistingItem(item.Amount);
+            grid[itemSlotLocation[0], itemSlotLocation[1]].AddToExistingItem(amount);
 
             AudioManager.Instance.Play("Item Pickup");
             return true;
         }
         else if (FindNextAvailableSlot(grid, ref nextAvailableSlot))
         {
-            grid[nextAvailableSlot[1], nextAvailableSlot[0]].SetItemAndSprite(item);
-            gridLocation.Add(item.ItemID, new int[2] { nextAvailableSlot[1], nextAvailableSlot[0] });
+            grid[nextAvailableSlot[1], nextAvailableSlot[0]].SetItemAndSprite(item, amount);
+            gridLocation.Add(item.id, new int[2] { nextAvailableSlot[1], nextAvailableSlot[0] });
             numOfType++;
 
             AudioManager.Instance.Play("Item Pickup");
@@ -168,17 +162,13 @@ public class PlayerInventory : MonoBehaviour {
     {
         switch (itemType)
         {
-            case (int)ItemDatabase.ItemType.error:
-                Debug.Log("Item of type error passed into AddToInventory.");
-                break;
-
-            case (int)ItemDatabase.ItemType.equip:
+            case (int)ItemDatabaseSO.ItemType.equip:
                 return RemoveItemFromSpecificGrid(equipmentGridLocation, equipmentGrid, ref equipNextAvailableSlot, ref numEquips, itemID, amount);
 
-            case (int)ItemDatabase.ItemType.use:
+            case (int)ItemDatabaseSO.ItemType.use:
                 return RemoveItemFromSpecificGrid(useGridLocation, useGrid, ref useNextAvailableSlot, ref numUse, itemID, amount);
 
-            case (int)ItemDatabase.ItemType.mats:
+            case (int)ItemDatabaseSO.ItemType.mats:
                 return RemoveItemFromSpecificGrid(materialsGridLocation, materialsGrid, ref matsNextAvailableSlot, ref numMats, itemID, amount);
         }
         return false;
@@ -220,21 +210,21 @@ public class PlayerInventory : MonoBehaviour {
     /* Returns the amount of the item in the inventory, else returns -1. */
     public int FindInInventory(int itemID)
     {
-        int type = itemDB.itemIDToType[itemID];
+        int type = itemDatabase.itemList[itemID].type;
         ItemSlot[,] grid;
 
         switch (type)
         {
-            case (int)ItemDatabase.ItemType.equip:
+            case (int)ItemDatabaseSO.ItemType.equip:
                 grid = equipmentGrid;
                 break;
 
-            case (int)ItemDatabase.ItemType.use:
+            case (int)ItemDatabaseSO.ItemType.use:
                 grid = useGrid;
                 break;
 
             default:
-            case (int)ItemDatabase.ItemType.mats:
+            case (int)ItemDatabaseSO.ItemType.mats:
                 grid = materialsGrid;
                 break;
         }
@@ -245,9 +235,9 @@ public class PlayerInventory : MonoBehaviour {
             for (int x = 0; x < grid.GetLength(1); x++)
             {
                 itemSlot = grid[y, x];
-                if (itemSlot.HasItem && itemSlot.Item.ItemID == itemID)
+                if (itemSlot.HasItem && itemSlot.item.id == itemID)
                 {
-                    return itemSlot.Item.Amount;
+                    return itemSlot.amount;
                 }
             }
         }

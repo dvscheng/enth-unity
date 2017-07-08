@@ -6,7 +6,7 @@ using System;
 
 public class QuestDialogue : MonoBehaviour {
 
-    ItemDatabase itemDB;
+    ItemDatabaseSO itemDatabase;
 
     public NPCs _NPC;
     public GameObject dialogue;
@@ -23,25 +23,28 @@ public class QuestDialogue : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         initialized = false;
-        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 	}
 
     public void Initialize(NPCs NPC)
     {
         /* Generate the items, get their sprites, and get the amounts-to-collect. */
-        int numItems = Enum.GetValues(typeof(ItemDatabase.ItemID)).Length-1;
-        firstItemID = UnityEngine.Random.Range(1, numItems);
-        secondItemID = UnityEngine.Random.Range(1, numItems);
-        while (firstItemID == secondItemID)
+        int numItems = Enum.GetValues(typeof(ItemDatabaseSO.ItemID)).Length-1;
+        firstItemID = UnityEngine.Random.Range(0, numItems);
+        secondItemID = UnityEngine.Random.Range(0, numItems);
+
+        int tries = 3;
+        while (firstItemID == secondItemID && tries > 0)
         {
             secondItemID = UnityEngine.Random.Range(1, numItems);
+            tries--;
         }
         firstAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
         secondAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
 
         /* Sets the sprites and amounts for the two items. */
-        firstImage.GetComponent<Image>().sprite = itemDB.itemToSprite[firstItemID];
-        secondImage.GetComponent<Image>().sprite = itemDB.itemToSprite[secondItemID];
+        firstImage.GetComponent<Image>().sprite = itemDatabase.itemList[firstItemID].sprite;
+        secondImage.GetComponent<Image>().sprite = itemDatabase.itemList[secondItemID].sprite;
         firstText.GetComponent<Text>().text = "" + firstAmount;
         secondText.GetComponent<Text>().text = "" + secondAmount;
 

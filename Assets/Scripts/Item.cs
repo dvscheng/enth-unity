@@ -1,13 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Item {
-    protected int type = (int)ItemDatabase.ItemType.error;
-    protected int itemID = (int)ItemDatabase.ItemID.none;
+    protected int type = (int)ItemDatabaseSO.ItemType.mats;
+    protected int itemID = (int)ItemDatabaseSO.ItemID.mushroom;
     protected int amount = 0;
 
-    protected ItemDatabase itemDB;
+    protected ItemDatabaseSO itemDatabase;
     public Sprite sprite;
 
     

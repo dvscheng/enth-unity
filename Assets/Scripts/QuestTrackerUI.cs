@@ -12,7 +12,7 @@ public class QuestTrackerUI : MonoBehaviour {
     }
     #endregion
 
-    ItemDatabase itemDB;
+    ItemDatabaseSO itemDatabase;
 
     public GameObject questObjectArea;  // UNITY
 
@@ -38,7 +38,7 @@ public class QuestTrackerUI : MonoBehaviour {
         //DontDestroyOnLoad(gameObject); already in UI 
         #endregion
 
-        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
         quests = new List<GameObject>(MAX_NUM_QUESTS);
     }
 	
@@ -76,8 +76,8 @@ public class QuestTrackerUI : MonoBehaviour {
         if (inventSecondAmount != -1)
             questInfo.secondCompleted += inventSecondAmount;
 
-        questInfo.firstImage.GetComponent<Image>().sprite = itemDB.itemToSprite[questInfo.firstItemID];
-        questInfo.secondImage.GetComponent<Image>().sprite = itemDB.itemToSprite[questInfo.secondItemID];
+        questInfo.firstImage.GetComponent<Image>().sprite = itemDatabase.itemList[questInfo.firstItemID].sprite;
+        questInfo.secondImage.GetComponent<Image>().sprite = itemDatabase.itemList[questInfo.secondItemID].sprite;
         questInfo.firstText.GetComponent<Text>().text = questInfo.firstCompleted + "/" + questInfo.firstAmount;
         questInfo.secondText.GetComponent<Text>().text = questInfo.secondCompleted + "/" + questInfo.secondAmount;
 
@@ -120,19 +120,19 @@ public class QuestTrackerUI : MonoBehaviour {
     }
 
     /* Applies appropriate changes to the tracker UI when notified of a change. */
-    public void NotifyQuestTracker(Item item)
+    public void NotifyQuestTracker(ItemObject item, int amount)
     {
         foreach (GameObject quest in quests)
         {
             CollectQuest questInfo = quest.GetComponent<CollectQuest>();
-            if (item.ItemID == questInfo.firstItemID)
+            if (item.id == questInfo.firstItemID)
             {
-                questInfo.firstCompleted += item.Amount;
+                questInfo.firstCompleted += amount;
                 DoRefreshing(quest);
             }
-            if (item.ItemID == questInfo.secondItemID)
+            if (item.id == questInfo.secondItemID)
             {
-                questInfo.secondCompleted += item.Amount;
+                questInfo.secondCompleted += amount;
                 DoRefreshing(quest);
             }
 

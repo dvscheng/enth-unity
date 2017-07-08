@@ -15,11 +15,11 @@ public class Journal : MonoBehaviour {
         Enemy.onDeath += OnEnemyDeath;
 
         //read from database/save later
-        enemyKillCount.Add((int)ItemDatabase.MobID.Slime, 0);
-        enemyKillCount.Add((int)ItemDatabase.MobID.BlueSlime, 0);
+        enemyKillCount.Add((int)ItemDatabaseSO.MobID.Slime, 0);
+        enemyKillCount.Add((int)ItemDatabaseSO.MobID.BlueSlime, 0);
 
-        idToGo.Add((int)ItemDatabase.MobID.Slime, slimeKC);
-        idToGo.Add((int)ItemDatabase.MobID.BlueSlime, blueSlimeKC);
+        idToGo.Add((int)ItemDatabaseSO.MobID.Slime, slimeKC);
+        idToGo.Add((int)ItemDatabaseSO.MobID.BlueSlime, blueSlimeKC);
     }
 
     void OnDestroy()
