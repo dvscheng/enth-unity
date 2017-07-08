@@ -42,8 +42,8 @@ public class CollectQuest : MonoBehaviour {
 
     public void Complete()
     {
-        PlayerInventory.Instance.RemoveFromInventory(firstItemID, (int)ItemDatabase.ItemType.mats, firstAmount);
-        PlayerInventory.Instance.RemoveFromInventory(secondItemID, (int)ItemDatabase.ItemType.mats, secondAmount);
+        PlayerInventory.Instance.RemoveFromInventory(firstItemID, (int)ItemDatabaseSO.ItemType.mats, firstAmount);
+        PlayerInventory.Instance.RemoveFromInventory(secondItemID, (int)ItemDatabaseSO.ItemType.mats, secondAmount);
         QuestTrackerUI.Instance.RemoveQuest(this);
         _NPC.IsQuestGiver = false;
 

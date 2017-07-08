@@ -1,7 +1,70 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item Database SO", menuName = "Item Database SO", order = 2)]
+[CreateAssetMenu(fileName = "Item Database SO", menuName = "Item Database SO", order = 1)]
 public class ItemDatabaseSO : ScriptableObject {
+    public enum ItemID
+    {
+        mushroom,
+        rock,
+        leatherMail
+    }
+
+    public enum ItemType
+    {
+        equip,
+        use,
+        mats
+    }
+
+    public enum DropRateType
+    {
+        common,
+        uncommon,
+        rare,
+        legendary,
+    }
+
+    public enum MobID
+    {
+        Slime,
+        BlueSlime,
+    }
+
+    /* Percentages, used in Enemy.RollForDrops() */
+    public int COMMON_DROPRATE = 40;
+    public int UNCOMMON_DROPRATE = 40;
+    public int RARE_DROPRATE = 10;
+    public int LEGENDARY_DROPRATE = 1;
+
+    public int[,] dropTable;
+
+    /* Indexed by id. */
     public List<ItemObject> itemList;
+    //public List<MobObject> mobList;
+
+    private void OnEnable()
+    {
+        /* The drop table is a 2d array that is resized on runtime depending on how many mobs and drop types there are.
+                Accessed via dropTable[mobID, itemDropRateType]. */
+        int numMobs = Enum.GetValues(typeof(MobID)).Length;
+        int numDropRateTypes = Enum.GetValues(typeof(DropRateType)).Length;
+        dropTable = new int[numMobs, numDropRateTypes];
+        dropTable[(int)MobID.Slime, (int)DropRateType.common] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)DropRateType.uncommon] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)DropRateType.rare] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)DropRateType.legendary] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)DropRateType.common] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)DropRateType.uncommon] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)DropRateType.rare] = (int)ItemID.rock;
+        dropTable[(int)MobID.BlueSlime, (int)DropRateType.legendary] = (int)ItemID.mushroom;
+    }
+
+    //        /* Map MobIDs to Sprites. */
+    //        mobToSprite = new Sprite[numMobs];
+    //        mobToSprite[(int)MobID.Slime] = Resources.Load<Sprite>("Sprites/spr_slime_strip2");
+    //        mobToSprite[(int)MobID.BlueSlime] = Resources.Load<Sprite>("Sprites/spr_slime_blue_strip");
+    //    }
+    //}
 }

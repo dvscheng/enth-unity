@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "Item Database", menuName = "Custom Objects", order = 1)]
 public class ItemDatabase : ScriptableObject {
 
     public enum ItemType

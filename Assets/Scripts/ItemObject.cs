@@ -2,12 +2,10 @@ using UnityEngine;
 
 [System.Serializable]
 public class ItemObject : ScriptableObject {
-    [Range(0, 3)]                               //Enum.GetValues(typeof(ItemDatabase.ItemID)).Length
-    public int id;
-
-    public Sprite sprite;
-    public bool isQuestItem;
-    public bool isStackable;
-    public string itemName;
-    public string flavorText;
+    public int id;                                      // The unique ID of every item.
+    public int type;                                    // The item type (of Equip, Use, or Mats).
+    public string itemName;                             // The item's name.
+    public Sprite sprite;                               // The item's Sprite image.
+    public bool isQuestItem;                            // Is this item a special quest item?
+    public string flavorText;                           // The description of the item.
 }

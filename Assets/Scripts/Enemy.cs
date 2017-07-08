@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     GameObject UIObj;
     GameObject player;
     Spawner spawner;
-    ItemDatabase itemDB;
+    ItemDatabaseSO itemDB;
     Rigidbody2D rb;
     EnemyHealthBar healthBar;
     public BoxCollider2D boxCollider; // UNITY
@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour
 
         UIObj = GameObject.Find("UI");
         player = GameObject.Find("Player");
-        itemDB = ScriptableObject.CreateInstance<ItemDatabase>();
+        itemDB = ScriptableObject.CreateInstance<ItemDatabaseSO>();
         rb = GetComponent<Rigidbody2D>();
         healthBar = healthBarObj.GetComponent<EnemyHealthBar>();
         playerCollider = player.GetComponent<BoxCollider2D>();
@@ -239,13 +239,13 @@ public class Enemy : MonoBehaviour
     /* Roll for drops, then destroy the Game Object. */
     private void OnDeath()
     {
-        if (!RollForDrops(itemDB.LEGENDARY))
+        if (!RollForDrops(itemDB.LEGENDARY_DROPRATE))
         {
-            if (!RollForDrops(itemDB.RARE))
+            if (!RollForDrops(itemDB.RARE_DROPRATE))
             {
-                if (!RollForDrops(itemDB.UNCOMMON))
+                if (!RollForDrops(itemDB.UNCOMMON_DROPRATE))
                 {
-                    RollForDrops(itemDB.COMMON);
+                    RollForDrops(itemDB.COMMON_DROPRATE);
                 }
             }
         }
@@ -298,26 +298,26 @@ public class Enemy : MonoBehaviour
             GameObject itemOnGround = (GameObject)Instantiate(Resources.Load("Prefabs/ItemOnGround"), dropPos, Quaternion.identity) as GameObject;
 
             int dropRate;
-            if (chances == itemDB.LEGENDARY)
+            if (chances == itemDB.LEGENDARY_DROPRATE)
             {
-                dropRate = (int)ItemDatabase.ItemDropRate.legendary;
-            } else if (chances == itemDB.RARE)
+                dropRate = (int)ItemDatabaseSO.DropRateType.legendary;
+            } else if (chances == itemDB.RARE_DROPRATE)
             {
-                dropRate = (int)ItemDatabase.ItemDropRate.rare;
-            } else if (chances == itemDB.UNCOMMON)
+                dropRate = (int)ItemDatabaseSO.DropRateType.rare;
+            } else if (chances == itemDB.UNCOMMON_DROPRATE)
             {
-                dropRate = (int)ItemDatabase.ItemDropRate.uncommon;
+                dropRate = (int)ItemDatabaseSO.DropRateType.uncommon;
             } else // common
             {
-                dropRate = (int)ItemDatabase.ItemDropRate.common;
+                dropRate = (int)ItemDatabaseSO.DropRateType.common;
             }
 
             int itemID = itemDB.dropTable[mobID, dropRate];
-            int itemType = itemDB.itemIDToType[itemID];
+            int itemType = itemDB.itemList[itemID].type;
             switch (itemType)
             {
                 case ((int)ItemDatabase.ItemType.equip):
-                    itemOnGround.GetComponent<ItemOnGround>().SetItem(new EquipItems(itemID, 5));
+                    itemOnGround.GetComponent<ItemOnGround>().Initialize(itemID, 5);
                     break;
 
                 case ((int)ItemDatabase.ItemType.use):

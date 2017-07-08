@@ -8,7 +8,9 @@ using System.Collections.Generic;
 public class ItemDatabaseEditor : EditorWindow {
 
     public ItemDatabaseSO itemDatabase;
-    int viewIndex = 1;
+    List<string> names = new List<string>();
+    int viewIndex = 0;
+    string newName = "";
 
     [MenuItem("Window/Inventory Item Editor")]
     static void Init()
@@ -74,7 +76,7 @@ public class ItemDatabaseEditor : EditorWindow {
 
             if (GUILayout.Button("Prev", GUILayout.ExpandWidth(false)))
             {
-                if (viewIndex > 1)
+                if (viewIndex > 0)
                     viewIndex--;
             }
             GUILayout.Space(5);
@@ -94,7 +96,7 @@ public class ItemDatabaseEditor : EditorWindow {
             }
             if (GUILayout.Button("Delete Item", GUILayout.ExpandWidth(false)))
             {
-                DeleteItem(viewIndex - 1);
+                DeleteItem(viewIndex);
             }
 
             GUILayout.EndHorizontal();
@@ -103,26 +105,29 @@ public class ItemDatabaseEditor : EditorWindow {
             if (itemDatabase.itemList.Count > 0)
             {
                 GUILayout.BeginHorizontal();
-                viewIndex = Mathf.Clamp(EditorGUILayout.IntField("Current Item", viewIndex, GUILayout.ExpandWidth(false)), 1, itemDatabase.itemList.Count);
+                viewIndex = Mathf.Clamp(EditorGUILayout.IntField("Current Item index", viewIndex, GUILayout.ExpandWidth(false)), 0, itemDatabase.itemList.Count - 1);
                 //Mathf.Clamp (viewIndex, 1, itemDatabase.itemList.Count);
-                EditorGUILayout.LabelField("of   " + itemDatabase.itemList.Count.ToString() + "  items", "", GUILayout.ExpandWidth(false));
+                EditorGUILayout.LabelField("of   " + (itemDatabase.itemList.Count - 1).ToString() + "  ", "", GUILayout.ExpandWidth(false));
                 GUILayout.EndHorizontal();
 
-                itemDatabase.itemList[viewIndex - 1].id = EditorGUILayout.IntField("ID", itemDatabase.itemList[viewIndex - 1].id);
-                itemDatabase.itemList[viewIndex - 1].itemName = EditorGUILayout.TextField("Name", itemDatabase.itemList[viewIndex - 1].itemName as string);
-                itemDatabase.itemList[viewIndex - 1].sprite = EditorGUILayout.ObjectField("Sprite", itemDatabase.itemList[viewIndex - 1].sprite, typeof(Sprite), false) as Sprite;
+                EditorGUI.BeginDisabledGroup(true);
+                itemDatabase.itemList[viewIndex].id = EditorGUILayout.IntField("ID", itemDatabase.itemList[viewIndex].id);
+                EditorGUI.EndDisabledGroup();
+
+                ChangeItemName(EditorGUILayout.DelayedTextField("Name", itemDatabase.itemList[viewIndex].itemName as string));
+                itemDatabase.itemList[viewIndex].type = EditorGUILayout.IntSlider("Type", itemDatabase.itemList[viewIndex].type, (int)ItemDatabaseSO.ItemType.equip, (int)ItemDatabaseSO.ItemType.mats);       // min = equip(0), max = mats(2)
+                itemDatabase.itemList[viewIndex].sprite = EditorGUILayout.ObjectField("Sprite", itemDatabase.itemList[viewIndex].sprite, typeof(Sprite), false) as Sprite;
 
                 GUILayout.Space(10);
 
                 GUILayout.BeginHorizontal();
-                itemDatabase.itemList[viewIndex - 1].isStackable = (bool)EditorGUILayout.Toggle("Stackable?", itemDatabase.itemList[viewIndex - 1].isStackable, GUILayout.ExpandWidth(false));
-                itemDatabase.itemList[viewIndex - 1].isQuestItem = (bool)EditorGUILayout.Toggle("Quest item?", itemDatabase.itemList[viewIndex - 1].isQuestItem, GUILayout.ExpandWidth(false));
+                itemDatabase.itemList[viewIndex].isQuestItem = (bool)EditorGUILayout.Toggle("Quest item?", itemDatabase.itemList[viewIndex].isQuestItem, GUILayout.ExpandWidth(false));
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
 
                 GUILayout.BeginHorizontal();
-                itemDatabase.itemList[viewIndex - 1].flavorText = EditorGUILayout.TextField("Flavor text", itemDatabase.itemList[viewIndex - 1].flavorText as string);
+                itemDatabase.itemList[viewIndex].flavorText = EditorGUILayout.TextField("Flavor text", itemDatabase.itemList[viewIndex].flavorText as string);
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
@@ -144,7 +149,7 @@ public class ItemDatabaseEditor : EditorWindow {
         // There is no overwrite protection here!
         // There is No "Are you sure you want to overwrite your existing object?" if it exists.
         // This should probably get a string from the user to create a new name and pass it ...
-        viewIndex = 1;
+        viewIndex = 0;
         itemDatabase = Create();
         if (itemDatabase)
         {
@@ -172,16 +177,23 @@ public class ItemDatabaseEditor : EditorWindow {
 
     void AddItem()
     {
-        ItemObject newItem = CreateInstance<ItemObject>();
-        newItem.itemName = "New Item";
-        newItem.hideFlags = HideFlags.HideInHierarchy;
-        AssetDatabase.AddObjectToAsset(newItem, itemDatabase);
-        itemDatabase.itemList.Add(newItem);
         viewIndex = itemDatabase.itemList.Count;
+
+        ItemObject newItem = CreateInstance<ItemObject>();
+        newItem.itemName = "NewItem" + "(" + viewIndex + ")";
+        newItem.id = viewIndex;
+        AssetDatabase.CreateAsset(newItem, "Assets/Resources/Data/Items/NewItem" + "(" + viewIndex + ")" + ".asset");
+        AssetDatabase.SaveAssets();
+        //newItem.hideFlags = HideFlags.HideInHierarchy;
+        //AssetDatabase.AddObjectToAsset(newItem, itemDatabase);
+        itemDatabase.itemList.Add(newItem);
+        names.Add(newItem.itemName);
     }
 
     void DeleteItem(int index)
     {
+        names.Remove(itemDatabase.itemList[index].itemName);
+        AssetDatabase.DeleteAsset("Assets/Resources/Data/Items/" + itemDatabase.itemList[index].itemName + ".asset");
         itemDatabase.itemList.RemoveAt(index);
     }
 
@@ -189,8 +201,21 @@ public class ItemDatabaseEditor : EditorWindow {
     {
         ItemDatabaseSO asset = CreateInstance<ItemDatabaseSO>();
 
-        AssetDatabase.CreateAsset(asset, "Assets/ItemDatabase.asset");
+        AssetDatabase.CreateAsset(asset, "Assets/Resources/Data/Items/ItemDatabase.asset");
         AssetDatabase.SaveAssets();
         return asset;
+    }
+
+    /* Rename the asset file and the item's name property. */
+    void ChangeItemName(string newName)
+    {
+        if (!newName.Equals(itemDatabase.itemList[viewIndex].itemName) && !newName.Equals("") && !names.Contains(newName))
+        {
+            names.Remove(itemDatabase.itemList[viewIndex].itemName);
+            names.Add(newName);
+
+            AssetDatabase.RenameAsset("Assets/Resources/Data/Items/" + itemDatabase.itemList[viewIndex].itemName + ".asset", newName);
+            itemDatabase.itemList[viewIndex].itemName = newName;
+        }
     }
 }

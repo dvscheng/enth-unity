@@ -8,24 +8,23 @@ public class ItemOnGround : MonoBehaviour {
     /* Custom inspector GUI, look at ItemOnGroundEditor.cs */
     public BoxCollider2D itemBcTrigger;
     public BoxCollider2D itemBcHitbox;
-    public Item item;
+    public ItemObject item;
+    public int amount;
+
+    ItemDatabaseSO itemDatabase;
 
     float originalY;
     float fluctuation = 0.25f;
 
     void Start()
     {
+        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
+
         originalY = gameObject.transform.position.y;
 
         // assumes player only has one boxcollider
         Physics2D.IgnoreCollision(itemBcHitbox, PlayerController.Instance.GetComponent<BoxCollider2D>());
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Item"), LayerMask.NameToLayer("Enemy"));
-
-        if (item == null)
-        {
-            item = new MatItems(1, 1);
-            SetItem(new MatItems(item.ItemID, item.Amount));
-        }
     }
 
     void Update()
@@ -35,10 +34,11 @@ public class ItemOnGround : MonoBehaviour {
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, newY, gameObject.transform.position.z);
     }
 
-    public void SetItem(Item item)
+    public void Initialize(int id, int amount)
     {
-        this.item = item;
-        gameObject.GetComponent<SpriteRenderer>().sprite = this.item.sprite;
+        item = itemDatabase.itemList[id];
+        this.amount = amount;
+        gameObject.GetComponent<SpriteRenderer>().sprite = item.sprite;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
