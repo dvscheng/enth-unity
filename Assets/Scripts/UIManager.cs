@@ -52,6 +52,11 @@ public class UIManager : MonoBehaviour {
     public EXPBar expBar;
     bool expBarOn;
 
+    public GameObject itemTooltipObj;
+    [HideInInspector]
+    public ItemTooltip itemTooltip;
+    bool itemTooltipOn;
+
 
     public int playerHp;
     public Text hpText;
@@ -62,7 +67,8 @@ public class UIManager : MonoBehaviour {
         questTracker,
         dialogue,
         insigniaPanel,
-        journal
+        journal,
+        itemTooltip
     }
 
     // Use this for initialization
@@ -98,6 +104,7 @@ public class UIManager : MonoBehaviour {
         healthBar = healthBarObj.GetComponent<HealthBar>();
         journal = journalObj.GetComponent<Journal>();
         expBar = expBarObj.GetComponent<EXPBar>();
+        itemTooltip = itemTooltipObj.GetComponent<ItemTooltip>();
         playerHp = playerController.Hp;
 
         /* Turn on (initialize) the UI, then turn it back off (assumes they're hidden in Unity editor at start). */
@@ -111,6 +118,8 @@ public class UIManager : MonoBehaviour {
         insigniaObj.SetActive(false);
         journalObj.SetActive(true);
         journalObj.SetActive(false);
+        itemTooltipObj.SetActive(true);
+        itemTooltipObj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -174,6 +183,11 @@ public class UIManager : MonoBehaviour {
             case (UI_Type.journal):
                 journalOn = OnOff;
                 journalObj.SetActive(OnOff);
+                break;
+
+            case (UI_Type.itemTooltip):
+                itemTooltipOn = OnOff;
+                itemTooltipObj.SetActive(OnOff);
                 break;
         }
     }

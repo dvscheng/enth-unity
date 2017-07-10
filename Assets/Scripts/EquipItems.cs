@@ -8,6 +8,5 @@ public class EquipItems : ItemObject {
     public int hp;
     public float defencePen;
     public float mastery;
-    public int favorRequirement;
     //public WeaponEffect effect1;
 }

@@ -49,20 +49,20 @@ public class ItemDatabaseSO : ScriptableObject {
         itemList = new List<ItemObject>();
 
         /* Create the item objects. */
-        CreateAndAddMat((int)ItemID.mushroom, (int)ItemType.mats, ItemID.mushroom.ToString(),
-                            Resources.Load<Sprite>("Sprites/spr_mushroom"), true, false, "", 255);
-        CreateAndAddMat((int)ItemID.rock, (int)ItemType.mats, ItemID.rock.ToString(),
-                            Resources.Load<Sprite>("Sprites/spr_rock"), true, false, "", 255);
-        CreateAndAddEquip((int)ItemID.leatherMail, (int)ItemType.equip, ItemID.leatherMail.ToString(),
-                            Resources.Load<Sprite>("Sprites/spr_leather_mail"), false, false, "", 0, 5, 10, 0f, 0f, 0);
+        CreateAndAddMat((int)ItemID.mushroom, (int)ItemType.mats, "Mushroom", Resources.Load<Sprite>("Sprites/spr_mushroom"), true, false, "A shroomy.",
+            255);
+        CreateAndAddMat((int)ItemID.rock, (int)ItemType.mats, "Rock", Resources.Load<Sprite>("Sprites/spr_rock"), true, false, "A rock.",
+            255);
+        CreateAndAddEquip((int)ItemID.leatherMail, (int)ItemType.equip, "Leather Mail", Resources.Load<Sprite>("Sprites/spr_leather_mail"), false, false, "A mail of leather.",
+            0, 5, 10, 0f, 0f);
 
         /* The drop table is a 2d array that is resized on runtime depending on how many mobs and drop types there are.
                 Accessed via dropTable[mobID, itemDropRateType]. */
         int numMobs = Enum.GetValues(typeof(MobID)).Length;
         int numDropRateTypes = Enum.GetValues(typeof(DropRateType)).Length;
         dropTable = new int[numMobs, numDropRateTypes];
-        dropTable[(int)MobID.Slime, (int)DropRateType.common] = (int)ItemID.mushroom;
-        dropTable[(int)MobID.Slime, (int)DropRateType.uncommon] = (int)ItemID.mushroom;
+        dropTable[(int)MobID.Slime, (int)DropRateType.common] = (int)ItemID.leatherMail;
+        dropTable[(int)MobID.Slime, (int)DropRateType.uncommon] = (int)ItemID.leatherMail;
         dropTable[(int)MobID.Slime, (int)DropRateType.rare] = (int)ItemID.mushroom;
         dropTable[(int)MobID.Slime, (int)DropRateType.legendary] = (int)ItemID.rock;
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.common] = (int)ItemID.rock;
@@ -71,9 +71,9 @@ public class ItemDatabaseSO : ScriptableObject {
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.legendary] = (int)ItemID.mushroom;
     }
 
-    /* Creates the item and adds it to the itemList. */
+    /* Creates a new EquipItems with the specified ItemType and adds it to the list.*/
     void CreateAndAddEquip(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
-                                int attack, int defence, int hp, float defencePen, float mastery, int favorRequirement)
+                                int attack, int defence, int hp, float defencePen, float mastery)
     {
         ItemObject item = CreateInstance<EquipItems>();
 
@@ -83,11 +83,11 @@ public class ItemDatabaseSO : ScriptableObject {
         (item as EquipItems).hp = hp;
         (item as EquipItems).defencePen = defencePen;
         (item as EquipItems).mastery = mastery;
-        (item as EquipItems).favorRequirement = favorRequirement;
 
         itemList.Add(item);
     }
 
+    /* Creates a new UseItems with the specified ItemType and adds it to the list.*/
     void CreateAndAddUse(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int restoreHp, int maxAmount)
     {
@@ -100,6 +100,7 @@ public class ItemDatabaseSO : ScriptableObject {
         itemList.Add(item);
     }
 
+    /* Creates a new MatItems with the specified ItemType and adds it to the list.*/
     void CreateAndAddMat(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int maxAmount)
     {
@@ -111,6 +112,7 @@ public class ItemDatabaseSO : ScriptableObject {
         itemList.Add(item);
     }
 
+    /* Initializes the ItemObject parameters. */
     void InitializeBaseItem(ItemObject item, int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText)
     {
         item.id = id;

@@ -13,6 +13,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     GameObject grid;
     GameObject itemImage;
     GameObject count;
+    GameObject tooltip;
 
     PlayerInventory playerInventory;
 
@@ -114,13 +115,19 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     /* Highlights the slot. */
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //
+        // initialize tooltip prefab
+        if (hasItem)
+        {
+            UIManager.Instance.itemTooltip.Initialize(item);
+            // toggled on inside initialize.
+            //UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.itemTooltip, true);
+        }
     }
 
     /* Un-highlights the slot. */
     public void OnPointerExit(PointerEventData eventData)
     {
-        //throw new NotImplementedException();
+        UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.itemTooltip, false);
     }
 
     public void OnPointerClick(PointerEventData data)
