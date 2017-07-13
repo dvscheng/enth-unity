@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UIEventSystem : MonoBehaviour{
+public class UIEventSystem : MonoBehaviour {
     #region Singleton Behaviour
     private static UIEventSystem _instance;   // singleton behaviour
     public static UIEventSystem Instance

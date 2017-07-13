@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 89e15e1e4b8cd0a4abc4568f214d66dc
-timeCreated: 1496404679
+guid: 17f08cc3941546543a37800c0755bace
+timeCreated: 1499817083
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: spr_player_attack_right_strip7_0
-    21300002: spr_player_attack_right_strip7_1
-    21300004: spr_player_attack_right_strip7_2
-    21300006: spr_player_attack_right_strip7_3
-    21300008: spr_player_attack_right_strip7_4
-    21300010: spr_player_attack_right_strip7_5
-    21300012: spr_player_attack_right_strip7_6
+    21300000: desert misc objects_0
+    21300002: desert misc objects_1
+    21300004: desert misc objects_2
+    21300006: desert misc objects_3
+    21300008: desert misc objects_4
+    21300010: desert misc objects_5
+    21300012: desert misc objects_6
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -77,91 +77,91 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spr_player_attack_right_strip7_0
+      name: desert misc objects_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 35
-        height: 21
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_player_attack_right_strip7_1
+      name: desert misc objects_1
       rect:
         serializedVersion: 2
-        x: 35
+        x: 32
         y: 0
-        width: 35
-        height: 21
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_player_attack_right_strip7_2
+      name: desert misc objects_2
       rect:
         serializedVersion: 2
-        x: 70
+        x: 64
         y: 0
-        width: 35
-        height: 21
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_player_attack_right_strip7_3
+      name: desert misc objects_3
       rect:
         serializedVersion: 2
-        x: 105
+        x: 96
         y: 0
-        width: 35
-        height: 21
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_player_attack_right_strip7_4
+      name: desert misc objects_4
       rect:
         serializedVersion: 2
-        x: 140
+        x: 128
         y: 0
-        width: 35
-        height: 21
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_player_attack_right_strip7_5
+      name: desert misc objects_5
       rect:
         serializedVersion: 2
-        x: 175
+        x: 160
         y: 0
-        width: 35
-        height: 21
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spr_player_attack_right_strip7_6
+      name: desert misc objects_6
       rect:
         serializedVersion: 2
-        x: 210
+        x: 192
         y: 0
-        width: 35
-        height: 21
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

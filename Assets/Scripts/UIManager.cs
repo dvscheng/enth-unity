@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
@@ -125,12 +126,7 @@ public class UIManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        // OnMouseEnter changes cursor would be better, but find a way to change it for ALL UI elements at the same time
-        /* Cursor; if the cursor is over a UI element, reset the cursor. Else set the custom one. */
-        if (EventSystem.current.IsPointerOverGameObject())
-            Cursor.SetCursor(null, Vector2.zero, cursorMode);
-        else
-            Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+        UpdateCursor();
 
         /* Check for UI toggles. */
         if (Inputs.Instance.inventory_key_down)
@@ -153,6 +149,36 @@ public class UIManager : MonoBehaviour {
         /* Show HP. (move elsewhere later) */
         playerHp = playerController.Hp;
         hpText.text = "HP: " + playerHp;
+    }
+
+    void UpdateCursor()
+    {
+        // OnMouseEnter changes cursor would be better, but find a way to change it for ALL UI elements at the same time
+        /* Cursor; if the cursor is over a UI element, reset the cursor. Else set the custom one. */
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            /*
+            PointerEventData pointer = new PointerEventData(EventSystem.current);
+            pointer.position = Input.mousePosition;
+
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointer, raycastResults);
+
+            if (raycastResults.Count > 0)
+            {
+                foreach (var obj in raycastResults)
+                {
+                    if (obj.gameObject.CompareTag("Damage Text"))
+                    {
+                        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+                    }
+                }
+            }
+            */
+            Cursor.SetCursor(null, Vector2.zero, cursorMode);
+        }
+        else
+            Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
     }
 
     /* Given the UI type to manipualte, turn it OnOff. */
