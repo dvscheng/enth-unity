@@ -2071,12 +2071,12 @@ Prefab:
     - target: {fileID: 114147221343988628, guid: 3193bcf3f12eb3c479288481549accb6,
         type: 2}
       propertyPath: startingPositionInNextScene.x
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114147221343988628, guid: 3193bcf3f12eb3c479288481549accb6,
         type: 2}
       propertyPath: startingPositionInNextScene.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3193bcf3f12eb3c479288481549accb6, type: 2}
