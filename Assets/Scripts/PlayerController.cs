@@ -255,64 +255,13 @@ public class PlayerController : MonoBehaviour
                         rb.AddForce(force * moveDistance * 4f);
                     }
 
-                    /* Gets the mouse's world position, not screen position. */
-                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                    /*        |  above  |
-                     *        |         |
-                     *        |---------|
-                     * left   | Player  |   right
-                     *        |---------|
-                     *        |         |
-                     *        |  below  |
-                     **/
-                    BoxCollider2D playerCollider = gameObject.GetComponent<BoxCollider2D>();
-                    Vector2 playerPos = gameObject.transform.position;
-                    Vector2 playerColliderSize = gameObject.GetComponent<BoxCollider2D>().size;
-                    float playerRight = playerPos.x + playerColliderSize.x / 2;
-                    float playerLeft = playerPos.x - playerColliderSize.x / 2;
-
-                    bool above = ((mousePos.y > playerPos.y) && ((playerLeft < mousePos.x) && (mousePos.x < playerRight))) ? true : false;
-                    bool below = ((mousePos.y < playerPos.y) && ((playerLeft < mousePos.x) && (mousePos.x < playerRight))) ? true : false;
-                    bool left = (mousePos.x < playerLeft) ? true : false;
-                    bool right = (playerRight < mousePos.x) ? true : false;
-
                     /* Depending on the direction of the mouse click, create a hitbox at the appropriate position,
                      * and setup the animation triggers and idle position for after the animation ends. */
-                    Vector3 hitBoxPos;
-                    float rotation;
-                    string triggerName;
-                    if (above)
-                    {
-                        hitBoxPos = new Vector2(playerPos.x, playerPos.y + playerColliderSize.y);
-                        rotation = 90;
-                        triggerName = "playerAttackUp";
-                        lastFacing = new Vector2(0, 1);
-                    }
-                    else if (below)
-                    {
-                        hitBoxPos = new Vector2(playerPos.x, playerPos.y - playerColliderSize.y);
-                        rotation = -90;
-                        triggerName = "playerAttackDown";
-                        lastFacing = new Vector2(0, -1);
+                    Vector3 hitBoxPos = Vector3.zero;
+                    float rotation = 0f;
+                    string triggerName = "";
+                    CalculateStrikeBox(ref hitBoxPos, ref rotation, ref triggerName);
 
-                    }
-                    else if (left)
-                    {
-                        hitBoxPos = new Vector2(playerPos.x - playerColliderSize.x, playerPos.y);
-                        rotation = 180;
-                        triggerName = "playerAttackLeft";
-                        lastFacing = new Vector2(-1, 0);
-
-                    }
-                    else // right
-                    {
-                        hitBoxPos = new Vector2(playerPos.x + playerColliderSize.x, playerPos.y);
-                        rotation = 0;
-                        triggerName = "playerAttackRight";
-                        lastFacing = new Vector2(1, 0);
-
-                    }
                     GameObject hitBox = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerStrikeBox"), hitBoxPos, Quaternion.identity);
                     hitBox.transform.Rotate(new Vector3(0, 0, rotation));
                     movement = Vector2.zero;
@@ -382,6 +331,111 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = movement * Time.deltaTime;
+    }
+
+    private void CalculateStrikeBox(ref Vector3 hitBoxPos, ref float rotation, ref string triggerName)
+    {
+        /* Gets the mouse's world position, not screen position. */
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        /*   upleft    |  top    |   upright
+         *             |         |
+         *             |---------|
+         *      left   | Player  |   right
+         *             |---------|
+         *             |         |
+         *  botleft    |  bottom |    botright
+         **/
+        BoxCollider2D playerCollider = gameObject.GetComponent<BoxCollider2D>();
+        Vector2 playerPos = gameObject.transform.position;
+        Vector2 playerColliderSize = gameObject.GetComponent<BoxCollider2D>().size;
+        float playerRight = playerPos.x + playerColliderSize.x / 2;
+        float playerLeft = playerPos.x - playerColliderSize.x / 2;
+
+        Vector2 point = new Vector2(mousePos.x - playerPos.x, mousePos.y - playerPos.y);
+        double radians = System.Math.Atan2(point.y, point.x);
+        double angle = (radians > 0 ? radians : (2 + System.Math.PI + radians)) * 360 / (2 * System.Math.PI);  // Atan2 returns radians, so convert to degrees
+        // take into account the player's collider box
+        bool right = (angle <= 22.5d && angle > 337.5d) ? true : false;
+        bool upRight = (angle <= 67.5d && angle > 22.5d) ? true : false;
+        bool up = (angle <= 112.5d && angle > 67.5d) ? true : false;
+        bool upLeft = (angle <= 157.5d && angle > 112.5d) ? true : false;
+        bool left = (angle <= 202.5d && angle > 157.5d) ? true : false;
+        bool downLeft = (angle <= 247.5d && angle > 202.5d) ? true : false;
+        bool down = (angle <= 292.5d && angle > 247.5d) ? true : false;
+        bool downRight = (angle <= 337.5d && angle > 292.5d) ? true : false;
+
+        print("Player striking failed. \n + "
+                + "MousePos: " + mousePos.ToString() + ", \n"
+                + "PlayerPos: " + playerPos.ToString() + ", \n"
+                + "Angle: " + angle.ToString() + ". \n");
+
+        /* Depending on the direction of the mouse click, create a hitbox at the appropriate position,
+         * and setup the animation triggers and idle position for after the animation ends. */
+        if (right)
+        {
+            hitBoxPos = new Vector2(playerPos.x + playerColliderSize.x, playerPos.y);
+            rotation = 0;
+            triggerName = "playerAttackRight";
+            lastFacing = new Vector2(1, 0);
+        }
+        else if (upRight)
+        {
+            hitBoxPos = new Vector2(playerPos.x + playerColliderSize.x, playerPos.y + playerColliderSize.y);
+            rotation = 45;
+            triggerName = "playerAttackUpRight";
+            lastFacing = new Vector2(1, 1);
+        }
+        else if (up)
+        {
+            hitBoxPos = new Vector2(playerPos.x, playerPos.y + playerColliderSize.y);
+            rotation = 90;
+            triggerName = "playerAttackUp";
+            lastFacing = new Vector2(0, 1);
+        }
+        else if (upLeft)
+        {
+            hitBoxPos = new Vector2(playerPos.x - playerColliderSize.x, playerPos.y + playerColliderSize.y);
+            rotation = 135;
+            triggerName = "playerAttackUpLeft";
+            lastFacing = new Vector2(-1, 1);
+        }
+        else if (left)
+        {
+            hitBoxPos = new Vector2(playerPos.x - playerColliderSize.x, playerPos.y);
+            rotation = 180;
+            triggerName = "playerAttackLeft";
+            lastFacing = new Vector2(-1, 0);
+        }
+        else if (downLeft)
+        {
+            hitBoxPos = new Vector2(playerPos.x - playerColliderSize.x, playerPos.y - playerColliderSize.y);
+            rotation = 225;
+            triggerName = "playerAttackDownLeft";
+            lastFacing = new Vector2(-1, -1);
+        }
+        else if (down)
+        {
+            hitBoxPos = new Vector2(playerPos.x, playerPos.y - playerColliderSize.y);
+            rotation = 270;
+            triggerName = "playerAttackDown";
+            lastFacing = new Vector2(0, -1);
+        }
+        else if (downRight)
+        {
+            hitBoxPos = new Vector2(playerPos.x + playerColliderSize.x, playerPos.y - playerColliderSize.y);
+            rotation = 315;
+            triggerName = "playerAttackDownRight";
+            lastFacing = new Vector2(1, -1);
+        }
+        else
+        {
+            // Should never get here, one of the eight booleans should be true.
+            print("Player striking failed. \n + "
+                + "MousePos: " + mousePos.ToString() + ", \n"
+                + "PlayerPos: " + playerPos.ToString() + ", \n"
+                + "Angle: " + angle.ToString() + ". \n");
+        }
     }
 
     public void TakeDamage(int damage)
