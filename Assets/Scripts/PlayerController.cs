@@ -241,7 +241,7 @@ public class PlayerController : MonoBehaviour
                 else if (attackAnimDone && attacksDone != attacksInputted)
                 {
 
-                    /* Moves player forward on hit. */
+                    /* Moves the player forward on hit. */
                     inputX = Input.GetAxisRaw("HorizontalAD");
                     inputY = Input.GetAxisRaw("VerticalWS");
                     if (inputX != 0 || inputY != 0)
@@ -272,7 +272,6 @@ public class PlayerController : MonoBehaviour
 
                     /* Start the coroutines for the hitbox spawntime and animation time. */
                     StartCoroutine(HitBoxTimer(HITBOX_LIFE_TIME, hitBox));
-
                     attackAnimDone = false;
                     attackAnim = AttackAnimationDone(ATTACK_ANIM_PERIOD);
                     StartCoroutine(attackAnim);
@@ -280,10 +279,7 @@ public class PlayerController : MonoBehaviour
                     gracePeriod = AttackGraceTimer(ATTACK_GRACE_PERIOD);
                     StartCoroutine(gracePeriod);
 
-                    attacksDone++;
-
                     /* Play the appropriate sound. */
-                    //int sound = Random.Range(1, 3);
                     int sound;
                     switch (attacksDone)
                     {
@@ -301,6 +297,9 @@ public class PlayerController : MonoBehaviour
                             break;
                     }
                     AudioManager.Instance.Play("Swing " + sound);
+
+                    /* Increment the attack counter by one. */
+                    attacksDone++;
                 }
                 break;
 
@@ -333,6 +332,8 @@ public class PlayerController : MonoBehaviour
         rb.velocity = movement * Time.deltaTime;
     }
 
+    /* Used to calculate the orientation of the attack animation and the placement of the strike box.
+     *  Takes in ref variables that will be changed. */
     private void CalculateStrikeBox(ref Vector3 hitBoxPos, ref float rotation, ref string triggerName)
     {
         /* Gets the mouse's world position, not screen position. */
@@ -362,8 +363,6 @@ public class PlayerController : MonoBehaviour
         bool downLeft = (angle <= 247.5d && angle > 202.5d) ? true : false;
         bool down = (angle <= 292.5d && angle > 247.5d) ? true : false;
         bool downRight = (angle <= 337.5d && angle > 292.5d) ? true : false;
-
-        print("Point: " + point.ToString() + ", \n");
 
         /* Depending on the direction of the mouse click, create a hitbox at the appropriate position,
          * and setup the animation triggers and idle position for after the animation ends. */
