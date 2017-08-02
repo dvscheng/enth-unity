@@ -12,15 +12,12 @@ public class UIQuestTracker : MonoBehaviour {
     }
     #endregion
 
-    ItemDatabaseSO itemDatabase;
+    public Transform questContentArea;  // UNITY
 
-    public GameObject questContentArea;  // UNITY
-
-    readonly float PADDING_FROM_TOP = -27f;
-    readonly float BLOCK_HEIGHT = 45f;
     int currNumQuests = 0;
-    List<GameObject> quests;
+    List<GameObject> questGOs;
     List<float> blockHeights;
+    QuestDatabase questDatabase;
 
     // Use this for initialization
     void Awake()
@@ -39,33 +36,27 @@ public class UIQuestTracker : MonoBehaviour {
         //DontDestroyOnLoad(gameObject); already in UI 
         #endregion
 
-        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
-        quests = new List<GameObject>();
+        questDatabase = ScriptableObject.CreateInstance<QuestDatabase>();
+        questGOs = new List<GameObject>();
         blockHeights = new List<float>();
     }
 
     /* Notify each quest that there is a potential change. */
     public void NotifyQuests(int itemID, int amount)
     {
-        foreach (GameObject questBlockGO in quests)
+        foreach (GameObject questBlockGO in questGOs)
         {
             /* Notify the QuestsBlock that there is a potential change. */
             questBlockGO.GetComponent<UIQuestBlock>().NotifyChange(itemID, amount);
         }
     }
 
-    /* VISUAL: Refresh and update the UI placement and visuals of the UI. */
-    public void RefreshTrackerUI()
-    {
-
-    }
-
     /* VISUAL: Update the progress of the specified quest. */
     private void RefreshQuest(Quest quest)
     {
-        for (int i = 0; i < quests.Count; i++)
+        for (int i = 0; i < questGOs.Count; i++)
         {
-            UIQuestBlock questBlock = quests[i].GetComponent<UIQuestBlock>();
+            UIQuestBlock questBlock = questGOs[i].GetComponent<UIQuestBlock>();
             if (questBlock.LinkedQuest.Equals(quest))
             {
                 questBlock.RefreshVisuals();
@@ -77,34 +68,34 @@ public class UIQuestTracker : MonoBehaviour {
     public void AddQuest(Quest quest)
     {
         /* Adds the number of paddings and block heights. */
-        float distanceFromTop = (PADDING_FROM_TOP * (currNumQuests + 1));           //negative
-        for (int i = 0; i < blockHeights.Count; i++)
-        {
-            distanceFromTop += blockHeights[i];
-        }
-
-        Vector2 pos = new Vector2(0, distanceFromTop);
-        GameObject NewUIQuestBlock = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/UIQuestBlock"), pos, Quaternion.identity, gameObject.transform);
+        GameObject NewUIQuestBlock = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/UIQuestBlock"), questContentArea);
         NewUIQuestBlock.GetComponent<UIQuestBlock>().Initialize(quest);
 
-        quests.Add(NewUIQuestBlock);
+        questGOs.Add(NewUIQuestBlock);
         currNumQuests++;
-
-        RefreshTrackerUI();
     }
 
     /* Removes the given quest. */
     public void RemoveQuest(Quest quest)
     {
-        for (int i = 0; i < quests.Count; i++)
+        for (int i = 0; i < questGOs.Count; i++)
         {
-            GameObject q = quests[i];
+            GameObject q = questGOs[i];
             if (q.GetComponent<Quest>().Equals(quest)) {
-                quests.RemoveAt(i);
+                questGOs.RemoveAt(i);
                 Destroy(q);
 
                 Debug.Log("Successfully removed a quest.");
             }
         }
+    }
+
+    /*******************************************
+     DEBUGGING
+    *******************************************/
+
+    public void AddRandomQuest()
+    {
+        AddQuest(questDatabase.questInfo[1]);
     }
 }

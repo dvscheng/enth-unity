@@ -36,6 +36,9 @@ public class Quest {
                 {
                     return true;
                 }
+            } else
+            {
+                // other types
             }
         }
         return false;

@@ -9,11 +9,14 @@ public class QuestDatabase : ScriptableObject {
         chief
     }
 
-    ItemDatabaseSO itemDatabase = CreateInstance<ItemDatabaseSO>();
-	public readonly Dictionary<int, Quest> questInfo = new Dictionary<int, Quest>();
+    ItemDatabaseSO itemDatabase;
+	public Dictionary<int, Quest> questInfo;
 
     public void OnEnable()
     {
+        itemDatabase = CreateInstance<ItemDatabaseSO>();
+        questInfo = new Dictionary<int, Quest>();
+
         QuestObjective objective1 = new ItemQuestObjective( "Collect mushrooms",
             (int)ItemDatabaseSO.ItemID.mushroom, 3);
         QuestObjective objective2 = new ItemQuestObjective("Collect rocks",
@@ -21,9 +24,9 @@ public class QuestDatabase : ScriptableObject {
         questInfo[(int)NPC_ID.yellowHood] = new Quest((int)NPC_ID.yellowHood, new QuestObjective[] { objective1, objective2 });
 
         QuestObjective objective3 = new ItemQuestObjective("Collect mushrooms",
-            (int)ItemDatabaseSO.ItemID.mushroom, 3);
+            (int)ItemDatabaseSO.ItemID.mushroom, 2);
         QuestObjective objective4 = new ItemQuestObjective("Collect rocks",
-            (int)ItemDatabaseSO.ItemID.rock, 3);
+            (int)ItemDatabaseSO.ItemID.rock, 2);
         questInfo[(int)NPC_ID.chief] = new Quest((int)NPC_ID.chief, new QuestObjective[] { objective1, objective2 });
     }
 }

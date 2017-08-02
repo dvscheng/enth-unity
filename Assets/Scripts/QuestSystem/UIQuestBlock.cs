@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIQuestBlock : MonoBehaviour {
-    public RectTransform rect;
     private Quest linkedQuest;
     public Quest LinkedQuest
     {
@@ -20,11 +19,6 @@ public class UIQuestBlock : MonoBehaviour {
         itemDB = ScriptableObject.CreateInstance<ItemDatabaseSO>();
     }
 
-    void OnEnable()
-    {
-        RefreshVisuals();
-    }
-
     /* Initializes all QuestBlocks. */
     public void Initialize(Quest quest)
     {
@@ -36,10 +30,7 @@ public class UIQuestBlock : MonoBehaviour {
         for (int i = 0; i < questObjectives.Count; i++)
         {
             GameObject NewUIQuestObjective = Instantiate(
-                Resources.Load<GameObject>("Prefabs/QuestSystem/UIQuestObjective"),
-                new Vector2(0, (DISTANCE_BETWEEN_OBJECTIVES + 45) * i),
-                Quaternion.identity,
-                gameObject.transform);
+                Resources.Load<GameObject>("Prefabs/QuestSystem/UIQuestObjective"), gameObject.transform);
 
             QuestObjective questObjective = questObjectives[i];
             if (questObjective is ItemQuestObjective)
@@ -50,6 +41,7 @@ public class UIQuestBlock : MonoBehaviour {
                     (questObjective as ItemQuestObjective).AmountCompleted + "/" + (questObjective as ItemQuestObjective).AmountNeeded;
                 NewUIQuestObjective.transform.GetChild(2).GetComponent<Text>().text =
                     (questObjective as ItemQuestObjective).Description;
+                (questObjective as ItemQuestObjective).CheckInventory();
             } else
             {
                 //other types
@@ -74,6 +66,9 @@ public class UIQuestBlock : MonoBehaviour {
                     (questObjective as ItemQuestObjective).AmountCompleted + "/" + (questObjective as ItemQuestObjective).AmountNeeded;
                 questObjectiveGO.transform.GetChild(2).GetComponent<Text>().text =
                     (questObjective as ItemQuestObjective).Description;
+            } else
+            {
+                // other types
             }
         }
     }

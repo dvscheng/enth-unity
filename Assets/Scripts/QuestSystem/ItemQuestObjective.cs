@@ -41,12 +41,10 @@ public class ItemQuestObjective : QuestObjective {
         itemNeeded = item;
         amountNeeded = amount;
         amountCompleted = 0;
-
-        CheckInventory();
     }
 
-    /*Checks for items already existing in the inventory. */
-    private void CheckInventory()
+    /* Checks for items already existing in the inventory. */
+    public void CheckInventory()
     {
         int amountInInventory = PlayerInventory.Instance.FindInInventory(itemNeeded);
         if (amountInInventory > 0)

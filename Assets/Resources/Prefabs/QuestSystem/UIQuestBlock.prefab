@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 222666027677500822}
   - component: {fileID: 114317940218910202}
   - component: {fileID: 114980378435995486}
+  - component: {fileID: 114075627430153362}
+  - component: {fileID: 114875877596582596}
   m_Layer: 5
   m_Name: UIQuestBlock
   m_TagString: Untagged
@@ -29,6 +31,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114075627430153362
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175701578149294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 3
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
 --- !u!114 &114317940218910202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -56,6 +80,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114875877596582596
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175701578149294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
 --- !u!114 &114980378435995486
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -67,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f824fc76b6e7454784c8be0ebee52aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rect: {fileID: 224362071292791044}
+  questObjectiveGOs: []
 --- !u!222 &222666027677500822
 CanvasRenderer:
   m_ObjectHideFlags: 1
