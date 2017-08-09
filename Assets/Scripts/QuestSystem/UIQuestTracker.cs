@@ -41,16 +41,6 @@ public class UIQuestTracker : MonoBehaviour {
         blockHeights = new List<float>();
     }
 
-    /* Notify each quest that there is a potential change. */
-    public void NotifyQuests(int itemID, int amount)
-    {
-        foreach (GameObject questBlockGO in questGOs)
-        {
-            /* Notify the QuestsBlock that there is a potential change. */
-            questBlockGO.GetComponent<UIQuestBlock>().NotifyChange(itemID, amount);
-        }
-    }
-
     /* VISUAL: Update the progress of the specified quest. */
     private void RefreshQuest(Quest quest)
     {
@@ -90,9 +80,33 @@ public class UIQuestTracker : MonoBehaviour {
         }
     }
 
-    /*******************************************
+    /************************************
+     'Notify' methods
+    ************************************/
+
+    /* Notify each quest that there is a potential change. */
+    public void NotifyQuests(int itemID, int amount)
+    {
+        foreach (GameObject questBlockGO in questGOs)
+        {
+            /* Notify the QuestsBlock that there is a potential change. */
+            questBlockGO.GetComponent<UIQuestBlock>().NotifyChange(itemID, amount);
+        }
+    }
+
+    /* Notify each quest that there is a potential change. */
+    public void NotifyQuests(int NPC_ID)
+    {
+        foreach (GameObject questBlockGO in questGOs)
+        {
+            /* Notify the QuestsBlock that there is a potential change. */
+            questBlockGO.GetComponent<UIQuestBlock>().NotifyChange(NPC_ID);
+        }
+    }
+
+    /****************************************************************************************************
      DEBUGGING
-    *******************************************/
+    ****************************************************************************************************/
 
     public void AddRandomQuest()
     {

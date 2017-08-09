@@ -29,23 +29,12 @@ public class UIQuestBlock : MonoBehaviour {
         List<QuestObjective> questObjectives = quest.QuestObjectives;
         for (int i = 0; i < questObjectives.Count; i++)
         {
-            GameObject NewUIQuestObjective = Instantiate(
-                Resources.Load<GameObject>("Prefabs/QuestSystem/UIQuestObjective"), gameObject.transform);
-
+            GameObject NewUIQuestObjective = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/UIQuestObjective"), gameObject.transform);
             QuestObjective questObjective = questObjectives[i];
-            if (questObjective is ItemQuestObjective)
-            {
-                NewUIQuestObjective.transform.GetChild(0).GetComponent<Image>().sprite =
-                    itemDB.itemList[(questObjective as ItemQuestObjective).ItemNeeded].sprite;
-                NewUIQuestObjective.transform.GetChild(1).GetComponent<Text>().text =
-                    (questObjective as ItemQuestObjective).AmountCompleted + "/" + (questObjective as ItemQuestObjective).AmountNeeded;
-                NewUIQuestObjective.transform.GetChild(2).GetComponent<Text>().text =
-                    (questObjective as ItemQuestObjective).Description;
-                (questObjective as ItemQuestObjective).CheckInventory();
-            } else
-            {
-                //other types
-            }
+            NewUIQuestObjective.transform.GetChild(0).GetComponent<Image>().sprite = itemDB.itemList[questObjective.ObjectiveNeeded].sprite;
+            NewUIQuestObjective.transform.GetChild(1).GetComponent<Text>().text = questObjective.AmountCompleted + "/" + questObjective.AmountNeeded;
+            NewUIQuestObjective.transform.GetChild(2).GetComponent<Text>().text = questObjective.Description;
+            questObjective.InitializeObjective();
 
             questObjectiveGOs.Add(NewUIQuestObjective);
         }
@@ -58,18 +47,9 @@ public class UIQuestBlock : MonoBehaviour {
         {
             GameObject questObjectiveGO = questObjectiveGOs[i];
             QuestObjective questObjective = questObjectiveGO.GetComponent<QuestObjective>();
-            if (questObjective is ItemQuestObjective)
-            {
-                questObjectiveGO.transform.GetChild(0).GetComponent<Image>().sprite =
-                    itemDB.itemList[(questObjective as ItemQuestObjective).ItemNeeded].sprite;
-                questObjectiveGO.transform.GetChild(1).GetComponent<Text>().text =
-                    (questObjective as ItemQuestObjective).AmountCompleted + "/" + (questObjective as ItemQuestObjective).AmountNeeded;
-                questObjectiveGO.transform.GetChild(2).GetComponent<Text>().text =
-                    (questObjective as ItemQuestObjective).Description;
-            } else
-            {
-                // other types
-            }
+            questObjectiveGO.transform.GetChild(0).GetComponent<Image>().sprite = itemDB.itemList[questObjective.ObjectiveNeeded].sprite;
+            questObjectiveGO.transform.GetChild(1).GetComponent<Text>().text = questObjective.AmountCompleted + "/" + questObjective.AmountNeeded;
+            questObjectiveGO.transform.GetChild(2).GetComponent<Text>().text = questObjective.Description;
         }
     }
 
@@ -77,6 +57,15 @@ public class UIQuestBlock : MonoBehaviour {
     public void NotifyChange(int itemID, int amount)
     {
         if (linkedQuest.NotifyChange(itemID, amount))
+        {
+            RefreshVisuals();
+        }
+    }
+
+    /* Notifies the quest of a potential change and then checks if there needs to be an update. */
+    public void NotifyChange(int NPC_ID)
+    {
+        if (linkedQuest.NotifyChange(NPC_ID))
         {
             RefreshVisuals();
         }

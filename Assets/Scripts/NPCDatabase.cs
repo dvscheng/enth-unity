@@ -16,6 +16,10 @@ public class NPCDatabase : ScriptableObject
      * EVERY NPC MUST HAVE AT LEAST 4 STRING[]s. */
     public readonly Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
 
+
+    /* Name, Sprite Directory, Neutral text, Giving quest text, */
+    public readonly Dictionary<int, string[][]> idToDialogues = new Dictionary<int, string[][]>();
+
     public string[] QuestNotCompleteString
     {
         get { return new string[] { "You don't seem to have finished the quest." }; }
@@ -30,6 +34,16 @@ public class NPCDatabase : ScriptableObject
             new string[] { "Hi there! How are you?", "I've been having trouble collecting some items.", "Are you up for a task?" },
             new string[] { "Thanks for your help, friend!" },
             new string[] { "Thanks again for the help." }
+        };
+
+        idToDialogues[0] = new string[][]
+        {
+            new string[] { "Name"},
+            new string[] { "Sprite Directory" },
+            new string[] { "Neutral text" },
+            /* First quest */
+            new string[] { "Giving quest text" },
+            new string[] { "Quest completion text" }
         };
     }
 }

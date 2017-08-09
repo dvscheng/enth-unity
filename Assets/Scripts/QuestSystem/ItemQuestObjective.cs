@@ -1,55 +1,21 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemQuestObjective : QuestObjective {
-    string description;
-    public string Description
-    {
-        get
-        {
-            return description;
-        }
-    }
-    int itemNeeded;
-    public int ItemNeeded
-    {
-        get
-        {
-            return itemNeeded;
-        }
-    }
-    int amountNeeded;
-    public int AmountNeeded
-    {
-        get
-        {
-            return amountNeeded;
-        }
-    }
-    int amountCompleted;
-    public int AmountCompleted
-    {
-        get
-        {
-            return amountCompleted;
-        }
-    }
 
-	public ItemQuestObjective(string description, int item, int amount)
+    public override void InitializeObjective()
     {
-        this.description = description;
-        itemNeeded = item;
-        amountNeeded = amount;
-        amountCompleted = 0;
+        CheckInventory();
+        /* Do nothing.
+         * Allow children to modify if needed.*/
     }
 
     /* Checks for items already existing in the inventory. */
     public void CheckInventory()
     {
-        int amountInInventory = PlayerInventory.Instance.FindInInventory(itemNeeded);
+        int amountInInventory = PlayerInventory.Instance.FindInInventory(objectiveNeeded);
         if (amountInInventory > 0)
         {
-            amountCompleted += PlayerInventory.Instance.FindInInventory(itemNeeded);
+            amountCompleted += PlayerInventory.Instance.FindInInventory(objectiveNeeded);
             if (amountCompleted >= amountNeeded)
             {
                 isCompleted = true;
@@ -58,9 +24,10 @@ public class ItemQuestObjective : QuestObjective {
     }
 
     /* Called to signify a potential change to the quest. */
-    public void NotifyChange(int itemID, int amount)
+    public override void NotifyChange(int itemID, int amount)
     {
-        if (itemID == itemNeeded)
+        Debug.Log("Overriden method called.");
+        if (itemID == objectiveNeeded)
         {
             amountCompleted += amount;
             if (amountCompleted < 0)
@@ -75,5 +42,16 @@ public class ItemQuestObjective : QuestObjective {
                 isCompleted = false;
             }
         }
+    }
+
+    /************************************
+     Used in NPCDatabase ONLY
+    ************************************/
+    public ItemQuestObjective(string description, int item, int amount)
+    {
+        this.description = description;
+        objectiveNeeded = item;
+        amountNeeded = amount;
+        amountCompleted = 0;
     }
 }

@@ -27,20 +27,32 @@ public class Quest {
         return true, otherwise return false. */
     public bool NotifyChange(int itemID, int amount)
     {
+        bool changed = false;
         foreach (QuestObjective questObjective in questObjectives)
         {
-            if (questObjective is ItemQuestObjective)
+            questObjective.NotifyChange(itemID, amount);
+            if (changed == false && questObjective.IsCompleted)
             {
-                (questObjective as ItemQuestObjective).NotifyChange(itemID, amount);
-                if (questObjective.IsCompleted)
-                {
-                    return true;
-                }
-            } else
-            {
-                // other types
+                changed = true;
             }
         }
-        return false;
+        return changed;
+    }
+
+    /* Notifies each QuestObjective of a change. If a QuestObjective is changed as a result of this,
+        return true, otherwise return false. */
+    public bool NotifyChange(int NPC_ID)
+    {
+        // TODO REPEATED CODE
+        bool changed = false;
+        foreach (QuestObjective questObjective in questObjectives)
+        {
+            questObjective.NotifyChange(NPC_ID);
+            if (changed == false && questObjective.IsCompleted)
+            {
+                changed = true;
+            }
+        }
+        return changed;
     }
 }
