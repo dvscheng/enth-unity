@@ -34,7 +34,7 @@ public class PlayerInventory : MonoBehaviour {
     public int numMats = 0;
     /* Used to notify subscribers that an item has been added. */
     public delegate void NotifyAddedItem(int itemID, int amount);
-    public static event NotifyAddedItem onAddItem;
+    public static event NotifyAddedItem OnAddItem;
 
     ItemDatabaseSO itemDatabase;
 
@@ -136,9 +136,9 @@ public class PlayerInventory : MonoBehaviour {
                 break;
         }
 
-        if (addedSuccessfully && onAddItem != null)
+        if (addedSuccessfully && OnAddItem != null)
         {
-            onAddItem(item.id, amount);
+            OnAddItem(item.id, amount);
         }
 
         return addedSuccessfully;

@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class NPCQuestObjective : QuestObjective {
+
     public override void NotifyChange(int NPC_id)
     {
         if (NPC_id == objectiveNeeded)
@@ -10,7 +11,7 @@ public class NPCQuestObjective : QuestObjective {
     }
 
     /************************************
-     Used in NPCDatabase ONLY
+     Used in QuestDatabase ONLY
     ************************************/
     public NPCQuestObjective(string description, int NPC_ID, int amount)
     {

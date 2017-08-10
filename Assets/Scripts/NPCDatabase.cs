@@ -1,15 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-//[CreateAssetMenu]
 public class NPCDatabase : ScriptableObject
 {
 
     public enum ID
     {
-        yellowHood,
+        example,
+        desert_master,
+        desert_alchemist,
+        desert_historian,
+        desert_blacksmith,
+        desert_merchant,
+        desert_yellowHood,
     }
 
     /* (NPC_ID, [["Name"], ["Sprite Directory"], ["Initial text"], ["Quest complete text"], ["Dialogue after quest complete."]]).
@@ -27,7 +30,7 @@ public class NPCDatabase : ScriptableObject
 
     public void OnEnable()
     {
-        valuesDictionary[(int)ID.yellowHood] = new string[][]
+        valuesDictionary[(int)ID.desert_master] = new string[][]
         {
             new string[] { "Yellow Hood" },
             new string[] { "Sprites/mushroom (2)" },
@@ -36,14 +39,21 @@ public class NPCDatabase : ScriptableObject
             new string[] { "Thanks again for the help." }
         };
 
-        idToDialogues[0] = new string[][]
+        /* Example template. */
+        idToDialogues[(int)ID.example] = new string[][]
         {
-            new string[] { "Name"},
-            new string[] { "Sprite Directory" },
-            new string[] { "Neutral text" },
-            /* First quest */
-            new string[] { "Giving quest text" },
-            new string[] { "Quest completion text" }
+            new string[] { "Name"},                             // NPC name
+            new string[] { "NPC sprite directory"},             // Directory of character's sprite
+            new string[] { "Dialogue sprite directory" },       // Directory of sprite that will show in dialogues
+            new string[] { "Neutral text" },                    // Neutral/normal text
+        };
+
+        idToDialogues[(int)ID.desert_master] = new string[][]
+        {
+            new string[] { "Name"},                             // NPC name
+            new string[] { "NPC sprite directory"},             // Directory of character's sprite
+            new string[] { "Sprite Directory" },                // Sprite directory
+            new string[] { "Neutral text" },                    // Neutral/normal text
         };
     }
 }

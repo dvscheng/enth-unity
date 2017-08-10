@@ -18,89 +18,46 @@ public class DialogueManager : MonoBehaviour {
     int lineNumber = 1;
     bool resetNextIteration = false;
 
-
+    
 
     // Use this for initialization
     void Awake () {
         NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
 	}
 
-    /* StartDialogue should ALWAYS be called first. */
-    private void Update()
+    void Update()
     {
-        /* If users presses space, the dialogue UI is on and, just in case, StartDialogue has been called... */
-        if (Inputs.Instance.interaction_key_down && UIManager.Instance.dialogueUIOn && NPC != null)
-        {
-            /* If we reach the end of the dialogue... */
-            if (lineNumber >= textLines.Length)
-            {
-                if (NPC.IsQuestGiver)
-                {
-                    /* If the NPC is a quest giver AND this NPC's quest has been accepted... */
-                    if (NPC.givenQuest)
-                    {
-                        /* If the quest is complete, give the rewards to the player. */
-                        if (NPC.Quest.IsComplete)
-                        {
-                            NPC.Quest.Complete();
-                        }
-                        ResetDialogue();
-                    }
-                    else
-                    {
-                        /* If there isn't already a quest dialogue up, create one. */
-                        if (questDialogueObj == null)
-                        {
-                            questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
-                            questDialogueObj.GetComponent<QuestDialogue>().Initialize(_NPC);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                NPCDialogueText.text = textLines[lineNumber];
-                lineNumber++;
-            }
-        }
+        //questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
+        //questDialogueObj.GetComponent<QuestDialogue>().Initialize(_NPC);
+        
     }
 
-    public void NPCInteraction(NPCs NPC_ID, CollectQuest quest)
+    /* Notify that an NPC has been interacted with. */
+    public void NPCInteraction(NPCs NPC)
     {
-        /* Get the NPC's dialogue values. */
-        string[][] values = NPCData.valuesDictionary[NPC_ID.ID];
-        string name = values[0][0];
-        string spriteLocation = values[1][0];
-        textLines = values[2];
+        GameObject newDialogue = Instantiate(Resources.Load<GameObject>("Prefabs/NPC Dialogue"), gameObject.transform);
+        newDialogue.transform.GetChild(0).GetComponent<Text>().text = NPC.CharacterName;
+        newDialogue.transform.GetChild(1).GetComponent<Image>().sprite = NPC.DialogueSprite;
 
-        /* Create and map values to the Dialogue GameObject's name and portait. */
-        newDialogue = Instantiate(Resources.Load<GameObject>("Prefabs/NPC Dialogue"), gameObject.transform);
-        GameObject NPCName = newDialogue.transform.GetChild(0).gameObject;
-        GameObject NPCPortait = newDialogue.transform.GetChild(1).gameObject;
-        NPCName.GetComponent<Text>().text = name;
-        NPCPortait.GetComponent<Image>().sprite = Resources.Load<Sprite>(spriteLocation);
-
-        /* Handle displaying the text. */
-        if (NPC_ID.IsQuestGiver && NPC_ID.givenQuest)
+        // check if a quest is finished
+        // go through every quest, of the ones completed, is the end npc this one?
+        // if so then complete it
+        List<Quest> allReadyQuests = UIQuestTracker.Instance.AllQuests(true);
+        foreach (Quest quest in allReadyQuests)
         {
-            if (quest.IsComplete)
-                textLines = values[3];
-            else
-                textLines = NPCData.QuestNotCompleteString;
-        } else if (!NPC_ID.IsQuestGiver && NPC_ID.givenQuest)
-        {
-            /* NPC is not a questgiver but has given a quest. */
-            textLines = values[4];
+            if (quest.EndNPC == NPC.ID)
+            {
+                // complete the quest and show the appropriate dialogue
+                return;
+            }
         }
 
-        NPCDialogueText = newDialogue.transform.GetChild(2).gameObject.GetComponent<Text>();
-        NPCDialogueText.text = textLines[0];
 
+
+        // then check if a quest is to be given
 
         UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, true);
 
-        /* Indicates that initialization was a success. */
-        _NPC = NPC_ID;
     }
 
     /* Destroys and resets the dialogue manager, including the quest dialogue if there is one. */

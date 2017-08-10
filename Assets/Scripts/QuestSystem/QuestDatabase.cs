@@ -3,30 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestDatabase : ScriptableObject {
-    public enum NPC_ID
-    {
-        yellowHood, // indexed starting at 1
-        chief
-    }
 
-    ItemDatabaseSO itemDatabase;
-	public Dictionary<int, Quest> questInfo;
+    /* (NPC_ID, Quest). */
+	public Dictionary<int, List<Quest>> npcIDToQuests;
 
     public void OnEnable()
     {
-        itemDatabase = CreateInstance<ItemDatabaseSO>();
-        questInfo = new Dictionary<int, Quest>();
+        npcIDToQuests = new Dictionary<int, List<Quest>>();
 
-        QuestObjective objective1 = new ItemQuestObjective( "Collect mushrooms",
-            (int)ItemDatabaseSO.ItemID.mushroom, 3);
-        QuestObjective objective2 = new ItemQuestObjective("Collect rocks",
-            (int)ItemDatabaseSO.ItemID.rock, 3);
-        questInfo[(int)NPC_ID.yellowHood] = new Quest((int)NPC_ID.yellowHood, new QuestObjective[] { objective1, objective2 });
+        npcIDToQuests[(int)NPCDatabase.ID.example] = new List<Quest>(new Quest[]
+            {
+            new Quest(
+                0,
+                new int[] { },                                                                                                          // The quests (their ids) that are required for this quest to start
+                (int)NPCDatabase.ID.example,                                                                                            // The NPC that gives the quest
+                (int)NPCDatabase.ID.example,                                                                                            // The NPC that completes the quest
+                new string[] { "Start dialogue" },                                                                                      // Start dialogue
+                new string[] { "End dialogue" },                                                                                        // End dialogue 
+                new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),         // (Objective description, item ID, amount to be collected)
+                                       new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.rock, 2) }
+                ),
+            new Quest(
+                1,
+                new int[] { },
+                (int)NPCDatabase.ID.example,
+                (int)NPCDatabase.ID.example,
+                new string[] { "Start dialogue" },
+                new string[] { "End dialogue" },
+                new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),
+                                       new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.rock, 2) }
+                ),
+            }
+        );
 
-        QuestObjective objective3 = new ItemQuestObjective("Collect mushrooms",
-            (int)ItemDatabaseSO.ItemID.mushroom, 2);
-        QuestObjective objective4 = new ItemQuestObjective("Collect rocks",
-            (int)ItemDatabaseSO.ItemID.rock, 2);
-        questInfo[(int)NPC_ID.chief] = new Quest((int)NPC_ID.chief, new QuestObjective[] { objective1, objective2 });
+        npcIDToQuests[(int)NPCDatabase.ID.desert_master] = new List<Quest>(new Quest[]
+            {
+            new Quest(
+                2,
+                new int[] { },
+                (int)NPCDatabase.ID.desert_master,
+                (int)NPCDatabase.ID.desert_master,
+                new string[] { "Start dialogue" },
+                new string[] { "End dialogue" },
+                new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),
+                                       new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.rock, 2) }
+                ),
+            }
+        );
     }
 }

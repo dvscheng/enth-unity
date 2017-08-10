@@ -39,8 +39,10 @@ public class QuestDialogue : MonoBehaviour {
             secondItemID = UnityEngine.Random.Range(1, numItems);
             tries--;
         }
-        firstAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
-        secondAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
+
+        // FIX
+        //firstAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
+        //secondAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
 
         /* Sets the sprites and amounts for the two items. */
         firstImage.GetComponent<Image>().sprite = itemDatabase.itemList[firstItemID].sprite;
@@ -62,12 +64,11 @@ public class QuestDialogue : MonoBehaviour {
         else
         {
             /* Initialize the prefab for the quest UI item. */
-            GameObject newQuest = Instantiate(Resources.Load<GameObject>("Prefabs/QuestItem"), QuestTrackerUI.Instance.questObjectArea.transform);
-            CollectQuest quest = newQuest.GetComponent<CollectQuest>();
-            quest.Initialize(_NPC, firstItemID, secondItemID, firstAmount, secondAmount);
+            //GameObject newQuest = Instantiate(Resources.Load<GameObject>("Prefabs/QuestItem"), QuestTrackerUI.Instance.questObjectArea.transform);
+            //CollectQuest quest = newQuest.GetComponent<CollectQuest>();
+            //quest.Initialize(_NPC, firstItemID, secondItemID, firstAmount, secondAmount);
             UIManager.Instance.dialogue.NPC.givenQuest = true;
 
-            _NPC.Quest = quest;
             Close();
         }
     }

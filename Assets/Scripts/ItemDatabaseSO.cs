@@ -4,6 +4,21 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item Database SO", menuName = "Item Database SO", order = 1)]
 public class ItemDatabaseSO : ScriptableObject {
+    /* 
+       When adding items:
+     
+         1. Add to ItemID enum.
+         2. Create and add to dictionary.
+         3. Add to monster drop tables.
+         
+       When adding monsters:
+
+         1. Add to MobID enum.
+         2. Add to the 4 drop rate types to the monster drop table.
+     */
+
+
+
     public enum ItemID
     {
         mushroom,
@@ -61,10 +76,12 @@ public class ItemDatabaseSO : ScriptableObject {
         int numMobs = Enum.GetValues(typeof(MobID)).Length;
         int numDropRateTypes = Enum.GetValues(typeof(DropRateType)).Length;
         dropTable = new int[numMobs, numDropRateTypes];
+
         dropTable[(int)MobID.Slime, (int)DropRateType.common] = (int)ItemID.leatherMail;
         dropTable[(int)MobID.Slime, (int)DropRateType.uncommon] = (int)ItemID.leatherMail;
         dropTable[(int)MobID.Slime, (int)DropRateType.rare] = (int)ItemID.mushroom;
         dropTable[(int)MobID.Slime, (int)DropRateType.legendary] = (int)ItemID.rock;
+
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.common] = (int)ItemID.rock;
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.uncommon] = (int)ItemID.rock;
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.rare] = (int)ItemID.rock;
@@ -72,7 +89,7 @@ public class ItemDatabaseSO : ScriptableObject {
     }
 
     /* Creates a new EquipItems with the specified ItemType and adds it to the list.*/
-    void CreateAndAddEquip(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+    private void CreateAndAddEquip(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int attack, int defence, int hp, float defencePen, float mastery)
     {
         ItemObject item = CreateInstance<EquipItems>();
@@ -88,7 +105,7 @@ public class ItemDatabaseSO : ScriptableObject {
     }
 
     /* Creates a new UseItems with the specified ItemType and adds it to the list.*/
-    void CreateAndAddUse(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+    private void CreateAndAddUse(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int restoreHp, int maxAmount)
     {
         ItemObject item = CreateInstance<UseItems>();
@@ -101,7 +118,7 @@ public class ItemDatabaseSO : ScriptableObject {
     }
 
     /* Creates a new MatItems with the specified ItemType and adds it to the list.*/
-    void CreateAndAddMat(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+    private void CreateAndAddMat(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int maxAmount)
     {
         ItemObject item = CreateInstance<MatItems>();
@@ -113,7 +130,7 @@ public class ItemDatabaseSO : ScriptableObject {
     }
 
     /* Initializes the ItemObject parameters. */
-    void InitializeBaseItem(ItemObject item, int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText)
+    private void InitializeBaseItem(ItemObject item, int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText)
     {
         item.id = id;
         item.type = type;

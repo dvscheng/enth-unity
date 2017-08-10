@@ -44,7 +44,7 @@ public class ItemQuestObjective : QuestObjective {
     }
 
     /************************************
-     Used in NPCDatabase ONLY
+     Used in QuestDatabase ONLY
     ************************************/
     public ItemQuestObjective(string description, int item, int amount)
     {
