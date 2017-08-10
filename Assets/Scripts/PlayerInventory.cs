@@ -32,6 +32,9 @@ public class PlayerInventory : MonoBehaviour {
     public int numEquips = 0;
     public int numUse = 0;
     public int numMats = 0;
+    /* Used to notify subscribers that an item has been added. */
+    public delegate void NotifyAddedItem(int itemID, int amount);
+    public static event NotifyAddedItem onAddItem;
 
     ItemDatabaseSO itemDatabase;
 
@@ -115,22 +118,30 @@ public class PlayerInventory : MonoBehaviour {
     /* Gets the correct grid depending on the item's type; returns true IFF item is added successfully. */
     public bool AddToInventory(ItemObject item, int amount)
     {
-        QuestTrackerUI.Instance.NotifyQuestTracker(item, amount);
-
+        bool addedSuccessfully = false;
         /* Depending on the item's type, update the appropriate grid and add the item to the new slot/increase the count (assumes accessing array in dictionary
          *  is not a reference) . */
         switch (item.type)
         {
             case (int)ItemDatabaseSO.ItemType.equip:
-                return AddItemToSpecificGrid(equipmentGridLocation, equipmentGrid, ref equipNextAvailableSlot, ref numEquips, item, amount);
+                addedSuccessfully = AddItemToSpecificGrid(equipmentGridLocation, equipmentGrid, ref equipNextAvailableSlot, ref numEquips, item, amount);
+                break;
 
             case (int)ItemDatabaseSO.ItemType.use:
-                return AddItemToSpecificGrid(useGridLocation, useGrid, ref useNextAvailableSlot, ref numUse, item, amount);
+                addedSuccessfully = AddItemToSpecificGrid(useGridLocation, useGrid, ref useNextAvailableSlot, ref numUse, item, amount);
+                break;
 
             case (int)ItemDatabaseSO.ItemType.mats:
-                return AddItemToSpecificGrid(materialsGridLocation, materialsGrid, ref matsNextAvailableSlot, ref numMats, item, amount);
+                addedSuccessfully = AddItemToSpecificGrid(materialsGridLocation, materialsGrid, ref matsNextAvailableSlot, ref numMats, item, amount);
+                break;
         }
-        return false;
+
+        if (addedSuccessfully && onAddItem != null)
+        {
+            onAddItem(item.id, amount);
+        }
+
+        return addedSuccessfully;
     }
 
     //TODO check ref on numOfType in unity editor
@@ -158,6 +169,7 @@ public class PlayerInventory : MonoBehaviour {
         return false;
     }
 
+    /* Remove an item from the inventory. */
     public bool RemoveFromInventory(int itemID, int itemType, int amount)
     {
         switch (itemType)

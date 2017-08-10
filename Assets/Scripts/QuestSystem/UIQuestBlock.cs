@@ -34,7 +34,7 @@ public class UIQuestBlock : MonoBehaviour {
             NewUIQuestObjective.transform.GetChild(0).GetComponent<Image>().sprite = itemDB.itemList[questObjective.ObjectiveNeeded].sprite;
             NewUIQuestObjective.transform.GetChild(1).GetComponent<Text>().text = questObjective.AmountCompleted + "/" + questObjective.AmountNeeded;
             NewUIQuestObjective.transform.GetChild(2).GetComponent<Text>().text = questObjective.Description;
-            questObjective.InitializeObjective();
+            questObjective.OnObjectiveStart();
 
             questObjectiveGOs.Add(NewUIQuestObjective);
         }
@@ -46,7 +46,7 @@ public class UIQuestBlock : MonoBehaviour {
         for (int i = 0; i < questObjectiveGOs.Count; i++)
         {
             GameObject questObjectiveGO = questObjectiveGOs[i];
-            QuestObjective questObjective = questObjectiveGO.GetComponent<QuestObjective>();
+            QuestObjective questObjective = LinkedQuest.QuestObjectives[i];
             questObjectiveGO.transform.GetChild(0).GetComponent<Image>().sprite = itemDB.itemList[questObjective.ObjectiveNeeded].sprite;
             questObjectiveGO.transform.GetChild(1).GetComponent<Text>().text = questObjective.AmountCompleted + "/" + questObjective.AmountNeeded;
             questObjectiveGO.transform.GetChild(2).GetComponent<Text>().text = questObjective.Description;

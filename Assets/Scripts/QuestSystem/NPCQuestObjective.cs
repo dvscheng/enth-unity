@@ -1,11 +1,6 @@
 using UnityEngine;
 
 public class NPCQuestObjective : QuestObjective {
-	public NPCQuestObjective(int NPC)
-    {
-
-    }
-
     public override void NotifyChange(int NPC_id)
     {
         if (NPC_id == objectiveNeeded)

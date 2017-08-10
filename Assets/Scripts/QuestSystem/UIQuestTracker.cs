@@ -41,6 +41,18 @@ public class UIQuestTracker : MonoBehaviour {
         blockHeights = new List<float>();
     }
 
+    /* Used to subscribe to publishers. */
+    void OnEnable()
+    {
+        PlayerInventory.onAddItem += NotifyQuests;
+    }
+
+    /* Used to unsubscribe to publishers. */
+    void OnDisable()
+    {
+        PlayerInventory.onAddItem -= NotifyQuests;
+    }
+
     /* VISUAL: Update the progress of the specified quest. */
     private void RefreshQuest(Quest quest)
     {
@@ -87,6 +99,7 @@ public class UIQuestTracker : MonoBehaviour {
     /* Notify each quest that there is a potential change. */
     public void NotifyQuests(int itemID, int amount)
     {
+        print("notiffied");
         foreach (GameObject questBlockGO in questGOs)
         {
             /* Notify the QuestsBlock that there is a potential change. */

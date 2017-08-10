@@ -7,7 +7,7 @@ public class Quest {
         get { return NPC_ID;  }
     }
 
-    private List<QuestObjective> questObjectives;
+    private List<QuestObjective> questObjectives;               // UIQuestBlock requires that the objectives been in order as they are in the ui block
     public List<QuestObjective> QuestObjectives
     {
         get

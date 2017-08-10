@@ -41,18 +41,19 @@ public abstract class QuestObjective {
         }
     }
 
-    public virtual void InitializeObjective()
+    /* Do anything that the objective needs to check when the quest is accepted. */
+    public virtual void OnObjectiveStart()
     {
         /* Do nothing.
          * Allow children to modify if needed.*/
     }
 
+    /* Notify objectives that there has been a change. */
     public virtual void NotifyChange(int itemID, int amount)
     {
         /* Do nothing.
          * Allow children to modify if needed.*/
     }
-
     public virtual void NotifyChange(int NPC_ID)
     {
         /* Do nothing.

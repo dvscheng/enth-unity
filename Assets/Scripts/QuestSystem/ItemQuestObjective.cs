@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ItemQuestObjective : QuestObjective {
 
-    public override void InitializeObjective()
+    public override void OnObjectiveStart()
     {
         CheckInventory();
         /* Do nothing.
@@ -26,7 +26,6 @@ public class ItemQuestObjective : QuestObjective {
     /* Called to signify a potential change to the quest. */
     public override void NotifyChange(int itemID, int amount)
     {
-        Debug.Log("Overriden method called.");
         if (itemID == objectiveNeeded)
         {
             amountCompleted += amount;
