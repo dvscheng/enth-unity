@@ -48,13 +48,23 @@ public class DialogueManager : MonoBehaviour {
             if (quest.EndNPC == NPC.ID)
             {
                 // complete the quest and show the appropriate dialogue
+                // change quest state to completed
+                // notify proceeding quests
+                quest.OnQuestComplete();
                 return;
             }
         }
 
-
-
         // then check if a quest is to be given
+        foreach (Quest quest in NPC.Quests)
+        {
+            if (quest.CurrentState == (int)Quest.State.qualified)
+            {
+                // start the quest
+                // change quest state to incompleted
+                return;
+            }
+        }
 
         UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, true);
 

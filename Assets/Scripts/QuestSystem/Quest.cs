@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Quest {
     public enum State
     {
-        notGiven,                                               // The quest hasn't been handed out yet
+        unqualified,                                            // The user has not yet met the requirements for this quest
+        qualified,                                              // The quest hasn't been handed out yet, but the user has met the requirements
         incomplete,                                             // The quest has been handed out but not completed yet
         ready,                                                  // The quest is ready to be completed/handed-in
         completed                                               // The quest is completed
@@ -66,6 +68,15 @@ public class Quest {
         }
     }                            // (less complex than having a Requirement datatype and supporting all types of requirements (kill count, level, item, exploration, etc.), and is more appropriate given the scope of this game
 
+    private List<int> proceedingQuests;                         // Quests that have this quest as a requirement
+    public List<int> ProceedingQuests
+    {
+        get
+        {
+            return proceedingQuests;
+        }
+    }
+
     private List<QuestObjective> questObjectives;               // UIQuestBlock requires that the objectives be in order as they are in the ui block
     public List<QuestObjective> QuestObjectives
     {
@@ -108,14 +119,28 @@ public class Quest {
         return changed;
     }
 
+    public void OnQuestComplete()
+    {
+        if (currentState != (int)State.ready)
+            Debug.Log("A quest was to be completed but it wasn't in the ready state.");
+
+        currentState = (int)State.completed;
+        NotifyProceedingQuests();
+    }
+
+    private void NotifyProceedingQuests()
+    {
+
+    }
 
     /************************************
       Used in NPCDatabase ONLY
      ************************************/
-    public Quest(int quest_ID, int[] requiredQuestIDs, int startNPC, int endNPC, string[] startDialogue, string[] completeDialogue, QuestObjective[] objectives)
+    public Quest(int quest_ID, int state, int[] requiredQuestIDs, int[] proceedingQuestIDs, int startNPC, int endNPC,
+        string[] startDialogue, string[] completeDialogue, QuestObjective[] objectives)
     {
         id = quest_ID;
-        currentState = (int)State.notGiven;
+        currentState = state;
         this.startNPC = startNPC;
         this.endNPC = endNPC;
         this.startDialogue = startDialogue;

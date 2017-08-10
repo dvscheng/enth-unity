@@ -64,10 +64,10 @@ public class NPCs : MonoBehaviour
 
         if (NPCData.idToDialogues.ContainsKey(ID))
         {
-            string[][] values = NPCData.idToDialogues[ID];
-            string name = values[0][0];
-            string characterSpriteDirectory = values[1][0];
-            string dialogueSpriteDirectory = values[2][0];
+            string[][] info = NPCData.idToDialogues[ID];
+            string name = info[0][0];
+            string characterSpriteDirectory = info[1][0];
+            string dialogueSpriteDirectory = info[2][0];
 
             characterName = name;
             characterSprite = Resources.Load<Sprite>(characterSpriteDirectory);
@@ -93,11 +93,11 @@ public class NPCs : MonoBehaviour
         if (collision.gameObject.name.Equals("Player") && Inputs.Instance.interaction_key_down && !UIManager.Instance.dialogueUIOn)         // consider changing the check for whether user is talking
         {
             //UIManager.Instance.dialogue.NPCInteraction(this, Quest);
-            UIManager.Instance.dialogue.NPCInteraction(this);
             if (OnNPCInteraction != null)
             {
                 OnNPCInteraction(ID);
             }
+            UIManager.Instance.dialogue.NPCInteraction(this);
         }
     }
 

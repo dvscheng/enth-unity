@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class NPCDatabase : ScriptableObject
 {
-
+    /// <summary>
+    /// NPC IDs
+    /// </summary>
     public enum ID
     {
         example,
