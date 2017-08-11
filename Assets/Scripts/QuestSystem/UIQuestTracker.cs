@@ -45,14 +45,14 @@ public class UIQuestTracker : MonoBehaviour {
     void OnEnable()
     {
         PlayerInventory.OnAddItem += NotifyQuests;
-        DialogueManager.OnNPCInteraction += NotifyQuests;
+        NPCs.OnNPCInteraction += NotifyQuests;
     }
 
     /* Used to unsubscribe to publishers. */
     void OnDisable()
     {
         PlayerInventory.OnAddItem -= NotifyQuests;
-        DialogueManager.OnNPCInteraction -= NotifyQuests;
+        NPCs.OnNPCInteraction -= NotifyQuests;
     }
 
     /* VISUAL: Update the progress of the specified quest. */

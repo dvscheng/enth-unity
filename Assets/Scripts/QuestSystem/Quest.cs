@@ -86,6 +86,8 @@ public class Quest {
         }
     }
 
+    private QuestDatabase questData;
+
     /* Notifies each QuestObjective of a change. If a QuestObjective is changed as a result of this,
         return true, otherwise return false. */
     public bool NotifyChange(int itemID, int amount)
@@ -128,9 +130,27 @@ public class Quest {
         NotifyProceedingQuests();
     }
 
+    /* Notifies each proceeding quest that this quest has been completed. */
     private void NotifyProceedingQuests()
     {
+        foreach (int quest_id in proceedingQuests)
+        {
+            questData.QuestDictionary[quest_id].CheckRequirements();
+        }
+    }
 
+    /* Checks, and changes if appropriate, whether the requirements of this quest have been fulfilled. */
+    private void CheckRequirements()
+    {
+        foreach (int quest_id in requirements)
+        {
+            if (questData.QuestDictionary[quest_id].currentState != (int)State.completed)
+            {
+                return;
+            }
+        }
+        /* Reach here only if all requirements are in the completed state */
+        currentState = (int)State.qualified;
     }
 
     /************************************
@@ -149,5 +169,6 @@ public class Quest {
         questObjectives.AddRange(objectives);
         requirements = new List<int>();
         requirements.AddRange(requiredQuestIDs);
+        questData = ScriptableObject.CreateInstance<QuestDatabase>();
     }
 }
