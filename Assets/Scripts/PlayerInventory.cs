@@ -13,8 +13,6 @@ public class PlayerInventory : MonoBehaviour {
     }
     #endregion
 
-    ItemDatabaseSO itemData;
-
     private readonly int WIDTH = 4;
     private readonly int HEIGHT = 6;
     public GameObject equipmentGridGameObj;
@@ -220,7 +218,7 @@ public class PlayerInventory : MonoBehaviour {
     /* Returns the amount of the item in the inventory, else returns -1. */
     public int FindInInventory(int itemID)
     {
-        int type = itemData.itemList[itemID].type;
+        int type = ItemDatabaseSO.itemList[itemID].type;
         ItemSlot[,] grid;
 
         switch (type)

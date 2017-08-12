@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class NPCDatabase : ScriptableObject
+public static class NPCDatabase
 {
     /// <summary>
     /// NPC IDs
@@ -9,28 +8,36 @@ public class NPCDatabase : ScriptableObject
     public enum ID
     {
         example,
+        desert_yellowHood,
         desert_master,
         desert_alchemist,
         desert_historian,
         desert_blacksmith,
         desert_merchant,
-        desert_yellowHood,
+    }
+
+    public enum Slot
+    {
+        name,
+        characterSprite,
+        dialogueSprite,
+        neutralText
     }
 
     /* (NPC_ID, [["Name"], ["Sprite Directory"], ["Initial text"], ["Quest complete text"], ["Dialogue after quest complete."]]).
      * EVERY NPC MUST HAVE AT LEAST 4 STRING[]s. */
-    public Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
+    public static readonly Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
 
 
     /* Name, Sprite Directory, Neutral text, Giving quest text, */
-    public Dictionary<int, string[][]> idToInfo = new Dictionary<int, string[][]>();
+    public static readonly Dictionary<int, string[][]> idToInfo = new Dictionary<int, string[][]>();
 
-    public string[] QuestNotCompleteString
+    public static string[] QuestNotCompleteString
     {
         get { return new string[] { "You don't seem to have finished the quest." }; }
     }
 
-    void OnEnable()
+    static NPCDatabase()
     {
         valuesDictionary[(int)ID.desert_master] = new string[][]
         {
@@ -50,12 +57,12 @@ public class NPCDatabase : ScriptableObject
             new string[] { "Neutral text" },                    // Neutral/normal text
         };
 
-        idToInfo[(int)ID.desert_master] = new string[][]
+        idToInfo[(int)ID.desert_yellowHood] = new string[][]
         {
-            new string[] { "Name"},                             // NPC name
-            new string[] { "NPC sprite directory"},             // Directory of character's sprite
-            new string[] { "Sprite Directory" },                // Sprite directory
-            new string[] { "Neutral text" },                    // Neutral/normal text
+            new string[] { "Yellow Hood"},                              // NPC name
+            new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
+            new string[] { "Sprites/mushroom (2)" },                    // Sprite directory
+            new string[] { "Hi there!" },                               // Neutral/normal text
         };
     }
 }

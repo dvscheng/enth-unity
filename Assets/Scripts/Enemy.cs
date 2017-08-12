@@ -31,8 +31,6 @@ public class Enemy : MonoBehaviour
 
     public int mobID; // UNITY
 
-    ItemDatabaseSO itemData;
-
     public delegate void EnemyDelegate(int mobID);
     public static event EnemyDelegate onDeath; 
 
@@ -68,8 +66,6 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         healthBar = healthBarObj.GetComponent<EnemyHealthBar>();
         playerCollider = player.GetComponent<BoxCollider2D>();
-
-        itemData = ScriptableObject.CreateInstance<ItemDatabaseSO>();
     }
 
     /* Chases the player when inside the sight range, attacks player when inside attack range. */
@@ -244,13 +240,13 @@ public class Enemy : MonoBehaviour
     /* Roll for drops, then destroy the Game Object. */
     void OnDeath()
     {
-        if (!RollForDrops(itemData.LEGENDARY_DROPRATE))
+        if (!RollForDrops(ItemDatabaseSO.LEGENDARY_DROPRATE))
         {
-            if (!RollForDrops(itemData.RARE_DROPRATE))
+            if (!RollForDrops(ItemDatabaseSO.RARE_DROPRATE))
             {
-                if (!RollForDrops(itemData.UNCOMMON_DROPRATE))
+                if (!RollForDrops(ItemDatabaseSO.UNCOMMON_DROPRATE))
                 {
-                    RollForDrops(itemData.COMMON_DROPRATE);
+                    RollForDrops(ItemDatabaseSO.COMMON_DROPRATE);
                 }
             }
         }
@@ -302,13 +298,13 @@ public class Enemy : MonoBehaviour
 
 
             int dropRate;
-            if (chances == itemData.LEGENDARY_DROPRATE)
+            if (chances == ItemDatabaseSO.LEGENDARY_DROPRATE)
             {
                 dropRate = (int)ItemDatabaseSO.DropRateType.legendary;
-            } else if (chances == itemData.RARE_DROPRATE)
+            } else if (chances == ItemDatabaseSO.RARE_DROPRATE)
             {
                 dropRate = (int)ItemDatabaseSO.DropRateType.rare;
-            } else if (chances == itemData.UNCOMMON_DROPRATE)
+            } else if (chances == ItemDatabaseSO.UNCOMMON_DROPRATE)
             {
                 dropRate = (int)ItemDatabaseSO.DropRateType.uncommon;
             } else // common
@@ -316,7 +312,7 @@ public class Enemy : MonoBehaviour
                 dropRate = (int)ItemDatabaseSO.DropRateType.common;
             }
 
-            int itemID = itemData.dropTable[mobID, dropRate];
+            int itemID = ItemDatabaseSO.dropTable[mobID, dropRate];
 
             GameObject itemOnGround = (GameObject)Instantiate(Resources.Load("Prefabs/ItemOnGround"), dropPos, Quaternion.identity) as GameObject;
             itemOnGround.GetComponent<ItemOnGround>().Initialize(itemID, 5);

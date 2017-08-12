@@ -5,7 +5,6 @@ public class ItemQuestObjective : QuestObjective {
     public override void OnObjectiveStart()
     {
         CheckInventory();
-        //sprite = itemData.itemList[objectiveNeeded].sprite;
     }
 
     /* Checks for items already existing in the inventory. */
@@ -45,11 +44,11 @@ public class ItemQuestObjective : QuestObjective {
     /************************************
      Used in QuestDatabase ONLY
     ************************************/
-    public ItemQuestObjective(string description, int item, int amount)
+    public ItemQuestObjective(string description, int item_id, int amount)
     {
         this.description = description;
-        this.sprite = sprite;
-        objectiveNeeded = item;
+        sprite = ItemDatabaseSO.itemList[item_id].sprite;
+        objectiveNeeded = item_id;
         amountNeeded = amount;
         amountCompleted = 0;
     }

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class QuestDatabase : ScriptableObject {
 
-    NPCDatabase NPCData;
-
     private Dictionary<int, Quest> questDictionary;                                          // (id, Quest) Quest IDs mapped to the respective quest
     public Dictionary<int, Quest> QuestDictionary
     {
@@ -26,7 +24,6 @@ public class QuestDatabase : ScriptableObject {
 
     public void OnEnable()
     {
-        NPCData = CreateInstance<NPCDatabase>();
         npcIDToQuests = new Dictionary<int, List<Quest>>();
         questDictionary = new Dictionary<int, Quest>
         {
@@ -70,9 +67,9 @@ public class QuestDatabase : ScriptableObject {
                     (int)Quest.State.qualified,
                     new int[] { },
                     new int[] { },
-                    (int)NPCDatabase.ID.desert_master,
-                    (int)NPCDatabase.ID.desert_master,
-                    "Quest Title",
+                    (int)NPCDatabase.ID.desert_yellowHood,
+                    (int)NPCDatabase.ID.desert_yellowHood,
+                    "Test Quest",
                     new string[] { "Start dialogue" },
                     new string[] { "End dialogue" },
                     new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),

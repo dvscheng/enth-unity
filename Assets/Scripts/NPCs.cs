@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NPCs : MonoBehaviour
 {
-    private NPCDatabase NPCData;
     private QuestDatabase questData;
     /* Unity editor */
     public int ID;
@@ -59,12 +58,11 @@ public class NPCs : MonoBehaviour
     {
         IsQuestGiver = true;
 
-        NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
         questData = ScriptableObject.CreateInstance<QuestDatabase>();
 
-        if (NPCData.idToInfo.ContainsKey(ID))
+        if (NPCDatabase.idToInfo.ContainsKey(ID))
         {
-            string[][] info = NPCData.idToInfo[ID];
+            string[][] info = NPCDatabase.idToInfo[ID];
             string name = info[0][0];
             string characterSpriteDirectory = info[1][0];
             string dialogueSpriteDirectory = info[2][0];
@@ -92,7 +90,6 @@ public class NPCs : MonoBehaviour
     {
         if (collision.gameObject.name.Equals("Player") && Inputs.Instance.interaction_key_down && !UIManager.Instance.dialogueUIOn)         // consider changing the check for whether user is talking
         {
-            //UIManager.Instance.dialogue.NPCInteraction(this, Quest);
             if (OnNPCInteraction != null)
             {
                 OnNPCInteraction(ID);

@@ -99,6 +99,7 @@ public class DialogueManager : MonoBehaviour {
 
         givingQuest = isGivingQuest;
 
+        UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, true);
         ProceedDialogue();
     }
 

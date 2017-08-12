@@ -11,8 +11,6 @@ public class ItemOnGround : MonoBehaviour {
     public ItemObject item;
     public int amount;
 
-    ItemDatabaseSO itemData;
-
     float originalY;
     float fluctuation = 0.25f;
 
@@ -20,8 +18,7 @@ public class ItemOnGround : MonoBehaviour {
      *  from itemDatabase, sets the amount, and applies the sprite to the GameObject.*/
     public void Initialize(int id, int amount)
     {
-        itemData = ScriptableObject.CreateInstance<ItemDatabaseSO>();
-        item = itemData.itemList[id];
+        item = ItemDatabaseSO.itemList[id];
         this.amount = amount;
         gameObject.GetComponent<SpriteRenderer>().sprite = item.sprite;
     }

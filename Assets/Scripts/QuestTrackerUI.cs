@@ -12,8 +12,6 @@ public class QuestTrackerUI : MonoBehaviour {
     }
     #endregion
 
-    ItemDatabaseSO itemDatabase;
-
     public GameObject questObjectArea;  // UNITY
 
     readonly float PADDING_FROM_TOP = -27f;
@@ -38,7 +36,6 @@ public class QuestTrackerUI : MonoBehaviour {
         //DontDestroyOnLoad(gameObject); already in UI 
         #endregion
 
-        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
         quests = new List<GameObject>(MAX_NUM_QUESTS);
     }
 	
@@ -76,8 +73,8 @@ public class QuestTrackerUI : MonoBehaviour {
         if (inventSecondAmount != -1)
             questInfo.secondCompleted += inventSecondAmount;
 
-        questInfo.firstImage.GetComponent<Image>().sprite = itemDatabase.itemList[questInfo.firstItemID].sprite;
-        questInfo.secondImage.GetComponent<Image>().sprite = itemDatabase.itemList[questInfo.secondItemID].sprite;
+        questInfo.firstImage.GetComponent<Image>().sprite = ItemDatabaseSO.itemList[questInfo.firstItemID].sprite;
+        questInfo.secondImage.GetComponent<Image>().sprite = ItemDatabaseSO.itemList[questInfo.secondItemID].sprite;
         questInfo.firstText.GetComponent<Text>().text = questInfo.firstCompleted + "/" + questInfo.firstAmount;
         questInfo.secondText.GetComponent<Text>().text = questInfo.secondCompleted + "/" + questInfo.secondAmount;
 

@@ -6,8 +6,6 @@ using System;
 
 public class QuestDialogue : MonoBehaviour {
 
-    ItemDatabaseSO itemDatabase;
-
     public NPCs _NPC;
     public GameObject dialogue;
     public GameObject firstImage;
@@ -23,7 +21,6 @@ public class QuestDialogue : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         initialized = false;
-        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 	}
 
     public void Initialize(NPCs NPC)
@@ -45,8 +42,8 @@ public class QuestDialogue : MonoBehaviour {
         //secondAmount = UnityEngine.Random.Range(1, CollectQuest.MAX_COLLECT_AMOUNT);
 
         /* Sets the sprites and amounts for the two items. */
-        firstImage.GetComponent<Image>().sprite = itemDatabase.itemList[firstItemID].sprite;
-        secondImage.GetComponent<Image>().sprite = itemDatabase.itemList[secondItemID].sprite;
+        firstImage.GetComponent<Image>().sprite = ItemDatabaseSO.itemList[firstItemID].sprite;
+        secondImage.GetComponent<Image>().sprite = ItemDatabaseSO.itemList[secondItemID].sprite;
         firstText.GetComponent<Text>().text = "" + firstAmount;
         secondText.GetComponent<Text>().text = "" + secondAmount;
 

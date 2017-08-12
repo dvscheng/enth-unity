@@ -8,12 +8,11 @@ public class ItemOnGroundEditor : Editor {
 	public void OnInspectorGUI ()
     {
         ItemOnGround myItemOnGround = (ItemOnGround)target;
-        ItemDatabaseSO itemData = CreateInstance<ItemDatabaseSO>();
 
         /* Set the default item: 1 mushroom. */
         if (myItemOnGround.item == null)
         {
-            myItemOnGround.item = CreateInstance<ItemObject>();
+            myItemOnGround.item = new ItemObject();
         }
 
         myItemOnGround.itemBcTrigger = EditorGUILayout.ObjectField("Pickup Trigger Range", myItemOnGround.itemBcTrigger, typeof(BoxCollider2D), false) as BoxCollider2D;
@@ -25,7 +24,7 @@ public class ItemOnGroundEditor : Editor {
         /* Show/set the item ID, changes the item as you set it. */
         myItemOnGround.item.id = EditorGUILayout.IntSlider("Item ID", myItemOnGround.item.id, 0, 2);
         //myItemOnGround.item.ItemID = EditorGUILayout.IntField("Item ID", myItemOnGround.item.ItemID);
-        int itemType = itemData.itemList[myItemOnGround.item.id].type;
+        int itemType = ItemDatabaseSO.itemList[myItemOnGround.item.id].type;
         myItemOnGround.GetComponent<ItemOnGround>().Initialize(myItemOnGround.item.id, myItemOnGround.amount);
 
         /* Show/get the item amount. */

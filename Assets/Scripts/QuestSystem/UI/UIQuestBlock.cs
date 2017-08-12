@@ -13,14 +13,11 @@ public class UIQuestBlock : MonoBehaviour {
     readonly float DISTANCE_BETWEEN_OBJECTIVES = 32f;
     public List<GameObject> questObjectiveGOs;
 
-    ItemDatabaseSO itemData;
-
     /* Initializes all QuestBlocks. */
     public void Initialize(Quest quest)
     {
         linkedQuest = quest;
         questObjectiveGOs = new List<GameObject>();
-        itemData = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
         /* Initialize a prefab for every QuestObjective. */
         List<QuestObjective> questObjectives = quest.QuestObjectives;
@@ -44,7 +41,7 @@ public class UIQuestBlock : MonoBehaviour {
         {
             GameObject questObjectiveGO = questObjectiveGOs[i];
             QuestObjective questObjective = LinkedQuest.QuestObjectives[i];
-            questObjectiveGO.transform.GetChild(0).GetComponent<Image>().sprite = itemData.itemList[questObjective.ObjectiveNeeded].sprite;
+            questObjectiveGO.transform.GetChild(0).GetComponent<Image>().sprite = ItemDatabaseSO.itemList[questObjective.ObjectiveNeeded].sprite;
             questObjectiveGO.transform.GetChild(1).GetComponent<Text>().text = questObjective.AmountCompleted + "/" + questObjective.AmountNeeded;
             questObjectiveGO.transform.GetChild(2).GetComponent<Text>().text = questObjective.Description;
         }

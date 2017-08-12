@@ -4,7 +4,7 @@ public class NPCQuestObjective : QuestObjective {
 
     public override void OnObjectiveStart()
     {
-        //sprite = ScriptableObject.CreateInstance<ItemDatabaseSO>().itemList[objectiveNeeded].sprite;
+        
     }
     
     public override void NotifyChange(int NPC_id)
@@ -21,7 +21,7 @@ public class NPCQuestObjective : QuestObjective {
     public NPCQuestObjective(string description, int NPC_ID, int amount)
     {
         this.description = description;
-        this.sprite = sprite;
+        sprite = Resources.Load<Sprite>(NPCDatabase.idToInfo[NPC_ID][(int)NPCDatabase.Slot.dialogueSprite][0]);                 // sprite directory
         objectiveNeeded = NPC_ID;
         amountNeeded = amount;
         amountCompleted = 0;

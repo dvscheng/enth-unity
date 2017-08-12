@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemObject : ScriptableObject{
+public class ItemObject {
     public int id;                                      // The unique ID of every item.
     public int type;                                    // The item type (of Equip, Use, or Mats).
     public string itemName;                             // The item's name.

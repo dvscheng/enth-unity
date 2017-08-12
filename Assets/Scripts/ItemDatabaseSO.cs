@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemDatabaseSO : ScriptableObject
+public static class ItemDatabaseSO
 {
     /* 
        When adding items:
@@ -48,18 +48,18 @@ public class ItemDatabaseSO : ScriptableObject
     }
 
     /* Percentages, used in Enemy.RollForDrops() */
-    public int COMMON_DROPRATE = 40;
-    public int UNCOMMON_DROPRATE = 40;
-    public int RARE_DROPRATE = 10;
-    public int LEGENDARY_DROPRATE = 1;
+    public static int COMMON_DROPRATE = 40;
+    public static int UNCOMMON_DROPRATE = 40;
+    public static int RARE_DROPRATE = 10;
+    public static int LEGENDARY_DROPRATE = 1;
 
-    public int[,] dropTable;
+    public static int[,] dropTable;
 
     /* Indexed by id. */
-    public List<ItemObject> itemList;
+    public static List<ItemObject> itemList;
     //public List<MobObject> mobList;
 
-    void OnEnable()
+    static ItemDatabaseSO()
     {
         itemList = new List<ItemObject>();
 
@@ -89,10 +89,10 @@ public class ItemDatabaseSO : ScriptableObject
     }
 
     /* Creates a new EquipItems with the specified ItemType and adds it to the list.*/
-    private void CreateAndAddEquip(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+    private static void CreateAndAddEquip(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int attack, int defence, int hp, float defencePen, float mastery)
     {
-        ItemObject item = CreateInstance<EquipItems>();
+        ItemObject item = new EquipItems();
 
         InitializeBaseItem(item, id, type, itemName, sprite, isStackable, isQuestItem, flavorText);
         (item as EquipItems).attack = attack;
@@ -105,10 +105,10 @@ public class ItemDatabaseSO : ScriptableObject
     }
 
     /* Creates a new UseItems with the specified ItemType and adds it to the list.*/
-    private void CreateAndAddUse(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+    private static void CreateAndAddUse(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int restoreHp, int maxAmount)
     {
-        ItemObject item = CreateInstance<UseItems>();
+        ItemObject item = new UseItems();
 
         InitializeBaseItem(item, id, type, itemName, sprite, isStackable, isQuestItem, flavorText);
         (item as UseItems).restoreHp = restoreHp;
@@ -118,10 +118,10 @@ public class ItemDatabaseSO : ScriptableObject
     }
 
     /* Creates a new MatItems with the specified ItemType and adds it to the list.*/
-    private void CreateAndAddMat(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
+    private static void CreateAndAddMat(int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText,
                                 int maxAmount)
     {
-        ItemObject item = CreateInstance<MatItems>();
+        ItemObject item = new MatItems();
 
         InitializeBaseItem(item, id, type, itemName, sprite, isStackable, isQuestItem, flavorText);
         (item as MatItems).maxAmount = maxAmount;
@@ -130,7 +130,7 @@ public class ItemDatabaseSO : ScriptableObject
     }
 
     /* Initializes the ItemObject parameters. */
-    private void InitializeBaseItem(ItemObject item, int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText)
+    private static void InitializeBaseItem(ItemObject item, int id, int type, string itemName, Sprite sprite, bool isStackable, bool isQuestItem, string flavorText)
     {
         item.id = id;
         item.type = type;
