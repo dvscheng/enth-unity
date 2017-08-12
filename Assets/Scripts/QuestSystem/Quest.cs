@@ -42,6 +42,14 @@ public class Quest {
             return endNPC;
         }
     }
+    private string questTitle;                                  // The title of the quest
+    public string QuestTitle
+    {
+        get
+        {
+            return questTitle;
+        }
+    }
     private string[] startDialogue;                             // The dialogue shown when starting the quest
     public string[] StartDialogue
     {
@@ -86,8 +94,6 @@ public class Quest {
         }
     }
 
-    private QuestDatabase questData;
-
     /* Notifies each QuestObjective of a change. If a QuestObjective is changed as a result of this,
         return true, otherwise return false. */
     public bool NotifyChange(int itemID, int amount)
@@ -125,9 +131,19 @@ public class Quest {
     {
         if (currentState != (int)State.ready)
             Debug.Log("A quest was to be completed but it wasn't in the ready state.");
+        else
+        {
+            currentState = (int)State.completed;
+            NotifyProceedingQuests();
+        }
+    }
 
-        currentState = (int)State.completed;
-        NotifyProceedingQuests();
+    public void OnQuestAccept()
+    {
+        if (currentState != (int)State.qualified)
+            Debug.Log("Tried to accept a quest that wasn't in the 'qualified' state.");
+        else
+            currentState = (int)State.incomplete;
     }
 
     /* Notifies each proceeding quest that this quest has been completed. */
@@ -135,40 +151,41 @@ public class Quest {
     {
         foreach (int quest_id in proceedingQuests)
         {
-            questData.QuestDictionary[quest_id].CheckRequirements();
+            //questData.QuestDictionary[quest_id].CheckRequirements();
         }
     }
 
-    /* Checks, and changes if appropriate, whether the requirements of this quest have been fulfilled. */
+    /* Checks whether the requirements of this quest have been fulfilled; if they have been, then change the state to 'qualified'. */
     private void CheckRequirements()
     {
         foreach (int quest_id in requirements)
         {
-            if (questData.QuestDictionary[quest_id].currentState != (int)State.completed)
-            {
-                return;
-            }
+            //if (questData.QuestDictionary[quest_id].currentState != (int)State.completed)
+            //{
+            //    return;
+            //}
         }
         /* Reach here only if all requirements are in the completed state */
-        currentState = (int)State.qualified;
+        if (currentState == (int)State.unqualified)
+            currentState = (int)State.qualified;
     }
 
     /************************************
       Used in NPCDatabase ONLY
      ************************************/
-    public Quest(int quest_ID, int state, int[] requiredQuestIDs, int[] proceedingQuestIDs, int startNPC, int endNPC,
+    public Quest(int quest_ID, int state, int[] requiredQuestIDs, int[] proceedingQuestIDs, int startNPC, int endNPC, string questTitle,
         string[] startDialogue, string[] completeDialogue, QuestObjective[] objectives)
     {
         id = quest_ID;
         currentState = state;
         this.startNPC = startNPC;
         this.endNPC = endNPC;
+        this.questTitle = questTitle;
         this.startDialogue = startDialogue;
         this.completeDialogue = completeDialogue;
         questObjectives = new List<QuestObjective>();
         questObjectives.AddRange(objectives);
         requirements = new List<int>();
         requirements.AddRange(requiredQuestIDs);
-        questData = ScriptableObject.CreateInstance<QuestDatabase>();
     }
 }

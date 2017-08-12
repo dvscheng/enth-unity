@@ -4,40 +4,42 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour {
-    NPCDatabase NPCData;
-    GameObject questDialogueObj;
-    public NPCs NPC {
-        get { return _NPC; }
-    }
 
-    /* Dialogue prefab. */
-    GameObject newDialogue;
-    NPCs _NPC;
-    Text NPCDialogueText;
-    string[] textLines;
-    int lineNumber = 1;
-    bool resetNextIteration = false;
+    /* Unity Editor */
+    [SerializeField] Text NPCName;
+    [SerializeField] Image NPCDialogueSprite;
+    [SerializeField] Text text;
 
+    private Queue<string> currentDialogue;
+
+    private bool givingQuest;
+
+    private Quest questToGive;
+
+    private NPCs interactingNPC;
     
 
     // Use this for initialization
     void Awake () {
-        NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
-	}
+        currentDialogue = new Queue<string>();
+        givingQuest = false;
+        questToGive = null;
+        interactingNPC = null;
+    }
 
     void Update()
     {
-        //questDialogueObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestDialogue"), gameObject.transform);
-        //questDialogueObj.GetComponent<QuestDialogue>().Initialize(_NPC);
-        
+        if (Inputs.Instance.interaction_key_down)
+        {
+            ProceedDialogue();
+        }
     }
 
     /* Notify that an NPC has been interacted with. */
     public void NPCInteraction(NPCs NPC)
     {
-        GameObject newDialogue = Instantiate(Resources.Load<GameObject>("Prefabs/NPC Dialogue"), gameObject.transform);
-        newDialogue.transform.GetChild(0).GetComponent<Text>().text = NPC.CharacterName;
-        newDialogue.transform.GetChild(1).GetComponent<Image>().sprite = NPC.DialogueSprite;
+        NPCName.text = NPC.CharacterName;
+        NPCDialogueSprite.sprite = NPC.DialogueSprite;
 
         // check if a quest is finished
         // go through every quest, of the ones completed, is the end npc this one?
@@ -47,10 +49,8 @@ public class DialogueManager : MonoBehaviour {
         {
             if (quest.EndNPC == NPC.ID)
             {
-                // complete the quest and show the appropriate dialogue
-                // change quest state to completed
-                // notify proceeding quests
                 quest.OnQuestComplete();
+                StartDialogue(quest.CompleteDialogue, false);
                 return;
             }
         }
@@ -60,8 +60,9 @@ public class DialogueManager : MonoBehaviour {
         {
             if (quest.CurrentState == (int)Quest.State.qualified)
             {
-                // start the quest
-                // change quest state to incompleted
+                questToGive = quest;
+                interactingNPC = NPC;
+                StartDialogue(quest.StartDialogue, true);
                 return;
             }
         }
@@ -70,19 +71,50 @@ public class DialogueManager : MonoBehaviour {
 
     }
 
+    public void ProceedDialogue()
+    {
+        if (currentDialogue.Count > 0)
+        {
+            text.text = currentDialogue.Dequeue();
+        }
+        else if (givingQuest)
+        {
+            if (questToGive != null && interactingNPC != null)
+                ShowQuestPopup(questToGive, interactingNPC);
+            else
+                Debug.Log("Tried to show quest, but quest or npc was null.");
+        }
+        else
+        {
+            ResetDialogue();
+        }
+    }
+
+    /* Load the dialogue into the currentDialogue queue for display. */
+    private void StartDialogue(string[] lines, bool isGivingQuest)
+    {
+        // could initialize it
+        foreach (string line in lines)
+            currentDialogue.Enqueue(line);
+
+        givingQuest = isGivingQuest;
+
+        ProceedDialogue();
+    }
+
+    /* Shows the QuestPopup window. */
+    private void ShowQuestPopup(Quest quest, NPCs startingNPC)
+    {
+        GameObject questPopup = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/Quest Pop-up/Quest Pop-up"), gameObject.transform);
+        questPopup.GetComponent<QuestPopup>().Initialize(quest, startingNPC);
+    }
+
     /* Destroys and resets the dialogue manager, including the quest dialogue if there is one. */
     public void ResetDialogue()
     {
-        if (newDialogue != null)
-        {
-            Destroy(newDialogue);
-            lineNumber = 1;
-            UIManager.Instance.dialogueUIOn = false;
-            gameObject.SetActive(false);
-        }
-
-        /* If a quest dialogue exists, destroy it too. */
-        if (questDialogueObj != null)
-            Destroy(questDialogueObj);
+        currentDialogue.Clear();
+        givingQuest = false;
+        questToGive = null;
+        interactingNPC = null;
     }
 }

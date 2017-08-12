@@ -62,9 +62,9 @@ public class NPCs : MonoBehaviour
         NPCData = ScriptableObject.CreateInstance<NPCDatabase>();
         questData = ScriptableObject.CreateInstance<QuestDatabase>();
 
-        if (NPCData.idToDialogues.ContainsKey(ID))
+        if (NPCData.idToInfo.ContainsKey(ID))
         {
-            string[][] info = NPCData.idToDialogues[ID];
+            string[][] info = NPCData.idToInfo[ID];
             string name = info[0][0];
             string characterSpriteDirectory = info[1][0];
             string dialogueSpriteDirectory = info[2][0];
@@ -73,9 +73,9 @@ public class NPCs : MonoBehaviour
             characterSprite = Resources.Load<Sprite>(characterSpriteDirectory);
             dialogueSprite = Resources.Load<Sprite>(dialogueSpriteDirectory);
         }
-        if (questData.npcIDToQuests.ContainsKey(ID))
+        if (questData.NPCIDToQuests.ContainsKey(ID))
         {
-            quests = questData.npcIDToQuests[ID];                                       // TODO: decide whether you need reference or copy of the list
+            quests = questData.NPCIDToQuests[ID];                                       // TODO: decide whether you need reference or copy of the list
         }
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class QuestDatabase : ScriptableObject {
 
+    NPCDatabase NPCData;
 
     private Dictionary<int, Quest> questDictionary;                                          // (id, Quest) Quest IDs mapped to the respective quest
     public Dictionary<int, Quest> QuestDictionary
@@ -19,12 +20,13 @@ public class QuestDatabase : ScriptableObject {
     {
         get
         {
-            return npcIDToQuests
+            return npcIDToQuests;
         }
     }
 
     public void OnEnable()
     {
+        NPCData = CreateInstance<NPCDatabase>();
         npcIDToQuests = new Dictionary<int, List<Quest>>();
         questDictionary = new Dictionary<int, Quest>
         {
@@ -33,15 +35,16 @@ public class QuestDatabase : ScriptableObject {
                 /* Example quests. */
                 new Quest(
                     0,                                                                                                                      // The quest's id
-                    (int)Quest.State.unqualified,                                                                                           // The quest's state; refer to Quest.cs for the enum
+                    (int)Quest.State.qualified,                                                                                             // The quest's state; refer to Quest.cs for the enum
                     new int[] { },                                                                                                          // The quests (their ids) that are required for this quest to start
                     new int[] { },                                                                                                          // The quests that have this quest as a requirement.
                     (int)NPCDatabase.ID.example,                                                                                            // The NPC that gives the quest
                     (int)NPCDatabase.ID.example,                                                                                            // The NPC that completes the quest
+                    "Quest Title",
                     new string[] { "Start dialogue" },                                                                                      // Start dialogue
                     new string[] { "End dialogue" },                                                                                        // End dialogue 
-                    new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),         // (Objective description, item ID, amount to be collected)
-                                            new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.rock, 2) })
+                    new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),         // (Objective description, sprite, item ID, amount to be collected)
+                                           new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.rock, 2) })
             },
             {
                 1,
@@ -52,6 +55,7 @@ public class QuestDatabase : ScriptableObject {
                     new int[] { },
                     (int)NPCDatabase.ID.example,
                     (int)NPCDatabase.ID.example,
+                    "Quest Title",
                     new string[] { "Start dialogue" },
                     new string[] { "End dialogue" },
                     new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),
@@ -68,6 +72,7 @@ public class QuestDatabase : ScriptableObject {
                     new int[] { },
                     (int)NPCDatabase.ID.desert_master,
                     (int)NPCDatabase.ID.desert_master,
+                    "Quest Title",
                     new string[] { "Start dialogue" },
                     new string[] { "End dialogue" },
                     new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),

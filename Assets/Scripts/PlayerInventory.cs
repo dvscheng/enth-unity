@@ -13,6 +13,8 @@ public class PlayerInventory : MonoBehaviour {
     }
     #endregion
 
+    ItemDatabaseSO itemData;
+
     private readonly int WIDTH = 4;
     private readonly int HEIGHT = 6;
     public GameObject equipmentGridGameObj;
@@ -35,8 +37,6 @@ public class PlayerInventory : MonoBehaviour {
     /* Used to notify subscribers that an item has been added. */
     public delegate void NotifyAddedItem(int itemID, int amount);
     public static event NotifyAddedItem OnAddItem;
-
-    ItemDatabaseSO itemDatabase;
 
     /* Should be referenced in Unity editor. */
     [HideInInspector] public Sprite[] buttonOnSprites;
@@ -62,8 +62,6 @@ public class PlayerInventory : MonoBehaviour {
         }
         #endregion
         //DontDestroyOnLoad(gameObject); already in UI
-
-        itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
         /* Load in the inventory tab buttons. */
         buttonOnSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_focused");
@@ -222,7 +220,7 @@ public class PlayerInventory : MonoBehaviour {
     /* Returns the amount of the item in the inventory, else returns -1. */
     public int FindInInventory(int itemID)
     {
-        int type = itemDatabase.itemList[itemID].type;
+        int type = itemData.itemList[itemID].type;
         ItemSlot[,] grid;
 
         switch (type)

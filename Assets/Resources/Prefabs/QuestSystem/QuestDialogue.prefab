@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a1fef338329ab43a9af66a82b412ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueMan: {fileID: 0}
+  _NPC: {fileID: 0}
   dialogue: {fileID: 0}
   firstImage: {fileID: 1977149654669378}
   firstText: {fileID: 1368507851112480}

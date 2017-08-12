@@ -5,8 +5,7 @@ public class ItemQuestObjective : QuestObjective {
     public override void OnObjectiveStart()
     {
         CheckInventory();
-        /* Do nothing.
-         * Allow children to modify if needed.*/
+        //sprite = itemData.itemList[objectiveNeeded].sprite;
     }
 
     /* Checks for items already existing in the inventory. */
@@ -49,6 +48,7 @@ public class ItemQuestObjective : QuestObjective {
     public ItemQuestObjective(string description, int item, int amount)
     {
         this.description = description;
+        this.sprite = sprite;
         objectiveNeeded = item;
         amountNeeded = amount;
         amountCompleted = 0;

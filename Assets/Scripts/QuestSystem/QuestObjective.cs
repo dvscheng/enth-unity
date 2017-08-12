@@ -40,6 +40,14 @@ public abstract class QuestObjective {
             return amountCompleted;
         }
     }
+    protected Sprite sprite;
+    public Sprite Sprite
+    {
+        get
+        {
+            return sprite;
+        }
+    }
 
     /* Do anything that the objective needs to check when the quest is accepted. */
     public virtual void OnObjectiveStart()

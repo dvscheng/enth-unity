@@ -19,18 +19,18 @@ public class NPCDatabase : ScriptableObject
 
     /* (NPC_ID, [["Name"], ["Sprite Directory"], ["Initial text"], ["Quest complete text"], ["Dialogue after quest complete."]]).
      * EVERY NPC MUST HAVE AT LEAST 4 STRING[]s. */
-    public readonly Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
+    public Dictionary<int, string[][]> valuesDictionary = new Dictionary<int, string[][]>();
 
 
     /* Name, Sprite Directory, Neutral text, Giving quest text, */
-    public readonly Dictionary<int, string[][]> idToDialogues = new Dictionary<int, string[][]>();
+    public Dictionary<int, string[][]> idToInfo = new Dictionary<int, string[][]>();
 
     public string[] QuestNotCompleteString
     {
         get { return new string[] { "You don't seem to have finished the quest." }; }
     }
 
-    public void OnEnable()
+    void OnEnable()
     {
         valuesDictionary[(int)ID.desert_master] = new string[][]
         {
@@ -42,7 +42,7 @@ public class NPCDatabase : ScriptableObject
         };
 
         /* Example template. */
-        idToDialogues[(int)ID.example] = new string[][]
+        idToInfo[(int)ID.example] = new string[][]
         {
             new string[] { "Name"},                             // NPC name
             new string[] { "NPC sprite directory"},             // Directory of character's sprite
@@ -50,7 +50,7 @@ public class NPCDatabase : ScriptableObject
             new string[] { "Neutral text" },                    // Neutral/normal text
         };
 
-        idToDialogues[(int)ID.desert_master] = new string[][]
+        idToInfo[(int)ID.desert_master] = new string[][]
         {
             new string[] { "Name"},                             // NPC name
             new string[] { "NPC sprite directory"},             // Directory of character's sprite

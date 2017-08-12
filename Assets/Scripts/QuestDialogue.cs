@@ -67,7 +67,7 @@ public class QuestDialogue : MonoBehaviour {
             //GameObject newQuest = Instantiate(Resources.Load<GameObject>("Prefabs/QuestItem"), QuestTrackerUI.Instance.questObjectArea.transform);
             //CollectQuest quest = newQuest.GetComponent<CollectQuest>();
             //quest.Initialize(_NPC, firstItemID, secondItemID, firstAmount, secondAmount);
-            UIManager.Instance.dialogue.NPC.givenQuest = true;
+            //UIManager.Instance.dialogue.NPC.givenQuest = true;
 
             Close();
         }

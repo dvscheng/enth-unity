@@ -148,6 +148,6 @@ public class UIQuestTracker : MonoBehaviour {
 
     public void AddRandomQuest()
     {
-        AddQuest(questDatabase.npcIDToQuests[0][0]);
+        AddQuest(questDatabase.NPCIDToQuests[0][0]);
     }
 }

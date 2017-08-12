@@ -7,7 +7,6 @@ public abstract class Item {
     protected int itemID = (int)ItemDatabaseSO.ItemID.mushroom;
     protected int amount = 0;
 
-    protected ItemDatabaseSO itemDatabase;
     public Sprite sprite;
 
     

@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item Database SO", menuName = "Item Database SO", order = 1)]
-public class ItemDatabaseSO : ScriptableObject {
+public class ItemDatabaseSO : ScriptableObject
+{
     /* 
        When adding items:
      

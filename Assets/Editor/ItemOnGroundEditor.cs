@@ -8,7 +8,7 @@ public class ItemOnGroundEditor : Editor {
 	public void OnInspectorGUI ()
     {
         ItemOnGround myItemOnGround = (ItemOnGround)target;
-        ItemDatabaseSO itemDatabase = ScriptableObject.CreateInstance<ItemDatabaseSO>();
+        ItemDatabaseSO itemData = CreateInstance<ItemDatabaseSO>();
 
         /* Set the default item: 1 mushroom. */
         if (myItemOnGround.item == null)
@@ -25,7 +25,7 @@ public class ItemOnGroundEditor : Editor {
         /* Show/set the item ID, changes the item as you set it. */
         myItemOnGround.item.id = EditorGUILayout.IntSlider("Item ID", myItemOnGround.item.id, 0, 2);
         //myItemOnGround.item.ItemID = EditorGUILayout.IntField("Item ID", myItemOnGround.item.ItemID);
-        int itemType = itemDatabase.itemList[myItemOnGround.item.id].type;
+        int itemType = itemData.itemList[myItemOnGround.item.id].type;
         myItemOnGround.GetComponent<ItemOnGround>().Initialize(myItemOnGround.item.id, myItemOnGround.amount);
 
         /* Show/get the item amount. */

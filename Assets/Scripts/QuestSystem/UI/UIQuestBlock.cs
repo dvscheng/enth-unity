@@ -9,21 +9,18 @@ public class UIQuestBlock : MonoBehaviour {
     {
         get { return linkedQuest; }
     }
-    ItemDatabaseSO itemDB;
 
     readonly float DISTANCE_BETWEEN_OBJECTIVES = 32f;
     public List<GameObject> questObjectiveGOs;
 
-    void Awake()
-    {
-        itemDB = ScriptableObject.CreateInstance<ItemDatabaseSO>();
-    }
+    ItemDatabaseSO itemData;
 
     /* Initializes all QuestBlocks. */
     public void Initialize(Quest quest)
     {
         linkedQuest = quest;
         questObjectiveGOs = new List<GameObject>();
+        itemData = ScriptableObject.CreateInstance<ItemDatabaseSO>();
 
         /* Initialize a prefab for every QuestObjective. */
         List<QuestObjective> questObjectives = quest.QuestObjectives;
@@ -31,7 +28,7 @@ public class UIQuestBlock : MonoBehaviour {
         {
             GameObject NewUIQuestObjective = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/UIQuestObjective"), gameObject.transform);
             QuestObjective questObjective = questObjectives[i];
-            NewUIQuestObjective.transform.GetChild(0).GetComponent<Image>().sprite = itemDB.itemList[questObjective.ObjectiveNeeded].sprite;
+            NewUIQuestObjective.transform.GetChild(0).GetComponent<Image>().sprite = questObjective.Sprite;
             NewUIQuestObjective.transform.GetChild(1).GetComponent<Text>().text = questObjective.AmountCompleted + "/" + questObjective.AmountNeeded;
             NewUIQuestObjective.transform.GetChild(2).GetComponent<Text>().text = questObjective.Description;
             questObjective.OnObjectiveStart();
@@ -47,7 +44,7 @@ public class UIQuestBlock : MonoBehaviour {
         {
             GameObject questObjectiveGO = questObjectiveGOs[i];
             QuestObjective questObjective = LinkedQuest.QuestObjectives[i];
-            questObjectiveGO.transform.GetChild(0).GetComponent<Image>().sprite = itemDB.itemList[questObjective.ObjectiveNeeded].sprite;
+            questObjectiveGO.transform.GetChild(0).GetComponent<Image>().sprite = itemData.itemList[questObjective.ObjectiveNeeded].sprite;
             questObjectiveGO.transform.GetChild(1).GetComponent<Text>().text = questObjective.AmountCompleted + "/" + questObjective.AmountNeeded;
             questObjectiveGO.transform.GetChild(2).GetComponent<Text>().text = questObjective.Description;
         }
