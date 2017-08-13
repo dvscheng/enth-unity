@@ -10479,7 +10479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd4ae9a62285104a96326c500214e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 1
   givenQuest: 0
   interactRange: {fileID: 604141262}
   rb: {fileID: 604141265}
@@ -11559,7 +11559,7 @@ GameObject:
   - component: {fileID: 657040785}
   - component: {fileID: 657040787}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Quest Tracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15242,7 +15242,7 @@ Prefab:
     - target: {fileID: 224423890967680180, guid: 144d0cafce5187c46949ed4fd51a32ad,
         type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224423890967680180, guid: 144d0cafce5187c46949ed4fd51a32ad,
         type: 2}

@@ -61,7 +61,7 @@ public static class NPCDatabase
         {
             new string[] { "Yellow Hood"},                              // NPC name
             new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
-            new string[] { "Sprites/mushroom (2)" },                    // Sprite directory
+            new string[] { "Sprites/spr_mushroom" },                        // Sprite directory
             new string[] { "Hi there!" },                               // Neutral/normal text
         };
     }

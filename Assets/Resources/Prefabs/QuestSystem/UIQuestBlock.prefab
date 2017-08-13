@@ -101,7 +101,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1175701578149294}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f824fc76b6e7454784c8be0ebee52aa, type: 3}
+  m_Script: {fileID: 11500000, guid: eef01dfd65ee9854284d9f332d809497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   questObjectiveGOs: []
