@@ -12,9 +12,11 @@ public class DialogueManager : MonoBehaviour {
 
     private Queue<string> currentDialogue;
 
-    private bool givingQuest;
+    private bool questIsUp;
+    private bool toGiveQuest;
 
     private Quest questToGive;
+    private QuestPopup questPopup;
 
     private NPCs interactingNPC;
     
@@ -22,14 +24,15 @@ public class DialogueManager : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         currentDialogue = new Queue<string>();
-        givingQuest = false;
+        questIsUp = false;
+        toGiveQuest = false;
         questToGive = null;
         interactingNPC = null;
     }
 
     void Update()
     {
-        if (Inputs.Instance.interaction_key_down)
+        if (Inputs.Instance.interaction_key_down && !questIsUp)
         {
             ProceedDialogue();
         }
@@ -77,7 +80,7 @@ public class DialogueManager : MonoBehaviour {
         {
             text.text = currentDialogue.Dequeue();
         }
-        else if (givingQuest)
+        else if (toGiveQuest)
         {
             if (questToGive != null && interactingNPC != null)
                 ShowQuestPopup(questToGive, interactingNPC);
@@ -97,7 +100,7 @@ public class DialogueManager : MonoBehaviour {
         foreach (string line in lines)
             currentDialogue.Enqueue(line);
 
-        givingQuest = isGivingQuest;
+        toGiveQuest = isGivingQuest;
 
         UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, true);
         ProceedDialogue();
@@ -106,15 +109,21 @@ public class DialogueManager : MonoBehaviour {
     /* Shows the QuestPopup window. */
     private void ShowQuestPopup(Quest quest, NPCs startingNPC)
     {
-        GameObject questPopup = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/Quest Pop-up/Quest Pop-up"), gameObject.transform);
-        questPopup.GetComponent<QuestPopup>().Initialize(quest, startingNPC);
+        GameObject questPopupObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/Quest Pop-up/Quest Pop-up"), gameObject.transform);
+        questPopup = questPopupObj.GetComponent<QuestPopup>();
+        questPopup.Initialize(quest, startingNPC);
+        questIsUp = true;
     }
 
     /* Destroys and resets the dialogue manager, including the quest dialogue if there is one. */
     public void ResetDialogue()
     {
+        if (questPopup != null)
+            questPopup.ResetDialogue();
+        UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, false);
         currentDialogue.Clear();
-        givingQuest = false;
+        toGiveQuest = false;
+        questIsUp = false;
         questToGive = null;
         interactingNPC = null;
     }

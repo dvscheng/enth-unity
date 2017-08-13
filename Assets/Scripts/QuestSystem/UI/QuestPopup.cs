@@ -49,12 +49,20 @@ public class QuestPopup : MonoBehaviour {
     {
         UIQuestTracker.Instance.AddQuest(quest);
         quest.OnQuestAccept();
+
+        DeclineQuest();
     }
 
     /* Linked to a button. */
     public void DeclineQuest()
     {
-        UIManager.Instance.dialogue.ResetDialogue();
+        UIManager.Instance.dialogue.ResetDialogue();                // perhaps don't exit dialogue right away.
+        Destroy(gameObject);
+    }
+
+    /* Called by DialogueManager. */
+    public void ResetDialogue()
+    {
         Destroy(gameObject);
     }
 }
