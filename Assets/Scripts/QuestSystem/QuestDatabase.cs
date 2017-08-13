@@ -70,7 +70,7 @@ public class QuestDatabase : ScriptableObject {
                     (int)NPCDatabase.ID.desert_yellowHood,
                     (int)NPCDatabase.ID.desert_yellowHood,
                     "Test Quest",
-                    new string[] { "Start dialogue" },
+                    new string[] { "Start dialogue Start dialogue Start dialogue Start dialogue Start dialogue.Start dialogue Start dialogue Start dialogue Start dialogue Start dialogue.", "Hi there Hi there Hi there Hi there." },
                     new string[] { "End dialogue" },
                     new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),
                                            new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.rock, 2) })

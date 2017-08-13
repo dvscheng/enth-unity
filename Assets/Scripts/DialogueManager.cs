@@ -11,6 +11,9 @@ public class DialogueManager : MonoBehaviour {
     [SerializeField] Text text;
 
     private Queue<string> currentDialogue;
+    private IEnumerator animationCoroutine;
+    private string fullTextToBeShown;
+    private bool animatingText;
 
     private bool questIsUp;
     private bool toGiveQuest;
@@ -24,6 +27,9 @@ public class DialogueManager : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         currentDialogue = new Queue<string>();
+        animationCoroutine = null;
+        fullTextToBeShown = "";
+        animatingText = false;
         questIsUp = false;
         toGiveQuest = false;
         questToGive = null;
@@ -45,8 +51,6 @@ public class DialogueManager : MonoBehaviour {
         NPCDialogueSprite.sprite = NPC.DialogueSprite;
 
         // check if a quest is finished
-        // go through every quest, of the ones completed, is the end npc this one?
-        // if so then complete it
         List<Quest> allReadyQuests = UIQuestTracker.Instance.AllQuests(true);
         foreach (Quest quest in allReadyQuests)
         {
@@ -70,15 +74,27 @@ public class DialogueManager : MonoBehaviour {
             }
         }
 
-        UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, true);
-
+        // otherwise, show neutral text
+        StartDialogue(NPCDatabase.idToInfo[NPC.ID][(int)NPCDatabase.Slot.neutralText], false);
     }
 
     public void ProceedDialogue()
     {
-        if (currentDialogue.Count > 0)
+        if (animatingText == true)
         {
-            text.text = currentDialogue.Dequeue();
+            if (animationCoroutine != null)
+                StopCoroutine(animationCoroutine);
+            else
+                Debug.Log("Tried to end animation coroutine, but it was null.");
+            animatingText = false;
+            text.text = fullTextToBeShown;
+        }
+        else if (currentDialogue.Count > 0)
+        {
+            fullTextToBeShown = currentDialogue.Dequeue();
+            animatingText = true;
+            animationCoroutine = AnimateText(fullTextToBeShown);
+            StartCoroutine(animationCoroutine);
         }
         else if (toGiveQuest)
         {
@@ -104,6 +120,19 @@ public class DialogueManager : MonoBehaviour {
 
         UIManager.Instance.TurnOnOffUI(UIManager.UI_Type.dialogue, true);
         ProceedDialogue();
+    }
+
+    /* A coroutine that animates the text. */
+    private IEnumerator AnimateText(string line)
+    {
+        int i = 0;
+        text.text = "";
+        while (i < line.Length)
+        {
+            text.text += line[i++];
+            yield return new WaitForSeconds((1f * Time.deltaTime)*1.35f);                   // option to change animation speed
+        }
+        animatingText = false;
     }
 
     /* Shows the QuestPopup window. */
