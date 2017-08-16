@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour {
     private Quest questToGive;
     private QuestPopup questPopup;
 
-    private NPCs interactingNPC;
+    private NPC interactingNPC;
     
 
     // Use this for initialization
@@ -45,7 +45,7 @@ public class DialogueManager : MonoBehaviour {
     }
 
     /* Notify that an NPC has been interacted with. */
-    public void NPCInteraction(NPCs NPC)
+    public void NPCInteraction(NPC NPC)
     {
         NPCName.text = NPC.CharacterName;
         NPCDialogueSprite.sprite = NPC.DialogueSprite;
@@ -136,7 +136,7 @@ public class DialogueManager : MonoBehaviour {
     }
 
     /* Shows the QuestPopup window. */
-    private void ShowQuestPopup(Quest quest, NPCs startingNPC)
+    private void ShowQuestPopup(Quest quest, NPC startingNPC)
     {
         GameObject questPopupObj = Instantiate(Resources.Load<GameObject>("Prefabs/QuestSystem/Quest Pop-up/Quest Pop-up"), gameObject.transform);
         questPopup = questPopupObj.GetComponent<QuestPopup>();

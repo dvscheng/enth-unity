@@ -28,7 +28,7 @@ public class QuestPopup : MonoBehaviour {
     [SerializeField] GameObject questIconGO;
 
     /* Must be called; links a quest to this popup. */
-    public void Initialize(Quest quest, NPCs startingNPC)
+    public void Initialize(Quest quest, NPC startingNPC)
     {
         this.quest = quest;
 

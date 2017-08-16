@@ -42,7 +42,7 @@ public static class NPCDatabase
         valuesDictionary[(int)ID.desert_master] = new string[][]
         {
             new string[] { "Yellow Hood" },
-            new string[] { "Sprites/mushroom (2)" },
+            new string[] { "Sprites/spr_sign" },
             new string[] { "Hi there! How are you?", "I've been having trouble collecting some items.", "Are you up for a task?" },
             new string[] { "Thanks for your help, friend!" },
             new string[] { "Thanks again for the help." }

@@ -6,7 +6,7 @@ using System;
 
 public class QuestDialogue : MonoBehaviour {
 
-    public NPCs _NPC;
+    public NPC _NPC;
     public GameObject dialogue;
     public GameObject firstImage;
     public GameObject firstText;
@@ -23,7 +23,7 @@ public class QuestDialogue : MonoBehaviour {
         initialized = false;
 	}
 
-    public void Initialize(NPCs NPC)
+    public void Initialize(NPC NPC)
     {
         /* Generate the items, get their sprites, and get the amounts-to-collect. */
         int numItems = Enum.GetValues(typeof(ItemDatabaseSO.ItemID)).Length-1;

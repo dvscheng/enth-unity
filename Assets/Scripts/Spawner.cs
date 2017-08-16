@@ -23,7 +23,7 @@ public class Spawner : MonoBehaviour {
 
         SpawnEnemy();
     }
-	
+
 	/* Updates the timer. */
 	void Update () {
         if (startCounting)

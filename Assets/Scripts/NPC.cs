@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCs : MonoBehaviour
+public class NPC : MonoBehaviour
 {
     private QuestDatabase questData;
     /* Unity editor */
