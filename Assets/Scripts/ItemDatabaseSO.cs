@@ -15,6 +15,11 @@ public static class ItemDatabaseSO
 
          1. Add to MobID enum.
          2. Add to the 4 drop rate types to the monster drop table.
+         IN UNITY EDITOR:
+         3. Make prefab with same name as the enum.
+         4. Change the prefab's Mob ID, move speed, sprite, box collider sizes, and hp bar location
+         IN JOURNAL (ENEMY KC TRACKER):
+         5. 
      */
 
     /* item id same as sprite name */
@@ -66,12 +71,21 @@ public static class ItemDatabaseSO
     public static int[,] dropTable;
 
     /* Indexed by id. */
-    public static List<ItemObject> itemList;
+    public static Dictionary<int, ItemObject> itemList;
+
+    private static Sprite[] itemSprites;
     //public List<MobObject> mobList;
 
     static ItemDatabaseSO()
     {
-        itemList = new List<ItemObject>();
+        itemList = new Dictionary<int, ItemObject>();
+        itemSprites = Resources.LoadAll<Sprite>("Sprites/Items/desert materials");      // item sprites path here
+        for (int i = 0; i < Enum.GetNames(typeof(ItemID)).Length; i++)
+        {
+            Sprite temp = itemSprites[i];
+            // get the Sprite that has the name of enum index i
+        }
+        
 
         /* Create the item objects. */
         Material((int)ItemID.mushroom, (int)ItemType.mats,
@@ -160,7 +174,7 @@ public static class ItemDatabaseSO
         (item as EquipItems).defencePen = defencePen;
         (item as EquipItems).mastery = mastery;
 
-        itemList.Add(item);
+        itemList.Add(id, item);
     }
 
     /* Creates a new UseItems with the specified ItemType and adds it to the list.*/
@@ -173,7 +187,7 @@ public static class ItemDatabaseSO
         (item as UseItems).restoreHp = restoreHp;
         (item as UseItems).maxAmount = maxAmount;
 
-        itemList.Add(item);
+        itemList.Add(id, item);
     }
 
     /* Creates a new MatItems with the specified ItemType and adds it to the list.*/
@@ -185,7 +199,7 @@ public static class ItemDatabaseSO
         InitializeBaseItem(item, id, type, itemName, sprite, isStackable, isQuestItem, flavorText);
         (item as MatItems).maxAmount = maxAmount;
 
-        itemList.Add(item);
+        itemList.Add(id, item);
     }
 
     /* Initializes the ItemObject parameters. */

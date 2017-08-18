@@ -22,7 +22,7 @@ public class ItemOnGroundEditor : Editor {
 
         // TODO: bug, doesnt initialize the item until you play the game THEN edit the id.
         /* Show/set the item ID, changes the item as you set it. */
-        myItemOnGround.item.id = EditorGUILayout.IntSlider("Item ID", myItemOnGround.item.id, 0, 2);
+        myItemOnGround.item.id = EditorGUILayout.IntSlider("Item ID", myItemOnGround.item.id, 0, ItemDatabaseSO.itemList.Count);
         //myItemOnGround.item.ItemID = EditorGUILayout.IntField("Item ID", myItemOnGround.item.ItemID);
         int itemType = ItemDatabaseSO.itemList[myItemOnGround.item.id].type;
         myItemOnGround.GetComponent<ItemOnGround>().Initialize(myItemOnGround.item.id, myItemOnGround.amount);

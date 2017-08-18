@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     Spawner spawner;
     Rigidbody2D rb;
     EnemyHealthBar healthBar;
+    public SpriteRenderer spriteRenderer; // UNITY
     public BoxCollider2D boxCollider; // UNITY
     public BoxCollider2D boxTrigger; // UNITY
     public CircleCollider2D sightRange; // UNITY
@@ -217,6 +218,9 @@ public class Enemy : MonoBehaviour
     {
         //rb.MovePosition((Vector2)transform.position + movement * Time.deltaTime);
         rb.velocity = movement * moveSpeed * Time.deltaTime;
+
+        /* If going left, flip x, otherwise don't. Sprite defult looks right. */
+        spriteRenderer.flipX = (movement.x < 0) ? true : false;
     }
 
     public void TakeDamage(int damage)
@@ -313,9 +317,16 @@ public class Enemy : MonoBehaviour
             }
 
             int itemID = ItemDatabaseSO.dropTable[mobID, dropRate];
+            if (ItemDatabaseSO.itemList.ContainsKey(itemID))
+            {
+                GameObject itemOnGround = Instantiate(Resources.Load<GameObject>("Prefabs/ItemOnGround"), dropPos, Quaternion.identity);
+                itemOnGround.GetComponent<ItemOnGround>().Initialize(itemID, 5);
+            }
+            else
+            {
+                return false;
+            }
 
-            GameObject itemOnGround = (GameObject)Instantiate(Resources.Load("Prefabs/ItemOnGround"), dropPos, Quaternion.identity) as GameObject;
-            itemOnGround.GetComponent<ItemOnGround>().Initialize(itemID, 5);
 
             //print(chances + "% roll success; Item: " + ((ItemDatabase.ItemID)itemID).ToString() + " of ID: " + itemID);
 
