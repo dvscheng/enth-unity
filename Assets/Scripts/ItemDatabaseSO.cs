@@ -8,7 +8,7 @@ public static class ItemDatabaseSO
        When adding items:
      
          1. Add to ItemID enum.
-         2. Create and add to dictionary.
+         2. Create and add to dictionary -in the same order as ItemID enum-
          3. Add to monster drop tables.
          
        When adding monsters:
@@ -25,16 +25,16 @@ public static class ItemDatabaseSO
     /* item id same as sprite name */
     public enum ItemID
     {
-        mushroom,
-        rock,
-        leatherMail,
-        slimeOrb,
-        slimeFang,
-        skeletalSpine,
-        skeletalCore,
-        cactusFlower,
-        cactusFluid,
-        scorpioStinger,
+        mushroom,                                                   // 0
+        rock,                                                       // 1
+        leatherMail,                                                // 2
+        slimeOrb,                                                   // 3
+        slimeFang,                                                  // 4
+        skeletalSpine,                                              // 5
+        skeletalCore,                                               // 6
+        cactusFlower,                                               // 7
+        cactusFluid,                                                // 8
+        scorpioStinger,                                             // 9
     }
 
     public enum ItemType
@@ -55,16 +55,16 @@ public static class ItemDatabaseSO
     /* Spawner requires this to have same name as Prefab. */
     public enum MobID
     {
-        Slime,
-        BlueSlime,
-        SkeletalWyvern,
-        Cactus,
-        DesertScorpio
+        Slime,                                                      // 0
+        BlueSlime,                                                  // 1
+        SkeletalWyvern,                                             // 2
+        Cactus,                                                     // 3
+        DesertScorpio                                               // 4
     }
 
     /* Percentages, used in Enemy.RollForDrops() */
     public static int COMMON_DROPRATE = 40;
-    public static int UNCOMMON_DROPRATE = 40;
+    public static int UNCOMMON_DROPRATE = 25;
     public static int RARE_DROPRATE = 10;
     public static int LEGENDARY_DROPRATE = 1;
 
@@ -73,59 +73,66 @@ public static class ItemDatabaseSO
     /* Indexed by id. */
     public static Dictionary<int, ItemObject> itemList;
 
+    private static Dictionary<string, int> nameToID;
+
     private static Sprite[] itemSprites;
     //public List<MobObject> mobList;
 
     static ItemDatabaseSO()
     {
         itemList = new Dictionary<int, ItemObject>();
-        itemSprites = Resources.LoadAll<Sprite>("Sprites/Items/desert materials");      // item sprites path here
-        for (int i = 0; i < Enum.GetNames(typeof(ItemID)).Length; i++)
+
+        /* (ItemID.name, ItemID.value) */
+        int numItems = Enum.GetNames(typeof(ItemID)).Length;
+        nameToID = new Dictionary<string, int>();
+        for (int i = 0; i < numItems; i++)
         {
-            Sprite temp = itemSprites[i];
-            // get the Sprite that has the name of enum index i
+            nameToID.Add(Enum.GetName(typeof(ItemID), i), i);
         }
-        
+
+        /* Load the resources into the Sprite[], then sort it according to ItemID. */
+        itemSprites = Resources.LoadAll<Sprite>("Sprites/Items/desert materials");      // item sprites path here
+        SortSpriteList(ref itemSprites, 0);
 
         /* Create the item objects. */
         Material((int)ItemID.mushroom, (int)ItemType.mats,
-            "Mushroom", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Mushroom", itemSprites[(int)ItemID.mushroom], true, false,
             "A shroomy.",
             255);
         Material((int)ItemID.rock, (int)ItemType.mats,
-            "Rock", Resources.Load<Sprite>("Sprites/Items/spr_rock"), true, false,
+            "Rock", itemSprites[(int)ItemID.rock], true, false,
             "A rock.",
             255);
         Equip((int)ItemID.leatherMail, (int)ItemType.equip,
-            "Leather Mail", Resources.Load<Sprite>("Sprites/Items/spr_leather_mail"), false, false,
+            "Leather Mail", itemSprites[(int)ItemID.leatherMail], false, false,
             "A mail of leather.",
             0, 5, 10, 0f, 0f);
         Material((int)ItemID.slimeOrb, (int)ItemType.mats,
-            "Slime Orb", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Slime Orb", itemSprites[(int)ItemID.slimeOrb], true, false,
             "The condensed essence of a slime. I've heard people saying that this orb holds odd physical properties.",
             255);
         Material((int)ItemID.slimeFang, (int)ItemType.mats,
-            "Fang", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Fang", itemSprites[(int)ItemID.slimeFang], true, false,
             "An unusually pristine fang extracted from the carcase of a slime. It feels pointy and sharp to the touch.",
             255);
         Material((int)ItemID.skeletalSpine, (int)ItemType.mats,
-            "Skeletal Spine", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Skeletal Spine", itemSprites[(int)ItemID.skeletalSpine], true, false,
             "The whole of that skeletal being's spine. It's surprisingly light and almost polished-looking, but it emits a strong, powerful aura.",
             255);
         Material((int)ItemID.skeletalCore, (int)ItemType.mats,
-            "Skeletal Core", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Skeletal Core", itemSprites[(int)ItemID.skeletalCore], true, false,
             "So this is what powered that eerie beast. I'm surprised I was able to extract and handle such a strange object. Maybe I can put this to good use.",
             255);
         Material((int)ItemID.cactusFlower, (int)ItemType.mats,
-            "Bristle Flower", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Bristle Flower", itemSprites[(int)ItemID.cactusFlower], true, false,
             "I couldn't resist taking this beauty with me. Its allure is irresistably captivating.. I found myself having a hard time looking away. This must have some uses.",
             255);
         Material((int)ItemID.cactusFluid, (int)ItemType.mats,
-            "Cactus Fluid", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Cactus Fluid", itemSprites[(int)ItemID.cactusFluid], true, false,
             "I'm assuming this fluid played a part in animating those odd plants. I'm sure this fluid has a use given the right expertise.",
             255);
         Material((int)ItemID.scorpioStinger, (int)ItemType.mats,
-            "Scorpio Stinger", Resources.Load<Sprite>("Sprites/Items/spr_mushroom"), true, false,
+            "Scorpio Stinger", itemSprites[(int)ItemID.scorpioStinger], true, false,
             "A worn but dangerous weapon. With a deadly poison leaking from the tip, this is definitely a Scorpio's weapon of choice.",
             255);
 
@@ -138,12 +145,12 @@ public static class ItemDatabaseSO
         dropTable[(int)MobID.Slime, (int)DropRateType.common] = (int)ItemID.slimeOrb;
         dropTable[(int)MobID.Slime, (int)DropRateType.uncommon] = (int)ItemID.slimeOrb;
         dropTable[(int)MobID.Slime, (int)DropRateType.rare] = (int)ItemID.slimeOrb;
-        dropTable[(int)MobID.Slime, (int)DropRateType.legendary] = (int)ItemID.slimeOrb;
+        dropTable[(int)MobID.Slime, (int)DropRateType.legendary] = (int)ItemID.rock;
 
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.common] = (int)ItemID.slimeFang;
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.uncommon] = (int)ItemID.slimeFang;
         dropTable[(int)MobID.BlueSlime, (int)DropRateType.rare] = (int)ItemID.slimeFang;
-        dropTable[(int)MobID.BlueSlime, (int)DropRateType.legendary] = (int)ItemID.slimeFang;
+        dropTable[(int)MobID.BlueSlime, (int)DropRateType.legendary] = (int)ItemID.mushroom;
 
         dropTable[(int)MobID.SkeletalWyvern, (int)DropRateType.common] = (int)ItemID.skeletalSpine;
         dropTable[(int)MobID.SkeletalWyvern, (int)DropRateType.uncommon] = (int)ItemID.skeletalCore;
@@ -158,7 +165,41 @@ public static class ItemDatabaseSO
         dropTable[(int)MobID.DesertScorpio, (int)DropRateType.common] = (int)ItemID.scorpioStinger;
         dropTable[(int)MobID.DesertScorpio, (int)DropRateType.uncommon] = (int)ItemID.scorpioStinger;
         dropTable[(int)MobID.DesertScorpio, (int)DropRateType.rare] = (int)ItemID.scorpioStinger;
-        dropTable[(int)MobID.DesertScorpio, (int)DropRateType.legendary] = (int)ItemID.scorpioStinger;
+        dropTable[(int)MobID.DesertScorpio, (int)DropRateType.legendary] = (int)ItemID.leatherMail;
+    }
+
+    /* Sorts the given sprite list as they are in the ItemID enum given these requirements:
+     * 1. ItemID name MUST be the same as the sprite name. 
+     * 2. spriteList MUST be the same size as ItemID.Length.
+     * 3. Does not support duplicates of items (same item name). */
+    private static void SortSpriteList(ref Sprite[] spriteList, int index)
+    {
+        if (index == spriteList.Length)
+        {
+            return;
+        }
+
+        Sprite sprite = spriteList[index];
+        if (nameToID.ContainsKey(sprite.name))
+        {
+            int correctIndex = nameToID[spriteList[index].name];
+            if (correctIndex != index)
+            {
+                Sprite temp = spriteList[correctIndex];
+                spriteList[correctIndex] = sprite;
+                spriteList[index] = temp;
+
+                SortSpriteList(ref spriteList, index);
+            }
+            else
+            {
+                SortSpriteList(ref spriteList, index+1);
+            }
+        }
+        else
+        {
+            throw new Exception("Couldn't find sprite of name '" + sprite.name + "'.");
+        }
     }
 
     /* Creates a new EquipItems with the specified ItemType and adds it to the list.*/

@@ -62,8 +62,8 @@ public class PlayerInventory : MonoBehaviour {
         //DontDestroyOnLoad(gameObject); already in UI
 
         /* Load in the inventory tab buttons. */
-        buttonOnSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_focused");
-        buttonOffSprites = Resources.LoadAll<Sprite>("Sprites/spr_inventory_tab_not_focused");
+        buttonOnSprites = Resources.LoadAll<Sprite>("Sprites/Inventory/spr_inventory_tab_focused");
+        buttonOffSprites = Resources.LoadAll<Sprite>("Sprites/Inventory/spr_inventory_tab_not_focused");
 
         /* Initialize the grid prefabs for Unity, initialize the grid arrays, then adjust the ItemSlots. */
         equipmentGridGameObj = (GameObject)Instantiate(Resources.Load("Prefabs/InventoryGrid Multiple 1"), gameObject.transform);

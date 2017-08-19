@@ -3018,7 +3018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61cbbcf39f3470947a63ceba4fec90c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: 0
+  enemyID: 3
   timer: 0
   respawnTime: 60
 --- !u!1 &179156457
@@ -15893,7 +15893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61cbbcf39f3470947a63ceba4fec90c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: 0
+  enemyID: 3
   timer: 0
   respawnTime: 60
 --- !u!1 &888005268
@@ -17369,7 +17369,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 638.5, y: -311.5}
-  m_SizeDelta: {x: 250, y: 150}
+  m_SizeDelta: {x: 250, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &989525650
 MonoBehaviour:
@@ -31455,7 +31455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61cbbcf39f3470947a63ceba4fec90c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: 4
+  enemyID: 3
   timer: 0
   respawnTime: 60
 --- !u!1 &1755366135
@@ -34782,7 +34782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61cbbcf39f3470947a63ceba4fec90c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: 0
+  enemyID: 3
   timer: 0
   respawnTime: 60
 --- !u!1 &1965445408
