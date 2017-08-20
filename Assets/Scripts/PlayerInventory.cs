@@ -289,4 +289,14 @@ public class PlayerInventory : MonoBehaviour {
             Debug.Log("Incorrect tabNumber:" + tabNumber + " was passed into SetTabInFocus in PlayerInventory.");
         }
     }
+
+    /*****************
+    Debugging
+    *****************/
+
+    public void AddRandomItems()
+    {
+        int itemID = UnityEngine.Random.Range(0, Enum.GetNames(typeof(ItemDatabaseSO.MobID)).Length);
+        AddToInventory(ItemDatabaseSO.itemList[itemID], 3);
+    }
 }

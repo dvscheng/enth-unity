@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     const int STATE_CHASING = 2;
     int currentState = 0;
     bool stateReady = true;
+    bool readyToAttack = true;
     bool wandering = false;
     const float KNOCKBACK_STUN_TIME = 0.8f;
     bool knockbacked = false;
@@ -82,32 +83,32 @@ public class Enemy : MonoBehaviour
                 stateReady = true;
                 currentState = STATE_CHASING;
             }
-            else if (playerOnTriggerEnterCount == 2)
+            else if (playerOnTriggerEnterCount == 2 && readyToAttack)
             {
-                /* If the Player enters twice, meaning it has entered the inner, body-hit collider. */
-                GameObject playerObj = collision.gameObject;
-
-                /* Add force */
-                float playerX = playerObj.transform.position.x;
-                float playerY = playerObj.transform.position.y;
-                float enemyX = gameObject.transform.position.x;
-                float enemyY = gameObject.transform.position.y;
-
-                float forceX = (enemyX - playerX > 0) ? -100 : 100;
-                float forceY = (enemyY - playerY > 0) ? -100 : 100;
-                Vector2 force = new Vector2(forceX, forceY);
-
-                /* Apply damage. */
-                // playerObj.GetComponent<Rigidbody2D>().AddForce(force);
-                // add defence too
-                PlayerController playerController = playerObj.GetComponent<PlayerController>();
-                int playerDefence = playerController.Defence + playerController.BonusDef;
-                int damageDealt = (BaseAtt * BaseAtt) / (BaseAtt + (playerDefence - (int)(playerDefence * DefencePen)));
-                playerController.TakeDamage(damageDealt);
+                Damage(collision);
 
                 movement = Vector2.zero;
                 stateReady = false;
-                StartCoroutine(Wait(1));
+                StartCoroutine(Wait(3));
+                currentState = STATE_IDLE;
+            }
+        }
+    }
+
+
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Equals("Player"))
+        {
+            currentState = STATE_CHASING;
+            if (playerOnTriggerEnterCount == 2 && readyToAttack)
+            {
+                Damage(collision);
+
+                movement = Vector2.zero;
+                stateReady = false;
+                StartCoroutine(Wait(3));
+                currentState = STATE_IDLE;
             }
         }
     }
@@ -130,6 +131,33 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    private void Damage(Collider2D collision)
+    {
+        /* If the Player enters twice, meaning it has entered the inner, body-hit collider. */
+        GameObject playerObj = collision.gameObject;
+
+        /* Add force */
+        float playerX = playerObj.transform.position.x;
+        float playerY = playerObj.transform.position.y;
+        float enemyX = gameObject.transform.position.x;
+        float enemyY = gameObject.transform.position.y;
+
+        float forceX = (enemyX - playerX > 0) ? -100 : 100;
+        float forceY = (enemyY - playerY > 0) ? -100 : 100;
+        Vector2 force = new Vector2(forceX, forceY);
+
+        /* Apply damage. */
+        // playerObj.GetComponent<Rigidbody2D>().AddForce(force);
+        // add defence too
+        PlayerController playerController = playerObj.GetComponent<PlayerController>();
+        int playerDefence = playerController.Defence + playerController.BonusDef;
+        int damageDealt = (BaseAtt * BaseAtt) / (BaseAtt + (playerDefence - (int)(playerDefence * DefencePen)));
+        playerController.TakeDamage(damageDealt);
+
+        readyToAttack = false;
+    }
+
 
     /* FSM. */
     void Update() {
@@ -275,31 +303,6 @@ public class Enemy : MonoBehaviour
         {
             Vector2 enemyPos = gameObject.transform.position;
             Vector2 dropPos = new Vector2(enemyPos.x, enemyPos.y);
-            /*
-            int retries = 3;
-            while (retries > 0)
-            {
-                dropPos = new Vector2(enemyPos.x + Random.Range(-0.8f, 0.8f), enemyPos.y + Random.Range(-0.8f, 0.8f));
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(dropPos, 1f);
-                if (colliders.Length > 1)
-                {
-                    foreach (Collider2D collider in colliders)
-                    {
-                        string cTag = collider.gameObject.tag;
-                        if (cTag == "Player" || cTag == "Wall")
-                        {
-                            print("bad area");
-                            retries -= 1;
-                            break;
-                        }
-                    }
-                    retries = -1;       // found a good place to drop
-                }
-            }
-            if (retries == 0)       // if after 3 retries and there is no good position, just drop at enemy pos
-                dropPos = new Vector2(enemyPos.x, enemyPos.y);
-            */
-
 
             int dropRate;
             if (chances == ItemDatabaseSO.LEGENDARY_DROPRATE)
@@ -340,6 +343,7 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         stateReady = true;
+        readyToAttack = true;
     }
 
     private IEnumerator KnockBackDelay(float waitTime)
