@@ -130,7 +130,7 @@ public class DialogueManager : MonoBehaviour {
         while (i < line.Length)
         {
             text.text += line[i++];
-            yield return new WaitForSeconds((1f * Time.deltaTime)*1.35f);                   // option to change animation speed
+            yield return new WaitForSeconds((1f * Time.deltaTime)*1.5f);                   // option to change animation speed
         }
         animatingText = false;
     }
