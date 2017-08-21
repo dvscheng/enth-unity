@@ -75,6 +75,10 @@ public class NPC : MonoBehaviour
         {
             quests = questData.NPCIDToQuests[ID];                                       // TODO: decide whether you need reference or copy of the list
         }
+        else
+        {
+            quests = new List<Quest>();                                                 // just create an empty list of quests for no bug when checking for dialogue
+        }
     }
 
     /* Keeps the rigidbody awake to check for player interaction. */

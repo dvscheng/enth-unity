@@ -66,9 +66,9 @@ public class QuestDatabase : ScriptableObject {
                     2,
                     (int)Quest.State.qualified,
                     new int[] { },
-                    new int[] { },
-                    (int)NPCDatabase.ID.desert_yellowHood,
-                    (int)NPCDatabase.ID.desert_yellowHood,
+                    new int[] { 3 },
+                    (int)NPCDatabase.ID.desert_master,
+                    (int)NPCDatabase.ID.desert_master,
                     "New Beginnings",
                     new string[] { "Good morning, young one. You come at a splendid time. I have something to discuss with you.",
                                     "I'm sure you recall how strongly I've been against you venturing off out of Elios, but it's time I told you why.",
@@ -80,9 +80,79 @@ public class QuestDatabase : ScriptableObject {
                                     "But enough intensity for now. You must take small steps. The first part of your journey will to gain the favor and power of our beloved village, Elios. Talk to everyone in the village, and show them this. (You gain an odd looking artifact)",
                                     "That shouldn't be too difficult of a task, granted you've lived here your whole life, can it?"},
                     new string[] { "You've returned. Splendid! How did it go?" },
-                    new QuestObjective[] { new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.mushroom, 2),
-                                           new ItemQuestObjective("Objective description", (int)ItemDatabaseSO.ItemID.rock, 2) })
-            }
+                    new QuestObjective[] { new NPCQuestObjective("Talk to the alchemist.", (int)NPCDatabase.ID.desert_alchemist, 1),
+                                            new NPCQuestObjective("Talk to the historian.", (int)NPCDatabase.ID.desert_historian, 1),
+                                            new NPCQuestObjective("Talk to the blacksmith.", (int)NPCDatabase.ID.desert_blacksmith, 1),
+                                            new NPCQuestObjective("Talk to the merchant.", (int)NPCDatabase.ID.desert_merchant, 1) })
+            },
+
+            {
+                3,
+                new Quest(
+                    3,
+                    (int)Quest.State.unqualified,
+                    new int[] { 2 },
+                    new int[] { 4 },
+                    (int)NPCDatabase.ID.desert_alchemist,
+                    (int)NPCDatabase.ID.desert_alchemist,
+                    "The Art of Alchemy",
+                    new string[] { "That shouldn't be too difficult of a task, granted you've lived here your whole life, can it?", },
+                    new string[] { "You've returned. Splendid! How did it go?" },
+                    new QuestObjective[] { new ItemQuestObjective("Collect a cactus's fluid.", (int)ItemDatabaseSO.ItemID.cactusFluid, 2),
+                                           new ItemQuestObjective("Collect a slime's orb.", (int)ItemDatabaseSO.ItemID.slimeOrb, 2),
+                                           new ItemQuestObjective("Collect a scorpion's stinger.", (int)ItemDatabaseSO.ItemID.scorpioStinger, 1) })
+            },
+
+            {
+                4,
+                new Quest(
+                    4,
+                    (int)Quest.State.unqualified,
+                    new int[] { 3 },
+                    new int[] { 5 },
+                    (int)NPCDatabase.ID.desert_historian,
+                    (int)NPCDatabase.ID.desert_historian,
+                    "Ancestral Knowledge",
+                    new string[] { "That shouldn't be too difficult of a task, granted you've lived here your whole life, can it?", },
+                    new string[] { "You've returned. Splendid! How did it go?" },
+                    new QuestObjective[] { new ItemQuestObjective("Collect a skeletal wyvern's spine.", (int)ItemDatabaseSO.ItemID.skeletalSpine, 1),
+                                           new ItemQuestObjective("Collect a slime's fang.", (int)ItemDatabaseSO.ItemID.slimeFang, 1) })
+            },
+
+            {
+                5,
+                new Quest(
+                    5,
+                    (int)Quest.State.unqualified,
+                    new int[] { 4 },
+                    new int[] { 6 },
+                    (int)NPCDatabase.ID.desert_blacksmith,
+                    (int)NPCDatabase.ID.desert_blacksmith,
+                    "Forging Power",
+                    new string[] { "That shouldn't be too difficult of a task, granted you've lived here your whole life, can it?", },
+                    new string[] { "You've returned. Splendid! How did it go?" },
+                    new QuestObjective[] { new ItemQuestObjective("Collect a skeletal wyvern's core.", (int)ItemDatabaseSO.ItemID.skeletalCore, 1),
+                                           new ItemQuestObjective("Collect a scorpio's stinger.", (int)ItemDatabaseSO.ItemID.scorpioStinger, 2) })
+            },
+
+            {
+                6,
+                new Quest(
+                    6,
+                    (int)Quest.State.unqualified,
+                    new int[] { 5 },
+                    new int[] { },
+                    (int)NPCDatabase.ID.desert_merchant,
+                    (int)NPCDatabase.ID.desert_merchant,
+                    "Charisma",
+                    new string[] { "That shouldn't be too difficult of a task, granted you've lived here your whole life, can it?", },
+                    new string[] { "You've returned. Splendid! How did it go?" },
+                    new QuestObjective[] { new NPCQuestObjective("Talk to the alchemist.", (int)NPCDatabase.ID.desert_alchemist, 1),
+                                            new NPCQuestObjective("Talk to the historian.", (int)NPCDatabase.ID.desert_historian, 1),
+                                            new NPCQuestObjective("Talk to the blacksmith.", (int)NPCDatabase.ID.desert_blacksmith, 1),
+                                            new NPCQuestObjective("Talk to the merchant.", (int)NPCDatabase.ID.desert_master, 1),
+                                            new NPCQuestObjective("Talk to the merchant.", (int)NPCDatabase.ID.desert_yellowHood, 1) })
+            },
         };
         CreateIDToQuestDictionary();
     }

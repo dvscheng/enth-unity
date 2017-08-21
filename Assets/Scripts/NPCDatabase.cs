@@ -7,13 +7,13 @@ public static class NPCDatabase
     /// </summary>
     public enum ID
     {
-        example,
-        desert_yellowHood,
-        desert_master,
-        desert_alchemist,
-        desert_historian,
-        desert_blacksmith,
-        desert_merchant,
+        example,                                        // 0
+        desert_yellowHood,                              // 1
+        desert_master,                                  // 2
+        desert_alchemist,                               // 3
+        desert_historian,                               // 4
+        desert_blacksmith,                              // 5
+        desert_merchant,                                // 6
     }
 
     public enum Slot
@@ -58,6 +58,46 @@ public static class NPCDatabase
         };
 
         idToInfo[(int)ID.desert_yellowHood] = new string[][]
+        {
+            new string[] { "Yellow Hood"},                              // NPC name
+            new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
+            new string[] { "Sprites/Items/spr_mushroom" },                        // Sprite directory
+            new string[] { "Hi there!" },                               // Neutral/normal text
+        };
+
+        idToInfo[(int)ID.desert_master] = new string[][]
+        {
+            new string[] { "Yellow Hood"},                              // NPC name
+            new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
+            new string[] { "Sprites/Items/spr_mushroom" },                        // Sprite directory
+            new string[] { "Hi there!" },                               // Neutral/normal text
+        };
+
+        idToInfo[(int)ID.desert_alchemist] = new string[][]
+        {
+            new string[] { "Yellow Hood"},                              // NPC name
+            new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
+            new string[] { "Sprites/Items/spr_mushroom" },                        // Sprite directory
+            new string[] { "Hi there!" },                               // Neutral/normal text
+        };
+
+        idToInfo[(int)ID.desert_historian] = new string[][]
+        {
+            new string[] { "Yellow Hood"},                              // NPC name
+            new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
+            new string[] { "Sprites/Items/spr_mushroom" },                        // Sprite directory
+            new string[] { "Hi there!" },                               // Neutral/normal text
+        };
+
+        idToInfo[(int)ID.desert_blacksmith] = new string[][]
+        {
+            new string[] { "Yellow Hood"},                              // NPC name
+            new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
+            new string[] { "Sprites/Items/spr_mushroom" },                        // Sprite directory
+            new string[] { "Hi there!" },                               // Neutral/normal text
+        };
+
+        idToInfo[(int)ID.desert_merchant] = new string[][]
         {
             new string[] { "Yellow Hood"},                              // NPC name
             new string[] { "Sprites/playerref editted"},                // Directory of character's sprite

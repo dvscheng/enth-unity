@@ -9,6 +9,7 @@ public class DialogueManager : MonoBehaviour {
     [SerializeField] Text NPCName;
     [SerializeField] Image NPCDialogueSprite;
     [SerializeField] Text text;
+    [SerializeField] GameObject EoTNotification;
 
     private Queue<string> currentDialogue;
     private IEnumerator animationCoroutine;
@@ -88,6 +89,7 @@ public class DialogueManager : MonoBehaviour {
                 Debug.Log("Tried to end animation coroutine, but it was null.");
             animatingText = false;
             text.text = fullTextToBeShown;
+            SetEndOfTextIndicator(true);
         }
         else if (currentDialogue.Count > 0)
         {
@@ -95,6 +97,7 @@ public class DialogueManager : MonoBehaviour {
             animatingText = true;
             animationCoroutine = AnimateText(fullTextToBeShown);
             StartCoroutine(animationCoroutine);
+            SetEndOfTextIndicator(false);
         }
         else if (toGiveQuest)
         {
@@ -133,6 +136,13 @@ public class DialogueManager : MonoBehaviour {
             yield return new WaitForSeconds((1f * Time.deltaTime)*1.5f);                   // option to change animation speed
         }
         animatingText = false;
+        SetEndOfTextIndicator(true);
+    }
+
+    /* Displays the notification on that the dialogue line is completely shown. */
+    private void SetEndOfTextIndicator(bool OnOrOff)
+    {
+        EoTNotification.SetActive(OnOrOff);
     }
 
     /* Shows the QuestPopup window. */
