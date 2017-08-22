@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region Unity Inspectors | References
+    #region Unity Editor | References
     Rigidbody2D rb;
     Animator anim;
 

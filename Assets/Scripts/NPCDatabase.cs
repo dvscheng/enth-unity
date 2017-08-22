@@ -67,7 +67,7 @@ public static class NPCDatabase
 
         idToInfo[(int)ID.desert_master] = new string[][]
         {
-            new string[] { "Yellow Hood"},                              // NPC name
+            new string[] { "Yellowhood"},                               // NPC name
             new string[] { "Sprites/playerref editted"},                // Directory of character's sprite
             new string[] { "Sprites/Items/spr_mushroom" },                        // Sprite directory
             new string[] { "Hi there!" },                               // Neutral/normal text
