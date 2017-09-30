@@ -17,7 +17,6 @@ public class UIQuestTracker : MonoBehaviour {
     int currNumQuests = 0;
     List<GameObject> questBlockGOs;
     List<float> blockHeights;
-    QuestDatabase questDatabase;
 
     // Use this for initialization
     void Awake()
@@ -36,7 +35,6 @@ public class UIQuestTracker : MonoBehaviour {
         //DontDestroyOnLoad(gameObject); already in UI 
         #endregion
 
-        questDatabase = ScriptableObject.CreateInstance<QuestDatabase>();
         questBlockGOs = new List<GameObject>();
         blockHeights = new List<float>();
     }
@@ -148,6 +146,6 @@ public class UIQuestTracker : MonoBehaviour {
 
     public void AddRandomQuest()
     {
-        AddQuest(questDatabase.NPCIDToQuests[0][0]);
+        AddQuest(QuestDatabase.NPCIDToQuests[0][0]);
     }
 }

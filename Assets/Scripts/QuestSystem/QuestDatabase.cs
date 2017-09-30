@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestDatabase : ScriptableObject {
+public static class QuestDatabase {
 
-    private Dictionary<int, Quest> questDictionary;                                          // (id, Quest) Quest IDs mapped to the respective quest
-    public Dictionary<int, Quest> QuestDictionary
+    private static Dictionary<int, Quest> questDictionary;                                          // (id, Quest) Quest IDs mapped to the respective quest
+    public static Dictionary<int, Quest> QuestDictionary
     {
         get
         {
@@ -13,8 +13,8 @@ public class QuestDatabase : ScriptableObject {
         }
     }
 
-    private Dictionary<int, List<Quest>> npcIDToQuests;                                      // (npc_id, List<Quest>) An NPC's ID mapped to a List of all their quests
-    public Dictionary<int, List<Quest>> NPCIDToQuests
+    private static Dictionary<int, List<Quest>> npcIDToQuests;                                      // (npc_id, List<Quest>) An NPC's ID mapped to a List of all their quests
+    public static Dictionary<int, List<Quest>> NPCIDToQuests
     {
         get
         {
@@ -22,7 +22,7 @@ public class QuestDatabase : ScriptableObject {
         }
     }
 
-    public void OnEnable()
+    static QuestDatabase()
     {
         npcIDToQuests = new Dictionary<int, List<Quest>>();
         questDictionary = new Dictionary<int, Quest>
@@ -79,7 +79,7 @@ public class QuestDatabase : ScriptableObject {
                                     "Their goal, and now your goal, is it gain the favor of all the villages of this land. With the power of all the villages, you will face the great evil that has flooded our world.",
                                     "But enough intensity for now. You must take small steps. The first part of your journey will to gain the favor and power of our beloved village, Elios. Talk to everyone in the village, and show them this. (You gain an odd looking artifact)",
                                     "That shouldn't be too difficult of a task, granted you've lived here your whole life, can it?"},
-                    new string[] { "You've returned. Splendid! How did it go?" },
+                    new string[] { "You've returned. Good. Now you are ready for the tasks of our people. Go around and ask if there are favors you can fulfil." },
                     new QuestObjective[] { new NPCQuestObjective("Talk to the alchemist.", (int)NPCDatabase.ID.desert_alchemist, 1),
                                             new NPCQuestObjective("Talk to the historian.", (int)NPCDatabase.ID.desert_historian, 1),
                                             new NPCQuestObjective("Talk to the blacksmith.", (int)NPCDatabase.ID.desert_blacksmith, 1),
@@ -158,7 +158,7 @@ public class QuestDatabase : ScriptableObject {
     }
 
     /* Used once to create an (id, quest) dictionary. */
-    private void CreateIDToQuestDictionary()
+    private static void CreateIDToQuestDictionary()
     {
         int[] keys = new int[questDictionary.Count];
         questDictionary.Keys.CopyTo(keys, 0);

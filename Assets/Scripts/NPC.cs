@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    private QuestDatabase questData;
     /* Unity editor */
     public int ID;
 
@@ -58,8 +57,6 @@ public class NPC : MonoBehaviour
     {
         IsQuestGiver = true;
 
-        questData = ScriptableObject.CreateInstance<QuestDatabase>();
-
         if (NPCDatabase.idToInfo.ContainsKey(ID))
         {
             string[][] info = NPCDatabase.idToInfo[ID];
@@ -71,9 +68,9 @@ public class NPC : MonoBehaviour
             characterSprite = Resources.Load<Sprite>(characterSpriteDirectory);
             dialogueSprite = Resources.Load<Sprite>(dialogueSpriteDirectory);
         }
-        if (questData.NPCIDToQuests.ContainsKey(ID))
+        if (QuestDatabase.NPCIDToQuests.ContainsKey(ID))
         {
-            quests = questData.NPCIDToQuests[ID];                                       // TODO: decide whether you need reference or copy of the list
+            quests = QuestDatabase.NPCIDToQuests[ID];                                       // TODO: decide whether you need reference or copy of the list
         }
         else
         {
