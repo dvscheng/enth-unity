@@ -189,6 +189,8 @@ public class UIManager : MonoBehaviour {
             case (UI_Type.inventory):
                 inventoryUIOn = OnOff;
                 inventory.SetActive(OnOff);
+                if (!OnOff)
+                    TurnOnOffUI(UI_Type.itemTooltip, OnOff);            // turn off the item tooltip as well
                 break;
 
             case (UI_Type.questTracker):
