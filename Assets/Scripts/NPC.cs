@@ -55,26 +55,41 @@ public class NPC : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        IsQuestGiver = true;
-
-        if (NPCDatabase.idToInfo.ContainsKey(ID))
-        {
-            string[][] info = NPCDatabase.idToInfo[ID];
-            string name = info[0][0];
-            string characterSpriteDirectory = info[1][0];
-            string dialogueSpriteDirectory = info[2][0];
-
-            characterName = name;
-            characterSprite = Resources.Load<Sprite>(characterSpriteDirectory);
-            dialogueSprite = Resources.Load<Sprite>(dialogueSpriteDirectory);
-        }
-        if (QuestDatabase.NPCIDToQuests.ContainsKey(ID))
-        {
-            quests = QuestDatabase.NPCIDToQuests[ID];                                       // TODO: decide whether you need reference or copy of the list
+        /* If the NPC was already initialized, take the data from NPCDatabase. */
+        if (NPCDatabase.npcObjects.ContainsKey(ID))                                         // temporary fix for unity creating another NPC on scene load.
+        {                                                                                   // references the NPCDatabase NPC object for info.
+            NPC originalNPC = NPCDatabase.npcObjects[ID];                                   // TODO: find a way to switch references to NPC script on the GameObject
+            characterName = originalNPC.characterName;
+            characterSprite = originalNPC.characterSprite;
+            dialogueSprite = originalNPC.dialogueSprite;
+            quests = originalNPC.quests;
         }
         else
         {
-            quests = new List<Quest>();                                                 // just create an empty list of quests for no bug when checking for dialogue
+            if (NPCDatabase.idToInfo.ContainsKey(ID))
+            {
+                string[][] info = NPCDatabase.idToInfo[ID];
+                string name = info[0][0];
+                string characterSpriteDirectory = info[1][0];
+                string dialogueSpriteDirectory = info[2][0];
+
+                characterName = name;
+                characterSprite = Resources.Load<Sprite>(characterSpriteDirectory);
+                dialogueSprite = Resources.Load<Sprite>(dialogueSpriteDirectory);
+            }
+            if (QuestDatabase.NPCIDToQuests.ContainsKey(ID))
+            {
+                IsQuestGiver = true;
+                quests = QuestDatabase.NPCIDToQuests[ID];                                       // TODO: decide whether you need reference or copy of the list
+            }
+            else
+            {
+                IsQuestGiver = false;
+                quests = new List<Quest>();                                                     // just create an empty list of quests for no bug when checking for dialogue
+            }
+
+            /* Temporary fix, look above for info. */
+            NPCDatabase.InitializeNPC(ID, this);
         }
     }
 

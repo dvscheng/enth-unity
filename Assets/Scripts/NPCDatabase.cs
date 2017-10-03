@@ -32,6 +32,8 @@ public static class NPCDatabase
     /* Name, Sprite Directory, Neutral text, Giving quest text, */
     public static readonly Dictionary<int, string[][]> idToInfo = new Dictionary<int, string[][]>();
 
+    public static readonly Dictionary<int, NPC> npcObjects = new Dictionary<int, NPC>();
+
     public static string[] QuestNotCompleteString
     {
         get { return new string[] { "You don't seem to have finished the quest." }; }
@@ -104,5 +106,11 @@ public static class NPCDatabase
             new string[] { "Sprites/Items/spr_mushroom" },                        // Sprite directory
             new string[] { "Hi there!" },                               // Neutral/normal text
         };
+    }
+
+    /* Used when an NPC is first loaded in a scene. */
+    public static void InitializeNPC(int id, NPC npc)
+    {
+        npcObjects.Add(id, npc);
     }
 }
