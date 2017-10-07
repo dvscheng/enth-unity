@@ -12,6 +12,7 @@ public class NPCQuestObjective : QuestObjective {
         if (NPC_id == objectiveNeeded)
         {
             isCompleted = true;
+            amountCompleted = amountNeeded;
         }
     }
 

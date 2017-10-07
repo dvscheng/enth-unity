@@ -98,16 +98,23 @@ public class Quest {
         return true, otherwise return false. */
     public bool NotifyChange(int itemID, int amount)
     {
-        bool changed = false;
+        int amountChanged = 0;
         foreach (QuestObjective questObjective in questObjectives)
         {
             questObjective.NotifyChange(itemID, amount);
-            if (changed == false && questObjective.IsCompleted)
+            if (questObjective.IsCompleted)
             {
-                changed = true;
+                amountChanged++;
             }
         }
-        return changed;
+
+        // if completed:
+        if (amountChanged == questObjectives.Count)
+        {
+            currentState = (int)State.ready;
+        }
+
+        return amountChanged > 0;
     }
 
     /* Notifies each QuestObjective of a change. If a QuestObjective is changed as a result of this,
@@ -115,16 +122,23 @@ public class Quest {
     public bool NotifyChange(int NPC_ID)
     {
         // TODO REPEATED CODE
-        bool changed = false;
+        int amountChanged = 0;
         foreach (QuestObjective questObjective in questObjectives)
         {
             questObjective.NotifyChange(NPC_ID);
-            if (changed == false && questObjective.IsCompleted)
+            if (questObjective.IsCompleted)
             {
-                changed = true;
+                amountChanged++;
             }
         }
-        return changed;
+
+        // if completed:
+        if (amountChanged == questObjectives.Count)
+        {
+            currentState = (int)State.ready;
+        }
+
+        return amountChanged > 0;
     }
 
     public void OnQuestComplete()
