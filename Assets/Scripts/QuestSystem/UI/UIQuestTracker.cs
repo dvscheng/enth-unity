@@ -83,11 +83,9 @@ public class UIQuestTracker : MonoBehaviour {
         for (int i = 0; i < questBlockGOs.Count; i++)
         {
             GameObject q = questBlockGOs[i];
-            if (q.GetComponent<Quest>().Equals(quest)) {
+            if (q.GetComponent<UIQuestBlock>().LinkedQuest.Equals(quest)) {
                 questBlockGOs.RemoveAt(i);
                 Destroy(q);
-
-                Debug.Log("Successfully removed a quest.");
             }
         }
     }

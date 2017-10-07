@@ -25,6 +25,10 @@ public class UIManager : MonoBehaviour {
     public PlayerInventory playerInventory;
     bool inventoryUIOn;
 
+    public GameObject questTrackerObj;                  // this calss doesnt control toggling for the quest tracker
+    [HideInInspector]
+    public UIQuestTracker questTracker;
+
     public GameObject dialogueObj;
     [HideInInspector]
     public DialogueManager dialogue;
@@ -95,6 +99,7 @@ public class UIManager : MonoBehaviour {
 
         playerController = player.GetComponent<PlayerController>();
         playerInventory = inventory.GetComponent<PlayerInventory>();
+        questTracker = questTrackerObj.GetComponent<UIQuestTracker>();
         dialogue = dialogueObj.GetComponent<DialogueManager>();
         insigniaPanel = insigniaObj.GetComponent<InsigniaPanel>();
         healthBar = healthBarObj.GetComponent<HealthBar>();

@@ -149,6 +149,10 @@ public class Quest {
         {
             currentState = (int)State.completed;
             NotifyProceedingQuests();
+            UIManager.Instance.questTracker.RemoveQuest(this);
+
+            // default rewards TODO: specialized rewards to-bo introduced on quest creation
+            PlayerController.Instance.GainEXP((int)(PlayerController.Instance.MaxExp*.75));
         }
     }
 
@@ -192,6 +196,7 @@ public class Quest {
     {
         id = quest_ID;
         currentState = state;
+        proceedingQuests = new List<int>(proceedingQuestIDs);
         this.startNPC = startNPC;
         this.endNPC = endNPC;
         this.questTitle = questTitle;
