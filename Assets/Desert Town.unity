@@ -4921,11 +4921,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4695752012008748, guid: dbac9bf400fc3ea4ea065fab87d76556, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -7.08
+      value: -4.83
       objectReference: {fileID: 0}
     - target: {fileID: 4695752012008748, guid: dbac9bf400fc3ea4ea065fab87d76556, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4.87
+      value: -5.03
       objectReference: {fileID: 0}
     - target: {fileID: 4695752012008748, guid: dbac9bf400fc3ea4ea065fab87d76556, type: 2}
       propertyPath: m_LocalPosition.z
