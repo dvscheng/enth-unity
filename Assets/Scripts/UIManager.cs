@@ -30,9 +30,6 @@ public class UIManager : MonoBehaviour {
     public DialogueManager dialogue;
     public bool dialogueUIOn;
 
-    public GameObject questTracker;
-    bool questTrackerOn;
-
     public GameObject insigniaObj;
     [HideInInspector]
     public InsigniaPanel insigniaPanel;
@@ -65,7 +62,6 @@ public class UIManager : MonoBehaviour {
     public enum UI_Type
     {
         inventory,
-        questTracker,
         dialogue,
         insigniaPanel,
         journal,
@@ -91,7 +87,6 @@ public class UIManager : MonoBehaviour {
         hotSpot = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);   // middle of the crossheir
 
         inventoryUIOn = false;
-        questTrackerOn = false;
         dialogueUIOn = false;
         insigniaOn = false;
         journalOn = false;
@@ -111,8 +106,6 @@ public class UIManager : MonoBehaviour {
         /* Turn on (initialize) the UI, then turn it back off (assumes they're hidden in Unity editor at start). */
         inventory.SetActive(true);
         inventory.SetActive(false);
-        questTracker.SetActive(true);
-        questTracker.SetActive(false);
         dialogueObj.SetActive(true);
         dialogueObj.SetActive(false);
         insigniaObj.SetActive(true);
@@ -132,10 +125,6 @@ public class UIManager : MonoBehaviour {
         if (Inputs.Instance.inventory_key_down)
         {
             TurnOnOffUI(UI_Type.inventory, !inventoryUIOn);
-        }
-        if (Inputs.Instance.quest_tracker_collapse_down)
-        {
-            TurnOnOffUI(UI_Type.questTracker, !questTrackerOn);
         }
         if (Inputs.Instance.insignia_key_down)
         {
@@ -191,11 +180,6 @@ public class UIManager : MonoBehaviour {
                 inventory.SetActive(OnOff);
                 if (!OnOff)
                     TurnOnOffUI(UI_Type.itemTooltip, OnOff);            // turn off the item tooltip as well
-                break;
-
-            case (UI_Type.questTracker):
-                questTrackerOn = OnOff;
-                questTracker.SetActive(OnOff);
                 break;
 
             case (UI_Type.dialogue):
